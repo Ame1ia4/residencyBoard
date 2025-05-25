@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {supabase} from '../SupabaseClient';
 
-export default function loginForm(){
+export default function LoginForm(){
     // variables for input values initialised to empty strings
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -39,8 +39,6 @@ export default function loginForm(){
                 onChange={e => setPassword(e.target.value)} // updates password variable to inputted string
                 required
             />
-            
-            Change text based on state of 'isLogin'
             <button type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
             <p
                 onClick={() => setIsLogin(!isLogin)}

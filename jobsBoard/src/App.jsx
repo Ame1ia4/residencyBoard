@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import Navbar from './components/navbar';
 import RankingPage from './pages/ranking'
 import HomePage from './pages/home';
@@ -14,6 +15,10 @@ import RPSPage from './pages/rps';
 import Navbar2 from './components/navbarRP';
 import Navbar3 from './components/navbarStaff';
 import HomeStaffPage from './pages/homeStaff';
+
+import LoginForm from './components/loginForm';
+
+import { supabase } from './SupabaseClient';
 
 
 function Student({component}) {
@@ -58,6 +63,7 @@ function RP({component}) {
 
 
 function App() {  
+  /*
   let component
 switch (window.location.pathname){
   case "/":
@@ -110,6 +116,35 @@ switch (userPermission) {
   default:
     return <SignedOut component={component}/>
 }
+    */
+
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() =>{
+    supabase.auth.getSession().then(({data: {session}}) => {
+      setUser(session?.user ?? null);
+    });
+
+    const {data: subscription} = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe;
+  }, []);
+
+  return(
+    <div>
+      {user ? (
+        <>
+          <h1>Welcome, {user.email}</h1>
+          <button onClick={() => supabase.auth.signOut()}>Sign Out</button>
+        </>
+      ) : (
+        <LoginForm />
+      )}
+    </div>
+  )
 }
 
 export default App;
