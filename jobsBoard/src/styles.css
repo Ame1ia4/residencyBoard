@@ -1,0 +1,139 @@
+*{
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    background-color: #bbbbbb;
+}
+
+body {
+    margin: 0;
+}
+
+.nav{
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 4rem;
+    height: 60px;
+    position: relative;
+}
+
+
+.nav ul{
+    background-color: #fff;
+    padding: 15px;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav a{
+    background-color: #fff;
+    color: #777777;
+    font-size: large;
+    font-weight: 470;
+    text-decoration: none;
+    padding: 0 50px;
+    margin-left: 100px;
+    display: inline;
+}
+
+.nav a:hover{
+    color: #000000;
+}
+
+.nav li{
+    float: left;
+    background-color: #fff;
+}
+
+.navStaff{
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 4rem;
+    height: 60px;
+    position: relative;
+}
+
+
+.navStaff ul{
+    background-color: #fff;
+    padding: 15 15px;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.navStaff a{
+    background-color: #fff;
+    color: #777777;
+    font-size: large;
+    font-weight: 470;
+    text-decoration: none;
+    padding: 0 50px;
+    margin-left: 50px;
+    display: inline;
+}
+
+.navStaff a:hover{
+    color: #000000;
+}
+
+.navStaff li{
+    float: left;
+    background-color: #fff;
+}
+
+.Overall-title{
+    text-align: center;
+    padding-top: 30px;
+    color: #fff;
+    margin: 0;   
+    background-color: transparent; 
+}
+
+.header{
+    background-image: linear-gradient(to right, #26254d, #13d68c);
+    height: 100px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.home-main{
+    color: #090f42;
+    height: 460px;
+}
+
+.home-main h1{
+    text-align: center;
+    padding: 50px;
+    margin-bottom: -40px;
+}
+
+.home-main p{
+    text-align: center;
+    display: inline-block;
+    margin-inline-start: 170px;
+    margin-inline-end: 140px;
+}
+
+.details{
+    color: #090f42;
+    display: block;
+    height: 460px;
+}
+
+.signedOut h1{
+color: #000000;
+text-align: center;
+}
