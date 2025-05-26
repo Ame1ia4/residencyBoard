@@ -131,7 +131,7 @@ function App() {
     <div>
       {user ? (
         <>
-          {renderPage()}//Calling renderPage
+          {renderPage()}
           <h1>Welcome, {user.email}</h1>
           <button onClick={() => supabase.auth.signOut()}>Sign Out</button>
         </>
