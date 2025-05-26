@@ -109,6 +109,7 @@ function renderPage(){
       return <Staff component={component}/>
   }
 }
+
 function App() {  
   const [user, setUser] = useState(null); // initialise user to null
 
@@ -130,7 +131,7 @@ function App() {
     <div>
       {user ? (
         <>
-          {renderPage()}
+          {renderPage()}//Calling renderPage
           <h1>Welcome, {user.email}</h1>
           <button onClick={() => supabase.auth.signOut()}>Sign Out</button>
         </>

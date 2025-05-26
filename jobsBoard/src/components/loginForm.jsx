@@ -24,22 +24,22 @@ export default function LoginForm(){
     };
 
     return(
-        <form onSubmit={handleSubmit}>
-            <input
+        <form onSubmit={handleSubmit} className="form">
+            <input className="input1"
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)} // updates email variable to inputted string
                 required
             />
-            <input
+            <input className="input2"
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={e => setPassword(e.target.value)} // updates password variable to inputted string
                 required
             />
-            <button type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
+            <button className="btn1" type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
             <p
                 onClick={() => setIsLogin(!isLogin)}
                 style={{cursor: 'pointer',color: 'blue'}}

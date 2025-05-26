@@ -6,7 +6,7 @@ function LoginPage(){
     return(
     <div className="login-background">
         <div className="login-forground">
-            <img src="../public/ISE.jpeg" alt="ISE Logo"></img>
+            <img src="../public/ISE.jpeg" alt="ISE Logo" id="loginImg"></img>
             <LoginForm /> 
         </div>
     </div>

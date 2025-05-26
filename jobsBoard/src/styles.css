@@ -142,16 +142,19 @@ body {
 }
 
 .login-forground{
+    width: 1000px;
     height: 100%;
-    border-radius: 2rem;
+    margin-left: 70px;
+    background-color: #d8d8d8;
+    border-radius: 90px;
     text-align: center;
     align-content: center;
 }
 
 .login-forground img{
-    border-radius: 2rem;
+    margin-top: 70px;
+    border-radius: 20px 20px;
 }
-
 
 .menu{
     background-color: #fff;
@@ -180,4 +183,37 @@ width: 170px;
 
 .dropdown-menu a{
 padding: 0 0px;
+}
+
+.form{
+   background-color: #d8d8d8;
+   width: 700px;
+   margin-top: 20px;
+   margin-left: 195px;
+}
+
+.form p{
+    position: relative;
+    margin-top: -25px;
+    margin-left: 215px;
+    background-color: #d8d8d8;
+    font-weight: 400;
+    width: 200px;
+}
+
+.btn1 {
+border-radius: 17px;
+margin-bottom: 40px;
+padding: 10px;
+}
+
+.input1 {
+border-radius: 10px;
+}
+
+.input2 {
+border-radius: 10px;
+justify-content: space-between;
+margin-left: 20px;
+margin-right: 20px;
 }
