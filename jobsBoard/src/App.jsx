@@ -62,64 +62,60 @@ function RP({component}) {
     );
 }
 
-
-function App() {  
-  /*
+function renderPage(){
   let component
-switch (window.location.pathname){
-  case "/":
-    component = <HomePage/>
-    break
+  switch (window.location.pathname){
+    case "/":
+      component = <HomePage/>
+      break
     case "/ranking":
       component = <RankingPage/>
-    break
+      break
     case "/details":
       component = <DetailsPage/>
-    break
+      break
     case "/allocation":
       component = <AllocationPage/>
-    break
-    case "/allocationRP":
+      break
+      case "/allocationRP":
       component = <AllocationRPPage/>
-    break
+      break
     case "/homeRP":
       component = <HomeRPPage/>
-    break
+      break
     case "/jobPostings":
       component = <JobPostPage/>
-    break
+      break
     case "/rankingRP":
       component = <RankingRPPage/>
-    break
+      break
     case "/homeStaff":
       component = <HomeStaffPage/>
-    break
+      break
     case "/students":
       component = <StudentsPage/>
-    break
+      break
     case "/rps":
       component = <RPSPage/>
-    break
+      break
     case "/timelineMan":
       component = <TimePage/>
-    break
+      break
+  }
+
+  const userPermission = 'student'
+  switch (userPermission) {
+    case 'student':
+      return <Student component={component}/>
+    case 'rp':
+      return <RP component={component}/>
+    case 'staff':
+      return <Staff component={component}/>
+    default:
+      return <SignedOut component={component}/>
+  }
 }
-
-
-const userPermission = 'student'
-switch (userPermission) {
-  case 'student':
-    return <Student component={component}/>
-  case 'rp':
-    return <RP component={component}/>
-  case 'staff':
-    return <Staff component={component}/>
-  default:
-    return <SignedOut component={component}/>
-}
-    */
-
-
+function App() {  
   const [user, setUser] = useState(null); // initialise user to null
 
   // check the current session to see is a user logged in
@@ -140,6 +136,7 @@ switch (userPermission) {
     <div>
       {user ? (
         <>
+          {renderPage()}
           <h1>Welcome, {user.email}</h1>
           <button onClick={() => supabase.auth.signOut()}>Sign Out</button>
         </>
