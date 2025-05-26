@@ -17,6 +17,7 @@ import Navbar3 from './components/navbarStaff';
 import HomeStaffPage from './pages/homeStaff';
 
 import LoginForm from './components/loginForm';
+import LoginPage from './pages/loginPage';
 
 import { supabase } from './SupabaseClient';
 
@@ -119,8 +120,10 @@ switch (userPermission) {
     */
 
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // initialise user to null
 
+  // check the current session to see is a user logged in
+  // update user
   useEffect(() =>{
     supabase.auth.getSession().then(({data: {session}}) => {
       setUser(session?.user ?? null);
@@ -141,7 +144,7 @@ switch (userPermission) {
           <button onClick={() => supabase.auth.signOut()}>Sign Out</button>
         </>
       ) : (
-        <LoginForm />
+        <LoginPage />
       )}
     </div>
   )
