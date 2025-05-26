@@ -148,6 +148,11 @@ body {
     align-content: center;
 }
 
+.login-forground img{
+    border-radius: 2rem;
+}
+
+
 .menu{
     background-color: #fff;
 }
