@@ -10,7 +10,8 @@ export default function LoginForm(){
     const [lname, setLname] = useState('');
     const [cname, setCname] = useState('');
     const [role, setRole] = useState('');
-    const [studentId, setSID] = useState('');
+    const [studentId, setSID] = useState(0);
+    const [yrGroup, setYrGroup] = useState('');
 
     const [isLogin, setIsLogin] = useState(null);
     // called by form submit
@@ -23,8 +24,40 @@ export default function LoginForm(){
             else alert('Login Successful');
         }else{
             const {error} = await supabase.auth.signUp({email, password});
-            if(error) alert(error.message);
-            else alert('Check your email for conformation')
+
+            if(error){ 
+                alert(error.message);
+            }else{ 
+                alert('Check your email for conformation');
+
+                // if succesful add data to the database
+                switch(role){
+                    case 'student':
+                        const {studentError} = await supabase.from('Student').insert({
+                            firstName: fname,
+                            lastName: lname,
+                            studentNo: studentId,
+                            password: password,
+                            groupID: yrGroup
+                        }) 
+                        if(studentError) alert('Error inserting user data: ', studentError.message);
+                    case 'staff':
+                        const {staffError} = await supabase.from('Staff').insert({
+                            staffEmail: email,
+                            staffFirstName: fname,
+                            staffLastName: lname,
+                            staffPassword: password
+                        })
+                        if(staffError) alert('Error inserting user data: ',staffError.message);
+                    case 'residency':
+                        const {residencyError} = await supabase.from('Residency Partner').insert({
+                            companyName: cname,
+                            companyEmail: email,
+                            companyPassword: password
+                        })
+                        if(residencyError) alert('Error inserting user data: ',staffError.message);
+                }
+            }
         }
     };
 
@@ -91,7 +124,7 @@ export default function LoginForm(){
                             type="text"
                             placeholder="First Name"
                             value={fname}
-                            onChange={e => setPassword(e.target.value)} // updates firstname variable to inputted string
+                            onChange={e => setFname(e.target.value)} // updates firstname variable to inputted string
                             required
                             />
                             <br></br>
@@ -100,7 +133,7 @@ export default function LoginForm(){
                                 type="text"
                                 placeholder="Last Name"
                                 value={lname}
-                                onChange={e => setPassword(e.target.value)} // updates lastname variable to inputted string
+                                onChange={e => setLname(e.target.value)} // updates lastname variable to inputted string
                                 required
                             />
                             <br></br>
@@ -122,9 +155,21 @@ export default function LoginForm(){
                         <>
                             <input
                                 type="text"
+                                pattern="\d{8}"
                                 placeholder="Student Id"
                                 value={studentId}
                                 onChange={e => setSID(e.target.value)} // updates student id variable to inputted string
+                                required
+                            />
+                            <br></br>
+
+                            <input
+                                type="number"
+                                min={1}
+                                max={4}
+                                placeholder="Year Group"
+                                value={yrGroup}
+                                onChange={e => setYrGroup(e.target.value)} // updates student year group variable to inputted string
                                 required
                             />
                             <br></br>
