@@ -19,7 +19,6 @@ body {
     gap: 2rem;
     padding: 0 4rem;
     height: 60px;
-    position: relative;
 }
 
 
@@ -30,6 +29,7 @@ body {
     list-style: none;
     display: flex;
     gap: 1rem;
+    position: absolute;
 }
 
 .nav a{
@@ -60,7 +60,7 @@ body {
     gap: 2rem;
     padding: 0 4rem;
     height: 60px;
-    position: relative;
+    position: absolute;
 }
 
 
@@ -146,4 +146,33 @@ body {
     border-radius: 2rem;
     text-align: center;
     align-content: center;
+}
+
+.menu{
+    background-color: #fff;
+}
+
+.dropdown-menu {
+margin-left: -200px;
+    position: relative;
+    padding: 0 -15px;
+    background-color: #fff;
+}
+
+.dropdown-menu li{
+width: 170px;
+}
+
+.dropdown-menu ul{
+    background-color: #fff;
+    padding: 15px;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    position: absolute;
+}
+
+.dropdown-menu a{
+padding: 0 0px;
 }
