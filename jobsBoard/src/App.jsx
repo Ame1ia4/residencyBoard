@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import Navbar from './components/navbar';
 import RankingPage from './pages/ranking'
 import HomePage from './pages/home';
 import DetailsPage from './pages/details';
@@ -12,12 +11,13 @@ import RankingRPPage from './pages/rankingRP';
 import StudentsPage from './pages/students';
 import TimePage from './pages/timelineMan';
 import RPSPage from './pages/rps';
-import Navbar2 from './components/navbarRP';
-import Navbar3 from './components/navbarStaff';
 import HomeStaffPage from './pages/homeStaff';
+import LoginPage from './pages/loginPage';
 
 import LoginForm from './components/loginForm';
-import LoginPage from './pages/loginPage';
+import Navbar from './components/navbar';
+import Navbar2 from './components/navbarRP';
+import Navbar3 from './components/navbarStaff';
 
 import { supabase } from './SupabaseClient';
 
@@ -32,10 +32,6 @@ function Student({component}) {
     {component}
     </div>
   );
-}
-
-function SignedOut() {
-  return <div className='signedOut'><h1>User not logged in!</h1></div>
 }
 
 function Staff({component}) {
@@ -111,8 +107,6 @@ function renderPage(){
       return <RP component={component}/>
     case 'staff':
       return <Staff component={component}/>
-    default:
-      return <SignedOut component={component}/>
   }
 }
 function App() {  

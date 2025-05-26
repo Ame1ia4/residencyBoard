@@ -4,8 +4,11 @@ import LoginForm from "../components/loginForm";
 
 function LoginPage(){
     return(
-    <div>
-        <LoginForm /> 
+    <div className="login-background">
+        <div className="login-forground">
+            <img src="../public/ISE.jpeg" alt="ISE Logo"></img>
+            <LoginForm /> 
+        </div>
     </div>
     );
 };

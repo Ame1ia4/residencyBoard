@@ -133,7 +133,17 @@ body {
     height: 460px;
 }
 
-.signedOut h1{
-color: #000000;
-text-align: center;
+.login-background{
+    background-image: linear-gradient(to right, #26254d, #13d68c);
+    padding: 2rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    height: 100vh;
+}
+
+.login-forground{
+    height: 100%;
+    border-radius: 2rem;
+    text-align: center;
+    align-content: center;
 }
