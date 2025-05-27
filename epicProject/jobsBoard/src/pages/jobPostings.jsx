@@ -38,6 +38,13 @@ const handleChange = (e) => {
   }));
 };
 
+const readData = async (e) =>{
+
+
+let { data: JobDetails, error } = await supabase
+  .from('JobDetails')
+  .select('jobTitle,description,salary,requirements')
+}
     
     return (
     <div style={{maxWidth: "600PX", margin: "0 auto", padding: "1rem"}}>
