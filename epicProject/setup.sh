@@ -10,10 +10,10 @@ echo 'Downloading Backend Requirments'
 sudo apt install -y python3 python3-pip python3.12-venv
 cd ../backend/
 python3 -m venv venv
-pip install -r requirments.txt
 
 echo 'Starting Backend'
 source venv/bin/activate
+pip install -r requirments.txt
 python3 app.py
 
 echo 'Starting Frontend'
