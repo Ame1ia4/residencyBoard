@@ -38,7 +38,8 @@ export default function LoginForm(){
                             lastName: lname,
                             studentNo: studentId,
                             password: password,
-                            groupID: yrGroup
+                            groupID: yrGroup,
+                            studentEmail: email
                         }) 
                         if(studentError) alert('Error inserting user data: ', studentError.message);
                     case 'staff':
@@ -155,7 +156,6 @@ export default function LoginForm(){
                         <>
                             <input
                                 type="text"
-                                pattern="\d{8}"
                                 placeholder="Student Id"
                                 value={studentId}
                                 onChange={e => setSID(e.target.value)} // updates student id variable to inputted string
@@ -164,9 +164,7 @@ export default function LoginForm(){
                             <br></br>
 
                             <input
-                                type="number"
-                                min={1}
-                                max={4}
+                                type="text"
                                 placeholder="Year Group"
                                 value={yrGroup}
                                 onChange={e => setYrGroup(e.target.value)} // updates student year group variable to inputted string
