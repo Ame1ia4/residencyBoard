@@ -99,7 +99,7 @@ function renderPage(){
       break
   }
 
-  const userPermission = 'student'
+  const userPermission = 'rp'
   switch (userPermission) {
     case 'student':
       return <Student component={component}/>
@@ -132,7 +132,7 @@ function App() {
       {user ? (
         <>
           {renderPage()}
-          <h1>Welcome, {user.email}</h1>
+          {/*<h1>Welcome, {user.email}</h1>*/}
           <button onClick={() => supabase.auth.signOut()}>Sign Out</button>
         </>
       ) : (
