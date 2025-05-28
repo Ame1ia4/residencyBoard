@@ -55,11 +55,10 @@ for student in students_ordered:
             remaining_slots[company] -= 1
             interview_count += 1
 
-            if interview_count > 3:
+            if interview_count >= 3:
                 break
 
     student_interview_count[student] = interview_count
-
 
 
 # creating a dataframe for the results to display
@@ -69,4 +68,10 @@ for company, students in interview_results.items():
         interview_list.append({"Company": company, "StudentName": student})
 
 interview_df = pd.DataFrame(interview_list)
-print(interview_df.head())
+
+def print_full(x):
+    pd.set_option('display.max_rows', len(x))
+    print(x)
+    pd.reset_option('display.max_rows')
+
+print_full(interview_df)
