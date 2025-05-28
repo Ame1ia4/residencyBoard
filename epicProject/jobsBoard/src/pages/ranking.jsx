@@ -1,36 +1,34 @@
-import React from 'react';
 import { supabase } from '../SupabaseClient';
 import { useEffect, useState } from 'react';
 
 function RankingPage(){
 
-const [newRank, setNewRank] = useState({rankId: "", companyName: ""});
+const [newRank, setNewRank] = useState({rankID: "", companyName: ""});
 const [fetchError, setFetchError] = useState(null)
 const [rank, setRank] = useState(null)
 
 const handleSubmit = async (e) => {
         e.preventDefault();
 
-    const RankToInsert = {
+    const rankDataToInsert = {
         ...newRank,
-        rankID: newRank.rankID ? parseInt(newRank.rankId) : undefined,
-        companyName: newRank.companyName ? parseInt(newRank.companyName) : undefined
+        rankID: newRank.rankID ? parseInt(newRank.rankID) : undefined
     };
 
   
-const {error} = await supabase.from("Ranking").insert(RankToInsert).single();
+const {error} = await supabase.from("Ranking").insert(rankDataToInsert).single();
 
     if(error){
     console.error("Error adding job:", error.message);
    }
    else{
-    setRank({rankId: "", companyName: ""});
+    setNewRank({rankID: "", companyName: ""});
    }
 }
 
 const handleChange = (e) => {
   const { name, value } = e.target;
-  setNewJob(prev => ({
+  setNewRank(prev => ({
     ...prev,
     [name]: value
   }));
@@ -91,8 +89,7 @@ return (
   <div className='jobDetails'>
     {rank.map(rank => (
       <p>
-        <p>Rank number: {rank.rankID}</p>
-        <p>Company Name: {rank.companyName}</p>
+        <p>{rank.rankID} : {rank.companyName}</p>
         <br></br>
       </p>
     ))}
