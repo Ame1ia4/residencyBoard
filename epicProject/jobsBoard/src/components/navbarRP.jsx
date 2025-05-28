@@ -1,4 +1,3 @@
-
 export default function Navbar2() {
     return (
       <nav className="nav">
