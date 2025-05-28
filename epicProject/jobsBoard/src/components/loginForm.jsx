@@ -10,7 +10,7 @@ export default function LoginForm(){
     const [lname, setLname] = useState('');
     const [cname, setCname] = useState('');
     const [role, setRole] = useState('');
-    const [studentId, setSID] = useState(0);
+    const [studentId, setSID] = useState('');
     const [yrGroup, setYrGroup] = useState('');
 
     const [isLogin, setIsLogin] = useState(null);
