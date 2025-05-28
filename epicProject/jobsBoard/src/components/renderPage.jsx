@@ -62,17 +62,14 @@ function RenderPage({user}){
 
     useEffect(() => {
         async function fetchRole() {
-        const { data, error } = await supabase
-            .from('User')
-            .select('Role')
-            .eq('Email', user.email)
-            .single();
-
-        if (!error && data) {
-            setRole(data.Role);
-        } else {
-            setRole(null); // handle error or no role found case
-        }
+          const { data, error } = await supabase
+              .from('User')
+              .select('Role')
+              .eq('Email', user.email)
+              .single();
+          if (!error && data.Role) {
+              setRole(data.Role);
+          }
         }
         fetchRole();
     }, [user.email]);
