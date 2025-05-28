@@ -33,7 +33,12 @@ export default function LoginForm(){
                 // if succesful add data to the database
                 switch(role){
                     case 'student':
-                        const {studentError} = await supabase.from('Student').insert({
+                        const {error: userStudentError} = await supabase.from("User").insert({
+                            Role: 'student',
+                            Email: email
+                        })
+                        console.log('student');
+                        const {error: studentError} = await supabase.from('Student').insert({
                             firstName: fname,
                             lastName: lname,
                             studentNo: studentId,
@@ -41,11 +46,8 @@ export default function LoginForm(){
                             groupID: yrGroup,
                             studentEmail: email
                         }) 
-                        const {userStudentError} = await supabase.from("User").insert({
-                            Role: 'student',
-                            Email: email
-                        })
-                        if(studentError || userStudentError) alert('Error inserting user data: ', studentError.message);
+                        console.log("user");
+                        if(studentError || userStudentError) alert(`Error inserting user data: ${studentError?.message || userStudentError?.message}`);
                     case 'staff':
                         const {staffError} = await supabase.from('Staff').insert({
                             staffEmail: email,

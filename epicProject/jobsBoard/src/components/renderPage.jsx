@@ -73,7 +73,6 @@ function RenderPage({user}){
         } else {
             setRole(null); // handle error or no role found case
         }
-        setLoading(false);
         }
         fetchRole();
     }, [user.email]);
