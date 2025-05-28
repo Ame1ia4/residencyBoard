@@ -20,6 +20,8 @@ import Navbar2 from './components/navbarRP';
 import Navbar3 from './components/navbarStaff';
 
 import { supabase } from './SupabaseClient';
+import Residency1Page from './pages/r1';
+import Residency2Page from './pages/r2';
 
 
 function Student({component}) {
@@ -97,9 +99,15 @@ function renderPage(){
     case "/timelineMan":
       component = <TimePage/>
       break
+    case "/r1":
+      component = <Residency1Page/>
+      break  
+     case "/r2":
+      component = <Residency2Page/>
+      break 
   }
 
-  const userPermission = 'rp'
+  const userPermission = 'student'
   switch (userPermission) {
     case 'student':
       return <Student component={component}/>

@@ -217,3 +217,25 @@ justify-content: space-between;
 margin-left: 20px;
 margin-right: 20px;
 }
+
+
+
+.jobPost {
+    background-color: #fff;
+    border-radius: 12%;
+    width: 500px;
+    box-shadow:  5px 5px 2px #636363;
+    margin-left: 250px;
+    opacity: 70%;
+    padding: 10px;
+    margin-bottom: 50px;
+}
+
+.jobPost p{
+font-size: 12px;
+padding: 3px;
+background-color: transparent;
+margin-left: 40px;
+width: 400px; 
+}
+

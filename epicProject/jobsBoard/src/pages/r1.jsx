@@ -1,16 +1,17 @@
 import { supabase } from '../SupabaseClient';
 import { useEffect, useState } from 'react';
 
-function DetailsPage(){
+function Residency1Page(){
 
 const [fetchError, setFetchError] = useState(null)
 const [jobDetails, setJobDetails] = useState(null)
 
     useEffect(() =>{
-    const fetchJobDetails = async () => {
+    const fetchJobDetails1 = async () => {
     const{ data, error} = await supabase
       .from('JobDetails')
-      .select('jobTitle,description,salary,requirements, residencyNo')
+      .select('*')
+      .eq('residencyNo', '1')
     
       if (error) {
         setFetchError('Could not fetch data')
@@ -23,26 +24,26 @@ const [jobDetails, setJobDetails] = useState(null)
       }
     }
         
-    fetchJobDetails()
+    fetchJobDetails1()
     }, [])
 
     return (
-
-
 <div>
-<h2>List of all Posts</h2>
+<h2>Available R1 Positions</h2>
 {fetchError && (<p>{fetchError}</p>)}
-<div className='Card' on>
+<div className='Card'>
 {jobDetails && (
   <div className='jobDetails'>
     {jobDetails.map(jobDetails => (
       <p>
+        <div className='jobPost'>
         <p>Job Title: {jobDetails.jobTitle}</p>
         <p>Salary: {jobDetails.salary}</p>
         <p>Description: {jobDetails.description}</p>
         <p>Requirements: {jobDetails.requirements}</p>
         <p>Residency: {jobDetails.residencyNo}</p>
         <br></br>
+        </div>
       </p>
     ))}
   </div>
@@ -52,4 +53,4 @@ const [jobDetails, setJobDetails] = useState(null)
     );
 };
 
-export default DetailsPage;
+export default Residency1Page;

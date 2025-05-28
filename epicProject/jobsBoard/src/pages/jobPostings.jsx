@@ -41,7 +41,7 @@ useEffect(() =>{
 const fetchJobDetails = async () => {
 const{ data, error} = await supabase
   .from('JobDetails')
-  .select('jobTitle,description,salary,requirements')
+  .select('jobTitle,description,salary,requirements, residencyNo')
 
   if (error) {
     setFetchError('Could not fetch data')
@@ -123,9 +123,10 @@ return (
     </button>
 </form>
 
+<br></br>
 <h2>List of Posts</h2>
 {fetchError && (<p>{fetchError}</p>)}
-<div className='Card' on>
+<div className='Card'>
 {jobDetails && (
   <div className='jobDetails'>
     {jobDetails.map(jobDetails => (
@@ -134,6 +135,7 @@ return (
         <p>Salary: {jobDetails.salary}</p>
         <p>Description: {jobDetails.description}</p>
         <p>Requirements: {jobDetails.requirements}</p>
+        <p>Residency: {jobDetails.residencyNo}</p>
         <br></br>
       </p>
     ))}
