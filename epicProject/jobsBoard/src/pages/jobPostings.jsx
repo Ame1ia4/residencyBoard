@@ -1,10 +1,11 @@
 import { supabase } from '../SupabaseClient';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function JobPostPage(){
 
-    const [newJob, setNewJob] = useState({jobID: "", description: "", salary: "", requirements: "", staffID: "", companyID: "", jobTitle: ""});
-
+const [newJob, setNewJob] = useState({jobID: "", description: "", salary: "", requirements: "", staffID: "", companyID: "", jobTitle: ""});
+const [fetchError, setFetchError] = useState(null)
+const [jobDetails, setJobDetails] = useState(null)
 
 const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,9 +19,7 @@ const handleSubmit = async (e) => {
     };
 
   
-
-
-    const {error} = await supabase.from("Job Details").insert(jobDataToInsert).single();
+const {error} = await supabase.from("Job Details").insert(jobDataToInsert).single();
 
     if(error){
     console.error("Error adding job:", error.message);
@@ -38,16 +37,28 @@ const handleChange = (e) => {
   }));
 };
 
-const readData = async (e) =>{
-
-
-let { data: JobDetails, error } = await supabase
+useEffect(() =>{
+const fetchJobDetails = async () => {
+const{ data, error} = await supabase
   .from('JobDetails')
   .select('jobTitle,description,salary,requirements')
+
+  if (error) {
+    setFetchError('Could not fetch data')
+    setJobDetails(null)
+    console.log(error)
+  }
+  if(data){
+    setJobDetails(data)
+    setFetchError(null)
+  }
 }
     
-    return (
-    <div style={{maxWidth: "600PX", margin: "0 auto", padding: "1rem"}}>
+fetchJobDetails()
+}, [])
+
+return (
+  <div style={{maxWidth: "600PX", margin: "0 auto", padding: "1rem"}}>
 
 <h2>Job Post</h2>
 
@@ -113,10 +124,24 @@ let { data: JobDetails, error } = await supabase
 </form>
 
 <h2>List of Posts</h2>
-
-
+{fetchError && (<p>{fetchError}</p>)}
+<div className='Card' on>
+{jobDetails && (
+  <div className='jobDetails'>
+    {jobDetails.map(jobDetails => (
+      <p>
+        <p>Job Title: {jobDetails.jobTitle}</p>
+        <p>Salary: {jobDetails.salary}</p>
+        <p>Description: {jobDetails.description}</p>
+        <p>Requirements: {jobDetails.requirements}</p>
+        <br></br>
+      </p>
+    ))}
+  </div>
+)}
+</div>
 </div>
     );
-};
+  };
 
 export default JobPostPage;
