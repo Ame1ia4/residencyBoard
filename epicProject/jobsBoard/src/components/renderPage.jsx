@@ -12,7 +12,7 @@ import StudentsPage from '../pages/students';
 import TimePage from '../pages/timelineMan';
 import RPSPage from '../pages/rps';
 import HomeStaffPage from '../pages/homeStaff';
-import Residency1Page from './.pages/r1';
+import Residency1Page from '../pages/r1';
 import Residency2Page from '../pages/r2';
 
 import Navbar from './navbar';
