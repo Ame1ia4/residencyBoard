@@ -34,14 +34,3 @@ with open(qca_path, "wb") as file:
         .download("qca_list.csv")
     )
     file.write(response)
-
-# the companies csv file is a placeholder until the db actually has data
-global company_path
-company_path = os.path.join(download_directory, "companies.csv")
-with open(company_path, "wb") as file:
-    response = (
-        supabase.storage
-        .from_("qca-list")
-        .download("companies.csv")
-    )
-    file.write(response)
