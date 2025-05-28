@@ -41,7 +41,11 @@ export default function LoginForm(){
                             groupID: yrGroup,
                             studentEmail: email
                         }) 
-                        if(studentError) alert('Error inserting user data: ', studentError.message);
+                        const {userStudentError} = await supabase.from("User").insert({
+                            Role: 'student',
+                            Email: email
+                        })
+                        if(studentError || userStudentError) alert('Error inserting user data: ', studentError.message);
                     case 'staff':
                         const {staffError} = await supabase.from('Staff').insert({
                             staffEmail: email,
@@ -49,15 +53,25 @@ export default function LoginForm(){
                             staffLastName: lname,
                             staffPassword: password
                         })
-                        if(staffError) alert('Error inserting user data: ',staffError.message);
+                        const {userStaffError} = await supabase.from("User").insert({
+                            Role: 'staff',
+                            Email: email
+                        })
+                        if(staffError || userStaffError) alert('Error inserting user data: ',staffError.message);
                     case 'residency':
                         const {residencyError} = await supabase.from('Residency Partner').insert({
                             companyName: cname,
                             companyEmail: email,
                             companyPassword: password
                         })
-                        if(residencyError) alert('Error inserting user data: ',staffError.message);
+                        const {userResidencyError} = await supabase.from("User").insert({
+                            Role: 'residency',
+                            Email: email
+                        })
+                        if(residencyError || userResidencyError) alert('Error inserting user data: ',staffError.message);
+                        
                 }
+                
             }
         }
     };
