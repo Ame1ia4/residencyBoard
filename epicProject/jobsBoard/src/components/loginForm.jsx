@@ -140,7 +140,7 @@ export default function LoginForm(){
                             <input
                             type="text"
                             placeholder="First Name"
-                            value={fname}
+                            value={cname}
                             onChange={e => setFname(e.target.value)} // updates firstname variable to inputted string
                             required
                             />
