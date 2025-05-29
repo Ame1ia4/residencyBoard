@@ -140,7 +140,7 @@ export default function LoginForm(){
                             <input
                             type="text"
                             placeholder="First Name"
-                            value={cname}
+                            value={fname}
                             onChange={e => setFname(e.target.value)} // updates firstname variable to inputted string
                             required
                             />
@@ -160,7 +160,7 @@ export default function LoginForm(){
                             <input
                                 type="text"
                                 placeholder="Company Name"
-                                value={fname}
+                                value={cname}
                                 onChange={e => setCname(e.target.value)} // updates companyname variable to inputted string
                                 required
                             />
