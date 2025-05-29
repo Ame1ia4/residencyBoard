@@ -9,13 +9,13 @@ function RankingPage(){
     const [fetchError, setFetchError] = useState(null)
     const [rank, setRank] = useState(null)
 
-    const [companyDropID, setCompanyDropdID] = useState('');
+    const [companyDropID, setCompanyDropID] = useState('');
     const [companyDropName, setCompanyDropName] = useState('');
 
 
     const handleCompanySelection = (companyId, companyName) => {
-        setCompanyDropdID(companyId);
-        setCompanyDropdID(companyName);
+        setCompanyDropID(companyId);
+        setCompanyDropID(companyName);
 
         setNewRank(prev => ({
             ...prev,
@@ -46,7 +46,7 @@ function RankingPage(){
         }
         else{
             setNewRank({rankID: "", companyName: ""}); 
-            setCompanyDropdID(''); 
+            setCompanyDropID(''); 
             setCompanyDropName('');
             setFetchError(null);
             fetchRank();
