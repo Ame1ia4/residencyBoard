@@ -20,7 +20,7 @@ fuser -k 5000/tcp
 
 # Activate venv and install packages
 source venv/bin/activate
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 echo 'Starting Backend'
 # Run backend in background
