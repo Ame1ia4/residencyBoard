@@ -1,5 +1,5 @@
-import DropdownMenu from '../components/dropdown1'; // Assuming this is another dropdown you might use elsewhere
-import Dropdown from '../components/dropMenu'; // This is the component we're modifying
+import DropdownMenu from '../components/dropdown1'; 
+import Dropdown from '../components/dropMenu'; 
 import { supabase } from '../SupabaseClient';
 import { useEffect, useState } from 'react';
 
