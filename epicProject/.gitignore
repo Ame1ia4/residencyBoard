@@ -1,2 +1,5 @@
 #Ignore python virtual environment
 backend/venv/
+
+backend/__pycache__/
+backend/csvDownloads/
