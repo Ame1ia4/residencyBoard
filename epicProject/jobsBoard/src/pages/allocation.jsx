@@ -1,31 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../SupabaseClient';
 
 function AllocationPage(){
 
 {
-  const [allocation, setAllocation] = useState(null);
-  const [fetchError, setFetchError] = useState(null);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     fetch('http://127.0.0.1:5000/')
-    .then(response => response.json())
-
-    if (error) {
-            setFetchError('Could not fetch rankings data');
-            setAllocation(null);
-            console.log(error);
-        }
-        if (data) {
-            setAllocation(json);
-            setFetchError(null);
-        }
+    
+      .then(response => response.json())
+      .then(json => setData(json))
+      .catch(error => console.error('Error fetching:', error));
   }, []);
 
-  return(
-  <div>
-    {allocation ? JSON.stringify(data) : 'Loading...'}
-    </div>
+  return( <div>{data ? JSON.stringify(data) : 'Loading...'}</div>
 )
 
 }
