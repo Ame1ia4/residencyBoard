@@ -1,4 +1,3 @@
-import os
 from supabase import create_client, Client
 import pandas as pd
 from loadCSVs import local_path, qca_path
