@@ -4,13 +4,12 @@ from dotenv import load_dotenv
 import pandas as pd
 
 # creates a supabase client
-load_dotenv(dotenv_path="epicProject/jobsBoard/.env")
 url: str = "https://zahjfkggsyktdshmjmre.supabase.co"
-key: str = "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5ODEyMzMsImV4cCI6MjA2MzU1NzIzM30.-7nvAbM7nzfHAs3qYwXivZjHMP6dfbX5k3LUByxk09A"
+key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5ODEyMzMsImV4cCI6MjA2MzU1NzIzM30.-7nvAbM7nzfHAs3qYwXivZjHMP6dfbX5k3LUByxk09A"
 supabase: Client = create_client(url, key)
 
 # any files downloaded from supabase are stored in the download_directory
-download_directory = "epicProject/backend/csvDownloads"
+download_directory = "csvDownloads"
 os.makedirs(download_directory, exist_ok=True)
 
 #downloads the jobRankings csv from supabase storage and prints it
