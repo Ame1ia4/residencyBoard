@@ -5,25 +5,18 @@ import { useEffect, useState } from 'react';
 
 function RankingPage(){
 
-    const [newRank, setNewRank] = useState({rankID: "", studentID: "", firstName: "", lastName: ""});
+    const [newRank, setNewRank] = useState({rankNo: "", studentID: ""});
     const [fetchError, setFetchError] = useState(null)
     const [rank, setRank] = useState(null)
 
     const [studentDropID, setStudentDropID] = useState('');
-    const [studentDropFName, setStudentDropFName] = useState('');
-    const [studentDropLName, setStudentDropLName] = useState('');
 
-
-    const handleStudentSelection = (studentID, firstName, lastName) => {
+    const handleStudentSelection = (studentID) => {
         setStudentDropID(studentID);
-        setStudentDropFName(firstName);
-        setStudentDropLName(lastName);
      
 
         setNewRank(prev => ({
             ...prev,
-            firstName: firstName,
-            lastName : lastName,
             studentID : studentID
         }));
     };
@@ -32,25 +25,21 @@ function RankingPage(){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!newRank.firstName && !newRank.lastName) {
-            setFetchError("Please select a student from the dropdown.");
-            return; 
-        }
 
         const rankDataToInsert = {
             ...newRank,
-            rankID: newRank.rankID ? parseInt(newRank.rankID) : undefined,
-           
+            rankID: newRank.rankNo ? parseInt(newRank.rankNo) : undefined,
+            studentID: newRank.studentID ? parseInt(newRank.studentID) : undefined,
         };
 
-        const {error} = await supabase.from("Ranking").insert(rankDataToInsert).single();
+        const {error} = await supabase.from("RankingStudent").insert(rankDataToInsert).single();
 
         if(error){
             console.error("Error with inserting rank:", error.message);
             setFetchError("Error inserting rank: " + error.message);
         }
         else{
-            setNewRank({rankID: ""}); 
+            setNewRank({rankNo: ""}); 
             setStudentDropID(''); 
             setFetchError(null);
             fetchRank();
@@ -68,9 +57,9 @@ function RankingPage(){
   
     const fetchRank = async () => {
         const { data, error } = await supabase
-            .from('Ranking')
-            .select('rankID, firstName, lastName')
-            .order('firstName', { ascending: true});
+            .from('RankingStudent')
+            .select('rankNo, studentID, Student(firstName)')
+            .order('rankNo', { ascending: true});
 
         if (error) {
             setFetchError('Could not fetch rankings data');
@@ -94,10 +83,10 @@ function RankingPage(){
 
             <form style={{marginBottom: "1rem"}} onSubmit={handleSubmit}>
                 <input
-                    name='rankID'
+                    name='rankNo'
                     type='number'
                     placeholder='Rank Number'
-                    value={newRank.rankID}
+                    value={newRank.rankNo}
                     onChange={handleChange}
                     style={{width:"100%", marginBottom: "0.5rem", padding: "0.5rem"}}
                 />
@@ -116,9 +105,9 @@ function RankingPage(){
             <div className='Card'>
                 {rank && (
                     <div className='jobDetails'>
-                        {rank.map(ranking => (
+                        {rank.map(rankingStudent => (
                             <p>
-                                {ranking.rankID} : {ranking.Student.firstName} {ranking.Student.lastName}
+                                {rankingStudent.rankNo} : {rankingStudent.Student.firstName} {rankingStudent.Student.lastName}
                             </p>
                         ))}
                     </div>

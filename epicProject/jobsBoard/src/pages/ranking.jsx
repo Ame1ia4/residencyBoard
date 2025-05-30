@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 function RankingPage(){
 
-    const [newRank, setNewRank] = useState({rankID: "", companyName: ""});
+    const [newRank, setNewRank] = useState({rankNo: "", companyName: ""});
     const [fetchError, setFetchError] = useState(null)
     const [rank, setRank] = useState(null)
 
@@ -34,18 +34,18 @@ function RankingPage(){
 
         const rankDataToInsert = {
             ...newRank,
-            rankID: newRank.rankID ? parseInt(newRank.rankID) : undefined,
+            rankID: newRank.rankNo ? parseInt(newRank.rankNo) : undefined,
            
         };
 
-        const {error} = await supabase.from("Ranking").insert(rankDataToInsert).single();
+        const {error} = await supabase.from("RankingCompany").insert(rankDataToInsert).single();
 
         if(error){
             console.error("Error with inserting rank:", error.message);
             setFetchError("Error inserting rank: " + error.message);
         }
         else{
-            setNewRank({rankID: "", companyName: ""}); 
+            setNewRank({rankNo: "", companyName: ""}); 
             setCompanyDropID(''); 
             setCompanyDropName('');
             setFetchError(null);
@@ -64,9 +64,9 @@ function RankingPage(){
   
     const fetchRank = async () => {
         const { data, error } = await supabase
-            .from('Ranking')
-            .select('rankID, companyName')
-            .order('rankID', { ascending: true});
+            .from('RankingCompany')
+            .select('rankNo, companyName')
+            .order('rankNo', { ascending: true});
 
         if (error) {
             setFetchError('Could not fetch rankings data');
@@ -90,7 +90,7 @@ function RankingPage(){
 
             <form style={{marginBottom: "1rem"}} onSubmit={handleSubmit}>
                 <input
-                    name='rankID'
+                    name='rankNo'
                     type='number'
                     placeholder='Rank Number'
                     value={newRank.rankID}
@@ -112,9 +112,9 @@ function RankingPage(){
             <div className='Card'>
                 {rank && (
                     <div className='jobDetails'>
-                        {rank.map(ranking => (
+                        {rank.map(rankingCompany => (
                             <p>
-                                {ranking.rankID} : {ranking.companyName}
+                                {rankingCompany.rankNo} : {rankingCompany.companyName}
                             </p>
                         ))}
                     </div>
