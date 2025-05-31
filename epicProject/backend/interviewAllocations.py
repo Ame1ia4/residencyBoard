@@ -1,12 +1,15 @@
 from supabase import create_client, Client
 import pandas as pd
 from loadCSVs import local_path, qca_path
+from dotenv import load_dotenv
+import os
 
 def allocate_interviews():
 
     # creates a supabase client
-    url: str = "https://zahjfkggsyktdshmjmre.supabase.co"
-    key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5ODEyMzMsImV4cCI6MjA2MzU1NzIzM30.-7nvAbM7nzfHAs3qYwXivZjHMP6dfbX5k3LUByxk09A"
+    load_dotenv(dotenv_path='.env')
+    url = os.getenv("VITE_SUPABASE_URL")
+    key = os.getenv("VITE_SUPABASE_KEY")
     supabase: Client = create_client(url, key)
 
     qca_df = pd.read_csv(qca_path)
