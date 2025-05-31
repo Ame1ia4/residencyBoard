@@ -95,12 +95,22 @@ def allocate_interviews():
         student_id = str(row["StudentID"])
         interview_id = int(row["Interview ID"])
 
-        response = (
-            supabase.table("InterviewAllocation")
-            .insert({"interviewID": interview_id,
-                "jobID": job, 
-                "studentID": student_id})
-            .execute()
+    max_id_response = supabase.table("InterviewAllocation").select("interviewID").order("interviewID", desc=True).limit(1).execute()
+    if max_id_response.data and max_id_response.data[0]:
+        latest_id = max_id_response.data[0]['interviewID']
+        new_interview_id = latest_id + 1
+    #counter for interview ids - stops duplication issues
+    else:
+        new_interview_id = 1 # Starts from 1 if table empty
+
+    response = (
+        supabase.table("InterviewAllocation")
+        .insert({
+            "interviewID": new_interview_id,
+            "jobID": job,
+            "studentID": student_id
+        })
+        .execute()
         )
 
     return interview_list
