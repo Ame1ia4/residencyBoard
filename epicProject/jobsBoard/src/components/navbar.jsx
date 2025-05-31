@@ -17,7 +17,6 @@ export default function Navbar() {
     <nav className="nav">
      <ul>
       <li>
-      <li>
           <a href="/">Home</a>
       </li>
       <li>
@@ -36,7 +35,6 @@ export default function Navbar() {
         </li>
         <li>
           <a href="/allocation">Allocations</a>
-        </li>
         </li>
       </ul>
     </nav>
