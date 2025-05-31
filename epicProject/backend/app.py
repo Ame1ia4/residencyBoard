@@ -11,5 +11,9 @@ def allocate(): #function to call in frontend
     result = allocate_interviews() #function
     return result
 
+@app.route('/rpAllocation')
+def rp():
+    return 'rp'
+
 if __name__ == '__main__': #if this file is run directly then this will run
     app.run(debug=True)

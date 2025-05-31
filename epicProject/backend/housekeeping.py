@@ -3,9 +3,10 @@ import os
 from dotenv import load_dotenv
 
 # creates a supabase client
-load_dotenv(dotenv_path="epicProject/jobsBoard/.env")
+load_dotenv(dotenv_path=".env")
 url: str = os.environ.get("VITE_SUPABASE_URL")
 key: str = os.environ.get("VITE_SUPABASE_KEY") 
+
 
 def clearInterviewAllocations():
     x = 0
