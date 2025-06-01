@@ -1,10 +1,10 @@
 from supabase import create_client, Client
 import pandas as pd
-from loadCSVs import local_path, qca_path
+from loadCSVs import ranking_path, qca_list_download
 from dotenv import load_dotenv
 import os
 
-def allocate_interviews():
+def allocate_interviews(year_group):
 
     # creates a supabase client
     load_dotenv(dotenv_path='.env')
@@ -12,8 +12,9 @@ def allocate_interviews():
     key = os.getenv("VITE_SUPABASE_KEY")
     supabase: Client = create_client(url, key)
 
+    qca_path = qca_list_download(year_group)
     qca_df = pd.read_csv(qca_path)
-    ranking_df = pd.read_csv(local_path)
+    ranking_df = pd.read_csv(ranking_path)
 
     # convert qca order to list
     students_ordered = qca_df["StudentID"].tolist()
