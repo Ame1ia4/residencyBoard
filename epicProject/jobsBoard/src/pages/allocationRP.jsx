@@ -1,3 +1,6 @@
+//needs to return only the users allocations and separate between r1, r2, etc
+//r1 allocations are gonna need to be done separately to r2 allocations in algorithm talk to sarah
+
 import React from 'react';
 
 function AllocationRPPage(){

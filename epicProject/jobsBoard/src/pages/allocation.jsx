@@ -1,3 +1,6 @@
+//needs to return only the users interview allocations
+//needs to switch based on timeline management to return job Allocation of user
+
 import { supabase } from '../SupabaseClient';
 import { useEffect, useState } from 'react';
 

@@ -3,7 +3,7 @@ export default function Navbar3() {
     return (
       <nav className="navStaff">
        <ul>
-        <li>
+        
         <li>
             <a href="/homeStaff">Home</a>
         </li>
@@ -16,7 +16,7 @@ export default function Navbar3() {
           <li>
             <a href="/timelineMan">Timeline Management</a>
           </li>
-          </li>
+        
         </ul>
       </nav>
     );

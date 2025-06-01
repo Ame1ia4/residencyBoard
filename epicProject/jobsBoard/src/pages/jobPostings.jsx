@@ -2,8 +2,7 @@ import { supabase } from '../SupabaseClient';
 import { useEffect, useState } from 'react';
 
 function JobPostPage(){
-{/**setting values, making functions ex:fetchJobDetails which is called and then used in to print values in retir*/}
-const [newJob, setNewJob] = useState({jobID: "", description: "", salary: "", requirements: "", staffID: "", companyID: "", jobTitle: ""});
+  const [newJob, setNewJob] = useState({residencyNo : "", description: "", salary: "", requirements: "", jobTitle: ""});
 const [fetchError, setFetchError] = useState(null)
 const [jobDetails, setJobDetails] = useState(null)
 const [userID, setUserID] = useState(null)
@@ -28,13 +27,13 @@ const [userID, setUserID] = useState(null)
         const { data, error } = await supabase
             .from('JobDetails') 
             .select('jobTitle,description,salary,requirements, residencyNo, jobID') 
-            .eq('staffID', userID); 
+            .eq('companyStaffID', userID); 
 
         if (error) {
             setFetchError('Could not fetch job posts: ' + error.message);
             setJobDetails(null);
             console.error('Fetch error:', error);
-        } else (data) => {
+        } else {
             setJobDetails(data);
             setFetchError(null);
         }
@@ -61,7 +60,7 @@ const [userID, setUserID] = useState(null)
 
         const jobDataToInsert = {
             ...newJob, 
-            staffID: userID, //debating do i put salary: salary stuff here too
+            companyStaffID: userID, //debating do i put salary: salary stuff here too
         };
 
         const { error } = await supabase.from("JobDetails").insert(jobDataToInsert).single();
@@ -70,7 +69,7 @@ const [userID, setUserID] = useState(null)
             console.error("Error adding job:", error.message);
             setFetchError("Error adding job: " + error.message);
         } else {
-            setNewJob({ jobID: "", description: "", salary: "", requirements: "", companyID: "", jobTitle: "" }); 
+            setNewJob({description: "", residencyNo: "", salary: "", requirements: "", companyID: "", jobTitle: "" }); 
             setFetchError(null); 
             fetchJobDetails();
         }
@@ -90,27 +89,11 @@ return (
 <h2>Job Post</h2>
 
 <form  style={{marginBottom: "1rem"}} onSubmit={handleSubmit}>
-    <input
-    name='jobID'
-    type='number' 
-    placeholder='Job ID'
-    value={newJob.jobID}
-    onChange={handleChange}
-    style={{width:"100%", marginBottom: "0.5rem", padding: "0.5rem"}}
-    />
-    <input
-    name='companyID'
-    type='number' 
-    placeholder='Company ID' 
-    value={newJob.companyID}
-    onChange={handleChange}
-    style={{width:"100%", marginBottom: "0.5rem", padding: "0.5rem"}}
-    />
-    <input
-    name='staffID'
-    type='number' 
-    placeholder='Staff ID'
-    value={newJob.staffID}
+  <input
+    name='residencyNo'
+    type='text'
+    placeholder='Residency No'
+    value={newJob.residencyNo}
     onChange={handleChange}
     style={{width:"100%", marginBottom: "0.5rem", padding: "0.5rem"}}
     />

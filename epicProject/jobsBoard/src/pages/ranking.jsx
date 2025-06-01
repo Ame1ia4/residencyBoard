@@ -1,3 +1,7 @@
+//needs to differentiate between R1, R2, etc. Needs to return only the applicable companys
+//needs to return only the rankings of the user doing the ranking
+
+
 import DropdownMenu from '../components/dropdown1'; 
 import Dropdown from '../components/dropMenu'; 
 import { supabase } from '../SupabaseClient';
