@@ -1,7 +1,7 @@
 
 export default function Navbar3() {
     return (
-      <nav className="navStaff">
+      <nav className="nav">
        <ul>
         
         <li>

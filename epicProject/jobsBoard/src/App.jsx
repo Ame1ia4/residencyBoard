@@ -29,7 +29,7 @@ function App() {
         <>
           <RenderPage  user={user}/>
           {/*<h1>Welcome, {user.email}</h1>*/}
-          <button onClick={() => supabase.auth.signOut()}>Sign Out</button>
+          <button id="signOut" onClick={() => supabase.auth.signOut()}>Sign Out</button>
         </>
       ) : (
         <LoginPage />

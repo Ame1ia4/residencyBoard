@@ -4,105 +4,70 @@
     font-optical-sizing: auto;
     font-weight: 600;
     font-style: normal;
-    background-color: #d3d3d3;
+    background-image: linear-gradient(to right, #26254d, #13d68c);
 }
 
 body {
     margin: 0;
+    background-image: none;
+    background-color: transparent;
 }
 
 .nav{
-    background-color: #ffffff;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 2rem;
-    padding: 0 4rem;
-    height: 60px;
+    padding: 0 2rem;
+    height: 70px;
+    margin-top: 30px;
+    margin-left: 40px;
+    position: absolute;
+    background-image: linear-gradient(to right,  #969696, #8f8f8f, #8a8a8a);
+    z-index: 0; 
+    box-shadow: 0 4px 2px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px); 
+    opacity: 60%;
+    border-radius: 25px;
 }
 
-
 .nav ul{
-    background-color: #fff;
-    padding: 15px;
-    margin: 0;
     list-style: none;
-    display: flex;
-    gap: 1rem;
-    position: absolute;
+    background-image: none;
+    margin-left: 35px;
+    padding: 9px;
 }
 
 .nav a{
-    background-color: #fff;
-    color: #777777;
-    font-size: large;
-    font-weight: 470;
-    text-decoration: none;
-    padding: 0 50px;
-    margin-left: 100px;
-    display: inline;
-}
-
-.nav a:hover{
-    color: #000000;
-}
-
-.nav li{
-    float: left;
-    background-color: #fff;
-}
-
-.navStaff{
-    background-color: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-    padding: 0 4rem;
-    height: 60px;
-    position: absolute;
-}
-
-
-.navStaff ul{
-    background-color: #fff;
-    padding: 15 15px;
-    margin: 0;
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-}
-
-.navStaff a{
-    background-color: #fff;
-    color: #777777;
+    background-image: none;
+    color: rgb(255, 255, 255);
     font-size: large;
     font-weight: 470;
     text-decoration: none;
     padding: 0 50px;
     margin-left: 50px;
     display: inline;
+    position: relative;
 }
 
-.navStaff a:hover{
-    color: #000000;
+.nav a:hover{
+    color: #00ff55;
 }
 
-.navStaff li{
+.nav li{
     float: left;
-    background-color: #fff;
+    background-image: none;
 }
 
 .Overall-title{
     text-align: center;
-    padding-top: 30px;
+    padding-top: 50px;
     color: #fff;
     margin: 0;   
     background-color: transparent; 
 }
 
 .header{
-    background-image: linear-gradient(to right, #26254d, #13d68c);
     height: 100px;
     width: 100%;
     margin: 0;
@@ -110,17 +75,19 @@ body {
 }
 
 .home-main{
-    color: #090f42;
+    color: #ffffff;
     height: 460px;
 }
 
 .home-main h1{
+    margin-top: 120px;
     text-align: center;
     padding: 50px;
     margin-bottom: -40px;
 }
 
 .home-main p{
+    background-image: none;
     text-align: center;
     display: inline-block;
     margin-inline-start: 170px;
@@ -157,33 +124,36 @@ body {
 }
 
 .menu{
-    background-color: #fff;
+    background-image: none;
+    background-color: transparent;
 }
 
 .dropdown-menu {
-margin-left: -200px;
-    position: relative;
+  position: absolute;
     padding: 0 -15px;
-    background-color: #fff;
-}
-
-.dropdown-menu li{
-width: 170px;
+    background-image: linear-gradient(to right,  #969696, #8f8f8f, #8a8a8a);
+    opacity: 70%;
+    margin-left: 90px;
 }
 
 .dropdown-menu ul{
-    background-color: #fff;
-    padding: 15px;
-    margin: 0;
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-    position: absolute;
+    background-image: none;
+    background-color: none;
+    margin-top: 27px;
+    height: 170px;
+    width: 10px;
+    margin-left: -90px; 
+    margin-right: 190px;  
+    display: block;
+    position: relative;
 }
 
 .dropdown-menu a{
-padding: 0 0px;
+    background-color: none;
+    color: rgb(255, 255, 255);
 }
+
+
 
 .form{
    background-color: #d8d8d8;
@@ -299,4 +269,18 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+#signOut {
+background-image: none;
+background-color: none;
+margin-left:900px ;
+position: absolute;
+background-image: linear-gradient(to right,  #969696, #8f8f8f, #8a8a8a);
+z-index: 1000; 
+transition: background-color 0.3s ease, box-shadow 0.3s ease;
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px); 
+opacity: 60%;
+border-radius: 25px;
 }
