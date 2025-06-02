@@ -37,7 +37,6 @@ export default function LoginForm(){
                             Role: 'student',
                             Email: email
                         })
-                        console.log('student');
                         const {error: studentError} = await supabase.from('Student').insert({
                             firstName: fname,
                             lastName: lname,
@@ -45,8 +44,7 @@ export default function LoginForm(){
                             password: password,
                             groupID: yrGroup,
                             studentEmail: email
-                        }) 
-                        console.log("user");
+                        })
                         if(studentError || userStudentError) alert(`Error inserting user data: ${studentError?.message || userStudentError?.message}`);
                     case 'staff':
                         const {staffError} = await supabase.from('Staff').insert({

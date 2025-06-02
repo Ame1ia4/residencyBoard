@@ -69,7 +69,7 @@ function RankingPage(){
     const fetchRank = async () => {
         const { data, error } = await supabase
             .from('RankingCompany')
-            .select('rankNo, companyName')
+            .select('rankNo, companyStaffID(companyName)')
             .order('rankNo', { ascending: true});
 
         if (error) {
