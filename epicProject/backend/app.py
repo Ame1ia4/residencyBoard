@@ -5,7 +5,7 @@ from jobAllocations import rpAllocate
 
 
 app = Flask(__name__) #creates the flask app and
-CORS(app, origins={"http://localhost:5173", "http://127.0.0.1:5173"}) #uses CORS on this file so React can talk to it
+CORS(app, origins={"http://127.0.0.1:5173"}) #uses CORS on this file so React can talk to it
 
 @app.route('/timelineMan') #url on the flask local host that will run the function below
 def allocate(): #function to call in frontend

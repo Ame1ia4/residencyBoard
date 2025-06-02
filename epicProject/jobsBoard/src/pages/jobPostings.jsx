@@ -7,6 +7,8 @@ const [fetchError, setFetchError] = useState(null)
 const [jobDetails, setJobDetails] = useState(null)
 const [userID, setUserID] = useState(null)
 
+
+//let rls policies fix this???? or just check against
     const getUser = async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
@@ -23,7 +25,7 @@ const [userID, setUserID] = useState(null)
             setFetchError("Login to view job posts."); 
             return;
         }
-
+        
         const { data, error } = await supabase
             .from('JobDetails') 
             .select('jobTitle,description,salary,requirements, residencyNo, jobID, positionsAvailable') 
@@ -39,11 +41,10 @@ const [userID, setUserID] = useState(null)
         }
     };
 
-    useEffect(() => {
-        getUser();
-    }, []); 
+ 
 {/**^setsUser and checks there is one VS fetchData function - need separate useEffect sections v*/}
     useEffect(() => {
+    getUser();
         if (userID) {
             fetchJobDetails();
         }
@@ -69,7 +70,7 @@ const [userID, setUserID] = useState(null)
             console.error("Error adding job:", error.message);
             setFetchError("Error adding job: " + error.message);
         } else {
-            setNewJob({description: "", residencyNo: "", salary: "", requirements: "", companyID: "", jobTitle: "", positionsAvailable: ""}); 
+            setNewJob({description: "", residencyNo: "", salary: "", requirements: "", jobTitle: "", positionsAvailable: ""}); 
             setFetchError(null); 
             fetchJobDetails();
         }
