@@ -88,11 +88,11 @@ function RankingPage(){
     }, []);
 
     return (
-        <div style={{maxWidth: "600PX", margin: "0 auto", padding: "1rem"}}>
+        <div className='rankForm'>
 
             <h2>Rank your companies</h2>
 
-            <form style={{marginBottom: "1rem"}} onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <input
                     name='rankNo'
                     type='number'
@@ -111,7 +111,7 @@ function RankingPage(){
             </form>
 
             <br></br>
-            <h2>Sorted Rankings</h2>
+            <h2 className='sortRanks'>Sorted Rankings</h2>
             {fetchError && (<p>{fetchError}</p>)} 
             <div className='Card'>
                 {rank && (

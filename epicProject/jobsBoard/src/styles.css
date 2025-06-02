@@ -156,7 +156,8 @@ body {
 
 
 .form{
-   background-color: #d8d8d8;
+   background-color: none;
+   background-image: none;
    width: 700px;
    margin-top: 20px;
    margin-left: 195px;
@@ -166,7 +167,7 @@ body {
     position: relative;
     margin-top: -25px;
     margin-left: 215px;
-    background-color: #d8d8d8;
+    background-color: none;
     font-weight: 400;
     width: 200px;
 }
@@ -188,7 +189,93 @@ margin-left: 20px;
 margin-right: 20px;
 }
 
+.rankForm {
+    position: absolute;
+    margin-top: 120px;
+    margin-left: 350px;
+    background-color: none;
+    background-image: none;
+    width: 600px;
+    margin: "0 auto";
+    padding: 1rem;
+}
 
+.rankForm form{
+    margin-bottom: 1rem;
+    background-color: none;
+    background-image: none;
+}
+
+.rankForm h2{
+    color: #fff;
+    background-color: none;
+    background-image: none;
+    position: relative;
+}
+
+.sortRanks {
+    margin-top: 170px;
+}
+
+.rankForm input{
+background-image: none;
+background-color: none;
+color: rgb(255, 255, 255);
+margin-left: 0px ;
+position: absolute;
+background-image: linear-gradient(to right,  #969696, #8f8f8f, #8a8a8a);
+z-index: 1000; 
+transition: background-color 0.3s ease, box-shadow 0.3s ease;
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px); 
+opacity: 60%;
+border-radius: 25px;
+margin-top: 0px;
+}
+
+.rankForm select.dropdown-button{
+background-image: none;
+background-color: none;
+color: rgb(255, 255, 255);
+margin-left: 0px ;
+position: absolute;
+background-image: linear-gradient(to right,  #969696, #8f8f8f, #8a8a8a);
+z-index: 1000; 
+transition: background-color 0.3s ease, box-shadow 0.3s ease;
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px); 
+opacity: 60%;
+border-radius: 25px;
+margin-top: 60px;
+}
+
+.rankForm button{
+background-image: none;
+background-color: none;
+color: rgb(255, 255, 255);
+margin-left: 0px ;
+position: absolute;
+background-image: linear-gradient(to right,  #969696, #8f8f8f, #8a8a8a);
+z-index: 1000; 
+transition: background-color 0.3s ease, box-shadow 0.3s ease;
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px); 
+opacity: 60%;
+border-radius: 25px;
+margin-top: 100px;
+}
+
+.rankForm button:hover {
+    color: rgb(0, 0, 0);
+}
+
+.rankForm p{
+    color: #fff;
+    background-image: none;
+    background-color: #8a8a8a;
+    border-radius: 25px;
+    padding: 10px;
+}
 
 .jobPost {
     background-color: #fff;
@@ -274,6 +361,7 @@ input:checked + .slider:before {
 #signOut {
 background-image: none;
 background-color: none;
+color: #fff;
 margin-left:900px ;
 position: absolute;
 background-image: linear-gradient(to right,  #969696, #8f8f8f, #8a8a8a);
@@ -283,4 +371,8 @@ backdrop-filter: blur(8px);
 -webkit-backdrop-filter: blur(8px); 
 opacity: 60%;
 border-radius: 25px;
+}
+
+#signOut:hover {
+    color: #000;
 }
