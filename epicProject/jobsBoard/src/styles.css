@@ -477,3 +477,23 @@ justify-content: space-around;
     background-color: none;
     background-image: none;
 }
+
+.home-students label{
+    color: #fff;
+    background-color: none;
+    background-image: none;
+}
+
+.home-students input{
+    color: #fff;
+    background-color: none;
+    background-image:  linear-gradient(to right,  #9696968c, #8f8f8f77, #8a8a8a73);
+    border-radius: 25px;
+}
+
+.home-students button{
+    color: #fff;
+    background-color: none;
+    background-image:  linear-gradient(to right,  #9696968c, #8f8f8f77, #8a8a8a73);
+    border-radius: 25px;
+}

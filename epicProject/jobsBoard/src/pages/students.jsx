@@ -35,7 +35,7 @@ function StudentsPage() {
     };
 
     return (
-        <div className="home-main">
+        <div className="home-students">
             <h2>Upload QCA Lists</h2>
 
             <label>Year Group:</label>

@@ -12,29 +12,31 @@ function TimePage() {
         setAlgorithmEnabled(checked);
 
         if (!checked) {
-            setAlgorithmEnabled(null);
+            setAlgorithmEnabled(false);
             console.log('Toggle is not checked.')
         }
     }
 
-useEffect(() =>{
-const runAlgorithm = async () =>{
-if(algorithmEnabled){
-     const response = await fetch('http://127.0.0.1:5000/timelineMan')
-      
-    if (!response.ok)
-        console.error('Response error from fetch.')
 
-     const json = await response.json();
-     setData(json);
-     console.log('Algorithm ran successfully.')
-   } else {
-     console.log("Toggle not enabled, algorithm is not running");
-     setFetchError('Failed to run algorithm.');
-     setData(null);
-   }
-}
-runAlgorithm();
+    useEffect(() =>{
+        const runAlgorithm = async () =>{
+            if(algorithmEnabled){
+            const response = await fetch('http://127.0.0.1:5000/timelineMan')
+            
+            if (!response.ok)
+            console.error('Response error from fetch.')
+
+            const json = await response.json();
+            setData(json);
+            console.log('Algorithm ran successfully.')
+            
+            } else {
+            console.log("Toggle not enabled, algorithm is not running");
+            setFetchError('Failed to run algorithm.');
+            setData(null);
+            }
+        }
+    runAlgorithm();
 }
 , [algorithmEnabled]);
 
