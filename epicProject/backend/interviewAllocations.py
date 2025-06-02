@@ -1,15 +1,12 @@
 from supabase import create_client, Client
 import pandas as pd
 from loadCSVs import ranking_path, qca_list_download
-from dotenv import load_dotenv
-import os
 
 def allocate_interviews(year_group):
 
     # creates a supabase client
-    load_dotenv(dotenv_path='.env')
-    url = os.getenv("VITE_SUPABASE_URL")
-    key = os.getenv("VITE_SUPABASE_KEY")
+    url = "https://zahjfkggsyktdshmjmre.supabase.co"
+    key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5ODEyMzMsImV4cCI6MjA2MzU1NzIzM30.-7nvAbM7nzfHAs3qYwXivZjHMP6dfbX5k3LUByxk09A"
     supabase: Client = create_client(url, key)
 
     qca_path = qca_list_download(year_group)
@@ -21,7 +18,7 @@ def allocate_interviews(year_group):
 
     jobDetails = (
         supabase.table("JobDetails")
-        .select("jobID,companyID,positionsAvailable")
+        .select("jobID,companyStaffID,positionsAvailable")
         .execute()
     )
     jobDetails_df = pd.DataFrame(jobDetails.data)
@@ -30,7 +27,7 @@ def allocate_interviews(year_group):
     # make a dict of how many interview slots a company has
     interview_slots = {}
     for index, row in jobDetails_df.iterrows():
-        job = int(row["jobID"])
+        job = row["jobID"]
         positions = int(row["positionsAvailable"])
         interview_slots[job] = positions * 3
 
@@ -94,11 +91,6 @@ def allocate_interviews(year_group):
     
     #print_full(interview_df)
 
-    for index, row in interview_df.iterrows():
-        job = str(row["jobID"])
-        student_id = str(row["StudentID"])
-        interview_id = int(row["Interview ID"])
-
     max_id_response = supabase.table("InterviewAllocation").select("interviewID").order("interviewID", desc=True).limit(1).execute()
     if max_id_response.data and max_id_response.data[0]:
         latest_id = max_id_response.data[0]['interviewID']
@@ -107,14 +99,21 @@ def allocate_interviews(year_group):
     else:
         new_interview_id = 1 # Starts from 1 if table empty
 
-    response = (
-        supabase.table("InterviewAllocation")
-        .insert({
-            "interviewID": new_interview_id,
-            "jobID": job,
-            "studentID": student_id
-        })
-        .execute()
+    for index, row in interview_df.iterrows():
+        job = str(row["jobID"])
+        student_id = str(row["StudentID"])
+        interview_id = int(row["Interview ID"])
+
+        response = (
+            supabase.table("InterviewAllocation")
+            .insert({
+                "interviewID": new_interview_id,
+                "jobID": job,
+                "studentID": student_id
+            })
+            .execute()
         )
+        
+        new_interview_id += 1
 
     return interview_list
