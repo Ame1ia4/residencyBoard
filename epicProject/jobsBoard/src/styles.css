@@ -19,6 +19,11 @@ h2{
     color: #fff;
 }
 
+p{
+    color: #fff;
+    text-align: center;
+}
+
 .nav{
     display: flex;
     align-items: center;
@@ -325,23 +330,58 @@ margin-top: 80px;
     padding: 10px;
 }
 
-.jobPost {
-    background-color: #fff;
-    border-radius: 12%;
-    width: 500px;
-    box-shadow:  5px 5px 2px #636363;
-    margin-left: 250px;
-    opacity: 70%;
-    padding: 10px;
-    margin-bottom: 50px;
+.postForm {
+    background-image:  none;
+    background-color: none;
+    width: 700px;
+    margin-left: 275px;
 }
 
-.jobPost p{
-font-size: 12px;
-padding: 3px;
-background-color: transparent;
-margin-left: 40px;
-width: 400px; 
+.postForm h2{
+    background-image:  none;
+    background-color: none;
+}
+
+.postForm form{
+    background-image:  none;
+    background-color: none; 
+}
+
+.postForm input{
+    background-image: linear-gradient(to right,  #96969669, #8f8f8f93, #8a8a8a8a);
+    opacity: 60%;
+    z-index: 0;
+    background-color: none;
+    border-radius: 15px;
+    color: #fff;
+}
+
+.postForm input:hover{
+    color: #000;
+}
+
+.postForm textarea{
+    background-image: linear-gradient(to right,  #96969669, #8f8f8f93, #8a8a8a8a);
+    opacity: 60%;
+    background-color: none;
+    border-radius: 15px;
+    color: rgb(255, 255, 255);
+}
+
+.postForm textarea:hover{
+    color: #000;
+}
+
+.postForm button{
+    background-image: linear-gradient(to right,  #969696a9, #8f8f8f93, #8a8a8a8a);
+    opacity: 60%;
+    background-color: none;
+    border-radius: 15px;
+    color: rgb(255, 255, 255);
+}
+
+.postForm button:hover{
+    color: #000;
 }
 
 .switch {

@@ -6,7 +6,9 @@ import { useEffect, useState } from 'react';
 
 function AllocationPage(){
   const [interview, setInterview] = useState(null);
-  const [fetchError, setFetchError] = useState(null)
+  const [fetchError, setFetchError] = useState(null);
+  const [job, setJob] = useState(null);
+  const [fetchError2, setFetchError2] = useState(null);
 
     const fetchInterview = async () => {
           const { data, error } = await supabase
@@ -26,6 +28,23 @@ function AllocationPage(){
           }
       };
 
+      const fetchJob = async () => {
+          const { data, error } = await supabase
+              .from('JobAllocation')
+              .select('allocationID, studentID, JobDetails(jobID)')
+              .eq('studentID', '58494')
+              .order('allocationID', { ascending: true});
+
+          if (error) {
+              setFetchError2('Could not fetch job allocation data. Data may currently be unavailable.');
+              setJob(null);
+              console.log(error);
+          }
+          if (data) {
+              setJob(data);
+              setFetchError2(null);
+          }
+      };
 
     {/*fetch('http://127.0.0.1:5000/allocation')
     
@@ -37,6 +56,7 @@ function AllocationPage(){
   
       useEffect(() => {
           fetchInterview();
+          fetchJob();
       }, []);
 
   
@@ -51,6 +71,20 @@ function AllocationPage(){
                         {interview.map(InterviewAllocation => (
                             <p>
                                 {InterviewAllocation.studentID} : {InterviewAllocation.JobDetails.jobTitle}
+                            </p>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+    <h2>Job Allocation</h2>
+    {fetchError2 && (<p>{fetchError2}</p>)} 
+            <div className='Card'>
+                {job && (
+                    <div className='jobDetails'>
+                        {job.map(JobAllocation => (
+                            <p>
+                                {JobAllocation.studentID} : {JobAllocation.JobDetails.jobTitle}
                             </p>
                         ))}
                     </div>

@@ -2,7 +2,7 @@ import { supabase } from '../SupabaseClient';
 import { useEffect, useState } from 'react';
 
 function JobPostPage(){
-  const [newJob, setNewJob] = useState({residencyNo : "", description: "", salary: "", requirements: "", jobTitle: ""});
+const [newJob, setNewJob] = useState({residencyNo : "", description: "", salary: "", requirements: "", jobTitle: "", positionsAvailable: ""});
 const [fetchError, setFetchError] = useState(null)
 const [jobDetails, setJobDetails] = useState(null)
 const [userID, setUserID] = useState(null)
@@ -26,7 +26,7 @@ const [userID, setUserID] = useState(null)
 
         const { data, error } = await supabase
             .from('JobDetails') 
-            .select('jobTitle,description,salary,requirements, residencyNo, jobID') 
+            .select('jobTitle,description,salary,requirements, residencyNo, jobID, positionsAvailable') 
             .eq('companyStaffID', userID); 
 
         if (error) {
@@ -69,7 +69,7 @@ const [userID, setUserID] = useState(null)
             console.error("Error adding job:", error.message);
             setFetchError("Error adding job: " + error.message);
         } else {
-            setNewJob({description: "", residencyNo: "", salary: "", requirements: "", companyID: "", jobTitle: "" }); 
+            setNewJob({description: "", residencyNo: "", salary: "", requirements: "", companyID: "", jobTitle: "", positionsAvailable: ""}); 
             setFetchError(null); 
             fetchJobDetails();
         }
@@ -84,16 +84,24 @@ const [userID, setUserID] = useState(null)
     };
 
 return (
-  <div style={{maxWidth: "600PX", margin: "0 auto", padding: "1rem"}}>
+  <div className='postForm'>
 
 <h2>Job Post</h2>
 
-<form  style={{marginBottom: "1rem"}} onSubmit={handleSubmit}>
+<form style={{marginBottom: "1rem"}} onSubmit={handleSubmit}>
   <input
     name='residencyNo'
     type='text'
     placeholder='Residency No'
     value={newJob.residencyNo}
+    onChange={handleChange}
+    style={{width:"100%", marginBottom: "0.5rem", padding: "0.5rem"}}
+    />  
+    <input
+    name='positionsAvailable'
+    type='number' 
+    placeholder='Positions Available'
+    value={newJob.positionsAvailable}
     onChange={handleChange}
     style={{width:"100%", marginBottom: "0.5rem", padding: "0.5rem"}}
     />

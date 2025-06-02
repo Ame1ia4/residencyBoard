@@ -1,16 +1,97 @@
-//needs to return only the users allocations and separate between r1, r2, etc
-//r1 allocations are gonna need to be done separately to r2 allocations in algorithm talk to sarah
+//needs to return only the users interview allocations
+//needs to switch based on timeline management to return job Allocation of user
 
-import React from 'react';
+import { supabase } from '../SupabaseClient';
+import { useEffect, useState } from 'react';
 
 function AllocationRPPage(){
-    return (
-    <div className='home-main'>
-     <h1>Hello.
-     </h1>
-     <p>Welcome to the ISE Job Board. To learn more about available jobs and their details, please visit the 'Job Details' page. To rank you preferences, please visit the 'Ranking' page. Finally, to discover which interviews or position you have been allocated, please visit the 'Allocations' page.</p>
-    </div>
-    );
+  const [interview, setInterview] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
+  const [job, setJob] = useState(null);
+  const [fetchError2, setFetchError2] = useState(null);
+
+    const fetchInterview = async () => {
+          const { data, error } = await supabase
+              .from('InterviewAllocation')
+              .select('studentID, interviewID, jobID, JobDetails(jobTitle)')
+              .eq('studentID', '58494')
+              .order('interviewID', { ascending: true});
+
+          if (error) {
+              setFetchError('Could not fetch rankings data');
+              setInterview(null);
+              console.log(error);
+          }
+          if (data) {
+              setInterview(data);
+              setFetchError(null);
+          }
+      };
+
+      const fetchJob = async () => {
+          const { data, error } = await supabase
+              .from('JobAllocation')
+              .select('allocationID, studentID, JobDetails(jobID)')
+              .eq('studentID', '58494')
+              .order('allocationID', { ascending: true});
+
+          if (error) {
+              setFetchError2('Could not fetch student allocation data. Data may currently be unavailable.');
+              setJob(null);
+              console.log(error);
+          }
+          if (data) {
+              setJob(data);
+              setFetchError2(null);
+          }
+      };
+
+    {/*fetch('http://127.0.0.1:5000/allocation')
+    
+      .then(response => response.json())
+      .then(json => setData(json))
+      .catch(error => console.error('Error fetching:', error));
+  }, []);
+*/}
+  
+      useEffect(() => {
+          fetchInterview();
+          fetchJob();
+      }, []);
+
+  
+
+  return( 
+<div>
+  <h2 className='interview'>Interview Allocation</h2>
+            {fetchError && (<p>{fetchError}</p>)} 
+            <div className='Card'>
+                {interview && (
+                    <div className='jobDetails'>
+                        {interview.map(InterviewAllocation => (
+                            <p>
+                                {InterviewAllocation.studentID} : {InterviewAllocation.JobDetails.jobTitle}
+                            </p>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+    <h2>Student Allocation</h2>
+    {fetchError2 && (<p>{fetchError2}</p>)} 
+            <div className='Card'>
+                {job && (
+                    <div className='jobDetails'>
+                        {job.map(JobAllocation => (
+                            <p>
+                                {JobAllocation.studentID} : {JobAllocation.JobDetails.jobTitle}
+                            </p>
+                        ))}
+                    </div>
+                )}
+            </div>
+</div>
+)
 };
 
 export default AllocationRPPage;
