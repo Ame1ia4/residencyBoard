@@ -14,7 +14,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="nav">
+    <nav className="nav" id="studentnav">
      <ul>
       <li>
           <a href="/">Home</a>

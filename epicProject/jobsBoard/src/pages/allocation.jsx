@@ -43,7 +43,7 @@ function AllocationPage(){
 
   return( 
 <div>
-  <h2>Interview Allocation</h2>
+  <h2 className='interview'>Interview Allocation</h2>
             {fetchError && (<p>{fetchError}</p>)} 
             <div className='Card'>
                 {interview && (

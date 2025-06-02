@@ -110,8 +110,8 @@ function RankingPage(){
                 </button>
             </form>
 
-            <br></br>
-            <h2 className='sortRanks'>Sorted Rankings</h2>
+            <br className='sortSpace'></br>
+            <h2 className='sortRank'>Sorted Rankings</h2>
             {fetchError && (<p>{fetchError}</p>)} 
             <div className='Card'>
                 {rank && (
