@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from interviewAllocations import allocate_interviews
-from allocations import rpAllocate
+from jobAllocations import rpAllocate
 
 
 app = Flask(__name__) #creates the flask app and
