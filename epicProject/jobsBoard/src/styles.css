@@ -139,11 +139,13 @@ h2{
 }
 
 .dropdown-menu {
+    backdrop-filter: blur(100%);
   position: absolute;
-    padding: 0 -15px;
-    background-image: linear-gradient(to right,  #969696, #8f8f8f, #8a8a8a);
+    padding: -15px;
+    background-image: linear-gradient(to right,  #969696bd, #8f8f8fc2, #8a8a8a71);
     opacity: 70%;
     margin-left: 90px;
+    border-radius: 25px;
 }
 
 .dropdown-menu ul{
@@ -254,12 +256,13 @@ margin-right: 20px;
     position: relative;
 }
 
-.sortRank {
-    margin-top: 180px;
-}
 
 .sortSpace{
     margin-top: 150px;
+}
+
+#sortRank {
+    margin-top: 120px;
 }
 
 .rankForm input{
@@ -275,7 +278,7 @@ backdrop-filter: blur(8px);
 -webkit-backdrop-filter: blur(8px); 
 opacity: 60%;
 border-radius: 25px;
-margin-top: 0px;
+margin-top: -10px;
 }
 
 .rankForm select.dropdown-button{
@@ -291,7 +294,7 @@ backdrop-filter: blur(8px);
 -webkit-backdrop-filter: blur(8px); 
 opacity: 60%;
 border-radius: 25px;
-margin-top: 60px;
+margin-top: 40px;
 }
 
 .rankForm button{
@@ -307,7 +310,7 @@ backdrop-filter: blur(8px);
 -webkit-backdrop-filter: blur(8px); 
 opacity: 60%;
 border-radius: 25px;
-margin-top: 100px;
+margin-top: 80px;
 }
 
 .rankForm button:hover {
@@ -317,7 +320,7 @@ margin-top: 100px;
 .rankForm p{
     color: #fff;
     background-image: none;
-    background-color: #8a8a8a;
+    background-color: none;
     border-radius: 25px;
     padding: 10px;
 }
@@ -342,6 +345,11 @@ width: 400px;
 }
 
 .switch {
+background-color: none;
+background-image:  none;
+margin-left: 580px;
+margin-top: 40px;
+margin-bottom: -90px;
   position: relative;
   display: inline-block;
   width: 60px;
@@ -423,4 +431,9 @@ justify-content: space-around;
 
 #signOut:hover {
     color: #000;
+}
+
+.fetchError p {
+    background-color: none;
+    background-image: none;
 }

@@ -1,7 +1,7 @@
 import { supabase } from '../SupabaseClient';
 import { useEffect, useState } from 'react';
 
-const Dropdown = ({ onSelectCompany, selectedCompanyId }) => {
+const Dropdown = ({ onSelectCompany, selectedCompanyStaffID }) => {
 
     const [fetchError, setFetchError] = useState(null);
     const [jobDetails, setJobDetails] = useState(null);
@@ -10,7 +10,7 @@ const Dropdown = ({ onSelectCompany, selectedCompanyId }) => {
         const fetchJobDetails = async () => {
             const { data, error } = await supabase
                 .from('JobDetails')
-                .select('jobID, jobTitle,residencyNo, companyID, ResidencyPartner(companyName)')
+                .select('jobID, jobTitle,residencyNo, companyStaffID, ResidencyPartner(companyName)')
                 .order('jobTitle', { ascending: true});
 
             if (error) {
@@ -27,11 +27,11 @@ const Dropdown = ({ onSelectCompany, selectedCompanyId }) => {
     }, []);
 
     const handleDropChange = (e) => {
-        const selectedCompanyId = e.target.value;
-        const selectedJob = jobDetails.find(job => job.companyID.toString() === selectedCompanyId);
+        const selectedCompanyStaffID = e.target.value;
+        const selectedJob = jobDetails.find(job => job.companyStaffID.toString() === selectedCompanyStaffID);
 
         if (selectedJob && onSelectCompany) {
-            onSelectCompany(selectedCompanyId, selectedJob.ResidencyPartner.companyName);
+            onSelectCompany(selectedCompanyStaffID, selectedJob.ResidencyPartner.companyName);
         }
     };
 
@@ -41,14 +41,14 @@ const Dropdown = ({ onSelectCompany, selectedCompanyId }) => {
             {jobDetails && (
                 <select
                     className="dropdown-button"
-                    value={selectedCompanyId}
+                    value={selectedCompanyStaffID}
                     onChange={handleDropChange}
                 >
                     <option value="" disabled>Select a job</option>
                     {jobDetails.map(job => (
                         <option
                             key={job.jobID}
-                            value={job.companyID}
+                            value={job.companyStaffID}
                         >
                             {job.jobTitle} - {job.ResidencyPartner.companyName}
                         </option>

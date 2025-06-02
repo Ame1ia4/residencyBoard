@@ -17,8 +17,8 @@ function RankingPage(){
     const [companyDropName, setCompanyDropName] = useState('');
 
 
-    const handleCompanySelection = (companyId, companyName) => {
-        setCompanyDropID(companyId);
+    const handleCompanySelection = (companyStaffId, companyName) => {
+        setCompanyDropID(companyStaffId);
         setCompanyDropID(companyName);
 
         setNewRank(prev => ({
@@ -103,15 +103,15 @@ function RankingPage(){
                 />
                 <Dropdown
                     onSelectCompany={handleCompanySelection}
-                    selectedCompanyId={companyDropID}
+                    selectedCompanyStaffID={companyDropID}
                 />
                 <button type='submit' style={{padding: "0.5rem 1rem"}}>
                     Add Ranking
                 </button>
             </form>
 
-            <br className='sortSpace'></br>
-            <h2 className='sortRank'>Sorted Rankings</h2>
+            <br></br>
+            <h2 id='sortRank'>Sorted Rankings</h2>
             {fetchError && (<p>{fetchError}</p>)} 
             <div className='Card'>
                 {rank && (
