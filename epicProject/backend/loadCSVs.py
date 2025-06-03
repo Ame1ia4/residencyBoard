@@ -12,17 +12,6 @@ supabase: Client = create_client(url, key)
 download_directory = "epicProject/backend/csvDownloads"
 os.makedirs(download_directory, exist_ok=True)
 
-#downloads the jobRankings csv from supabase storage
-global ranking_path
-ranking_path = os.path.join(download_directory, "jobRankings.csv")
-with open(ranking_path, "wb") as f:
-    response = (
-        supabase.storage
-        .from_("ranking-csvs")
-        .download("jobRankings.csv")
-    )
-    f.write(response)
-
 # downloads the qca_list csv from supabase storage
 def qca_list_download(year_group):
     filename = f"qca_list_{year_group}.csv"
@@ -35,4 +24,5 @@ def qca_list_download(year_group):
     with open(qca_path, "wb") as file:
         file.write(response)
 
+    print(f"QCA list downloaded to {qca_path}")
     return qca_path
