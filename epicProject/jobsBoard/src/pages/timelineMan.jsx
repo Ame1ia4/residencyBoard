@@ -41,7 +41,6 @@ function TimePage() {
             const json = await response.json();
             setData(json);
             console.log('Algorithm ran successfully.')
-            alert('Algorithm ran successfully');
             
             } else {
             console.log("Toggle not enabled, algorithm is not running");
@@ -84,10 +83,9 @@ function TimePage() {
 
 
      <h1>Allocation Control</h1>
-     <h2 id='interviewAllocate'>Interview Allocation Algorithm</h2>
+     <h2>Interview Allocation Algorithm</h2>
      <p>Please insert QCA list for year group you want to run algorithm for. Results will display for students of that year group.</p>
      <label class="switch">
-        <p id='off'>Off/On</p>
         <input id="switchBox" type="checkbox" checked={algorithmEnabled} onChange={handleSwitch}></input>
          <span class="slider round"></span>
     </label>

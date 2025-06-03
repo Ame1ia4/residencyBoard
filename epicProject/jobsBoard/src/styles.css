@@ -411,9 +411,9 @@ margin-left: 580px;
 margin-top: 40px;
 margin-bottom: -90px;
   position: relative;
-display: inline-block;
-width: 60px;
-height: 34px;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
 }
 
 /* Hide default HTML checkbox */
@@ -423,6 +423,7 @@ height: 34px;
   height: 0;
 }
 
+<<<<<<< HEAD
 #off{
     margin-left: -70px;
     display: inline;
@@ -436,18 +437,17 @@ height: 34px;
     margin-top: 90px;
 }
 
+=======
+>>>>>>> bc7a6cadd2b1ec73a0f4cff6efbbf01ef8fa6e0c
 /* The slider */
 .slider {
-    margin-top: -5px;
-    margin-bottom: 5px;
   position: absolute;
   cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #78dd89;
-  background-image: none;
+  background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -465,8 +465,7 @@ height: 34px;
 }
 
 input:checked + .slider {
-background-image: none;
-background-color: #010f4bb9;
+  background-color: #2196F3;
 }
 
 input:focus + .slider {
@@ -533,9 +532,4 @@ justify-content: space-around;
     background-color: none;
     background-image:  linear-gradient(to right,  #9696968c, #8f8f8f77, #8a8a8a73);
     border-radius: 25px;
-}
-
-#interviewAllocate{
-    margin-top: 40px;
-    color: #0a114b;
 }
