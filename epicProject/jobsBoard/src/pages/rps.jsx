@@ -129,5 +129,4 @@ function RPSPage() {
         </div>
   );
 }
-
 export default RPSPage;
