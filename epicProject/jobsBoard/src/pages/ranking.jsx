@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 
 function RankingPage({user}){
     // State to hold the new rank data for submission
-    // It should store companyStaffID, not companyName directly for insertion
-    const [newRank, setNewRank] = useState({rankNo: "", companyStaffID: null}); // Changed companyName to companyStaffID
+    // It should store jobID, not companyName directly for insertion
+    const [newRank, setNewRank] = useState({rankNo: "", jobID: null}); // Changed companyName to jobID
     const [fetchError, setFetchError] = useState(null);
     const [rankings, setRankings] = useState(null); // Renamed 'rank' to 'rankings' for clarity
 
@@ -14,15 +14,15 @@ function RankingPage({user}){
     const [selectedDropdownCompanyName, setSelectedDropdownCompanyName] = useState(''); // This is for display in UI, not for DB insertion
 
 
-    // This function receives companyStaffID and companyName from the Dropdown
-    const handleCompanySelection = (companyStaffId, companyName) => {
-        setSelectedDropdownCompanyID(companyStaffId); // Store the ID for the dropdown itself
+    // This function receives jobID and companyName from the Dropdown
+    const handleCompanySelection = (jobID, companyName) => {
+        setSelectedDropdownCompanyID(jobID); // Store the ID for the dropdown itself
         setSelectedDropdownCompanyName(companyName); // Store the Name for display (optional)
 
-        // Update newRank with the companyStaffID, as this is what RankingCompany table needs
+        // Update newRank with the jobID, as this is what RankingCompany table needs
         setNewRank(prev => ({
             ...prev,
-            companyStaffID: companyStaffId // Correctly set companyStaffID
+            jobID: jobID // Correctly set jobID
         }));
     };
 
@@ -31,19 +31,19 @@ function RankingPage({user}){
         // get the list of entries following the new entry
         const { data: list, error: listError } = await supabase
             .from('RankingCompany')
-            .select('rankNo, companyStaffID') 
+            .select('rankNo, jobID') 
             .eq('studentID',user.id)
             .gte('rankNo', data.rankNo)
-            .neq('companyStaffID',data.companyStaffID)
+            .neq('jobID',data.jobID)
             .order('rankNo', { ascending: true}); 
 
         let index = 0;
         let rank = data.rankNo;
         while(index < list.length && list[index].rankNo - rank < 2){ // operate on any row between new entry and its old position
-            const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('companyStaffID',list[index].companyStaffID);
+            const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('jobID',list[index].jobID);
             const {error: uploadError} = await supabase.from("RankingCompany").insert({ 
                 studentID: user.id,
-                companyStaffID: list[index].companyStaffID,
+                jobID: list[index].jobID,
                 rankNo: rank + 1}).single();
 
             if(deleteError || uploadError){
@@ -63,8 +63,8 @@ function RankingPage({user}){
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate that a company has been selected (i.e., companyStaffID is not null)
-        if (!newRank.companyStaffID) { // Check for companyStaffID now
+        // Validate that a company has been selected (i.e., jobID is not null)
+        if (!newRank.jobID) { // Check for jobID now
             setFetchError("Please select a company from the dropdown.");
             return;
         }
@@ -72,7 +72,7 @@ function RankingPage({user}){
         // Prepare the data for insertion
         const rankDataToInsert = {
             rankNo: newRank.rankNo ? parseInt(newRank.rankNo) : null, // Ensure rankNo is an integer or null
-            companyStaffID: newRank.companyStaffID, // Correctly use companyStaffID
+            jobID: newRank.jobID, // Correctly use jobID
             studentID: user.id // take userID use it for studentID
         };
 
@@ -83,7 +83,7 @@ function RankingPage({user}){
         }
 
         // Delete old ranking and Insert into RankingCompany table
-        const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('companyStaffID',newRank.companyStaffID);
+        const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('jobID',newRank.jobID);
         const {error: uploadError} = await supabase.from("RankingCompany").insert(rankDataToInsert).single();
 
         if(uploadError || deleteError){
@@ -92,7 +92,7 @@ function RankingPage({user}){
         }
         else{
             // Clear form fields and update rankings after successful insert
-            setNewRank({rankNo: "", companyStaffID: null});
+            setNewRank({rankNo: "", jobID: null});
             setSelectedDropdownCompanyID('');
             setSelectedDropdownCompanyName('');
             setNewRankNumbers(rankDataToInsert);
@@ -112,10 +112,10 @@ function RankingPage({user}){
     // Fetch rankings, joining to get the company name from ResidencyPartner
     const fetchRankings = async () => {
         // SELECT 'rankNo' and then traverse the foreign key relationship
-        // 'companyStaffID' is the foreign key, and 'companyName' is the field in ResidencyPartner
+        // 'jobID' is the foreign key, and 'companyName' is the field in ResidencyPartner
         const { data, error } = await supabase
             .from('RankingCompany')
-            .select('rankNo, companyStaffID(companyName)') // THIS IS THE CORRECT WAY TO GET COMPANY NAME VIA FK
+            .select('rankNo, jobID(companyStaffID(companyName))') // THIS IS THE CORRECT WAY TO GET COMPANY NAME VIA FK
             .eq('studentID',user.id)
             .order('rankNo', { ascending: true});   
 
@@ -164,8 +164,8 @@ function RankingPage({user}){
                 {rankings && ( // Use 'rankings' state here
                     <div className='jobDetails'>
                         {rankings.map(rankingCompany => (
-                            <p key={rankingCompany.rankNo + rankingCompany.companyStaffID.companyName}> {/* Add a unique key */}
-                                {rankingCompany.rankNo} : {rankingCompany.companyStaffID ? rankingCompany.companyStaffID.companyName : 'N/A'}
+                            <p key={rankingCompany.rankNo + rankingCompany.jobID.companyStaffID.companyName}> {/* Add a unique key */}
+                                {rankingCompany.rankNo} : {rankingCompany.jobID ? rankingCompany.jobID.companyStaffID.companyName : 'N/A'}
                             </p>
                         ))}
                     </div>
