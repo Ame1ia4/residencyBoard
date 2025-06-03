@@ -1,4 +1,3 @@
-import DropdownMenu from '../components/dropdown1';
 import Dropdown from '../components/dropMenu';
 import { supabase } from '../SupabaseClient';
 import { useEffect, useState } from 'react';

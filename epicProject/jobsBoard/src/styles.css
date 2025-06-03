@@ -26,6 +26,7 @@ p{
     background-image: none;
 }
 
+
 #qcaListInput {
     display: block;
     margin-top: 10px;
@@ -435,7 +436,8 @@ margin-bottom: -90px;
     margin-left: -10px;
     background-color: none;
     background-image: none;
-    margin-top: 90px;
+    margin-top: 70px;
+    margin-bottom: 40px;
 }
 
 /* The slider */
@@ -446,7 +448,8 @@ margin-bottom: -90px;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-image: none;
+  background-color: #bbbbbb;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -458,13 +461,15 @@ margin-bottom: -90px;
   width: 26px;
   left: 4px;
   bottom: 4px;
+  background-image: none;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+    background-image: none;
+  background-color: #020c64;
 }
 
 input:focus + .slider {
@@ -490,8 +495,6 @@ input:checked + .slider:before {
 background-image: none;
 background-color: none;
 color: #fff;
-margin-left:900px ;
-position: absolute;
 background-image: linear-gradient(to right,  #969696, #8f8f8f, #8a8a8a);
 z-index: 1000; 
 transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -499,8 +502,9 @@ backdrop-filter: blur(8px);
 -webkit-backdrop-filter: blur(8px); 
 opacity: 60%;
 border-radius: 25px;
-position: absolute;
-margin-top: 450px;
+position: fixed;
+bottom: 20px;    /* Space from the bottom of the viewport */
+    right: 20px;
 justify-content: space-around;
 }
 
@@ -584,4 +588,33 @@ justify-content: space-around;
 .home-rps td{
     background-color: none;
     background-image: none;
+}
+
+.home-main h1{
+    margin-top: 80px;
+    margin-bottom: 5px;
+}
+
+.home-main button {
+    background-color: #ffffff46;
+    padding: 5px;
+    display: block;
+    margin-top: 0px;
+    margin-left: 500px;
+    color: #fff;
+    background-image: none;
+    border-radius: 25px;
+    margin-bottom: 20px;
+}
+
+.home-main button:hover {
+color: #010742;
+}
+
+#alloCon{
+margin-bottom: -75px;
+}
+
+.home-main{
+    margin-bottom: 70px;
 }
