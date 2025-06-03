@@ -83,7 +83,7 @@ function TimePage() {
 
 
      <h1>Allocation Control</h1>
-     <h2>Interview Allocation Algorithm</h2>
+     <h2 id='jobAllocate'>Interview Allocation Algorithm</h2>
      <p>Please insert QCA list for year group you want to run algorithm for. Results will display for students of that year group.</p>
      <label class="switch">
         <input id="switchBox" type="checkbox" checked={algorithmEnabled} onChange={handleSwitch}></input>

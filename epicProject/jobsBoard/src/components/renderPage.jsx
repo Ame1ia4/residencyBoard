@@ -20,6 +20,10 @@ import Navbar2 from './navbarRP';
 import Navbar3 from './navbarStaff';
 
 import { supabase } from '../SupabaseClient';
+import Residency12Page from '../pages/r1-2';
+import Residency5Page from '../pages/r5';
+import Residency4Page from '../pages/r4';
+import Residency3Page from '../pages/r3';
 
 function Student({component}) {
   return(
@@ -117,6 +121,18 @@ function RenderPage({user}){
         break  
         case "/r2":
         component = <Residency2Page/>
+        break 
+        case "/r3":
+        component = <Residency3Page/>
+        break 
+        case "/r4":
+        component = <Residency4Page/>
+        break 
+        case "/r5":
+        component = <Residency5Page/>
+        break 
+        case "/r1-2":
+        component = <Residency12Page/>
         break 
     }
 
