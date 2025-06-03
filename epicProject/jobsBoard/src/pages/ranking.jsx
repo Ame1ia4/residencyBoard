@@ -2,8 +2,7 @@ import Dropdown from '../components/dropMenu';
 import { supabase } from '../SupabaseClient';
 import { useEffect, useState } from 'react';
 
-function RankingPage(){
-
+function RankingPage({user}){
     // State to hold the new rank data for submission
     // It should store companyStaffID, not companyName directly for insertion
     const [newRank, setNewRank] = useState({rankNo: "", companyStaffID: null}); // Changed companyName to companyStaffID
@@ -27,6 +26,39 @@ function RankingPage(){
         }));
     };
 
+    // recursively call this to give new rankNo
+    const setNewRankNumbers = async (data) => {
+        // get the list of entries following the new entry
+        const { data: list, error: listError } = await supabase
+            .from('RankingCompany')
+            .select('rankNo, companyStaffID') 
+            .eq('studentID',user.id)
+            .gte('rankNo', data.rankNo)
+            .neq('companyStaffID',data.companyStaffID)
+            .order('rankNo', { ascending: true}); 
+
+        let index = 0;
+        let rank = data.rankNo;
+        while(index < list.length && list[index].rankNo - rank < 2){ // operate on any row between new entry and its old position
+            const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('companyStaffID',list[index].companyStaffID);
+            const {error: uploadError} = await supabase.from("RankingCompany").insert({ 
+                studentID: user.id,
+                companyStaffID: list[index].companyStaffID,
+                rankNo: rank + 1}).single();
+
+            if(deleteError || uploadError){
+                if(deleteError){
+                    console.log(deleteError.message);
+                }
+                if(uploadError){
+                    console.log(uploadError.message);
+                }
+            }
+            index++;
+            rank++;
+        }
+        fetchRankings();
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,6 +73,7 @@ function RankingPage(){
         const rankDataToInsert = {
             rankNo: newRank.rankNo ? parseInt(newRank.rankNo) : null, // Ensure rankNo is an integer or null
             companyStaffID: newRank.companyStaffID, // Correctly use companyStaffID
+            studentID: user.id // take userID use it for studentID
         };
 
         // Basic validation for rank number
@@ -49,18 +82,20 @@ function RankingPage(){
             return;
         }
 
-        // Insert into RankingCompany table
-        const {error} = await supabase.from("RankingCompany").insert(rankDataToInsert).single();
+        // Delete old ranking and Insert into RankingCompany table
+        const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('companyStaffID',newRank.companyStaffID);
+        const {error: uploadError} = await supabase.from("RankingCompany").insert(rankDataToInsert).single();
 
-        if(error){
-            console.error("Error with inserting rank:", error.message);
-            setFetchError("Error inserting rank: " + error.message);
+        if(uploadError || deleteError){
+            console.error("Error with inserting rank:", uploadError.message,deleteError.message);
+            setFetchError("Error inserting rank: " + uploadError.message,deleteError.message);
         }
         else{
             // Clear form fields and update rankings after successful insert
             setNewRank({rankNo: "", companyStaffID: null});
             setSelectedDropdownCompanyID('');
             setSelectedDropdownCompanyName('');
+            setNewRankNumbers(rankDataToInsert);
             setFetchError(null);
             fetchRankings(); // Re-fetch rankings to update the list
         }
@@ -81,7 +116,8 @@ function RankingPage(){
         const { data, error } = await supabase
             .from('RankingCompany')
             .select('rankNo, companyStaffID(companyName)') // THIS IS THE CORRECT WAY TO GET COMPANY NAME VIA FK
-            .order('rankNo', { ascending: true});
+            .eq('studentID',user.id)
+            .order('rankNo', { ascending: true});   
 
         if (error) {
             setFetchError('Could not fetch rankings data');

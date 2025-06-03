@@ -1,6 +1,6 @@
 from supabase import create_client, Client
 import pandas as pd
-from loadCSVs import ranking_path, qca_list_download
+from loadCSVs import qca_list_download
 
 def allocate_interviews(year_group):
 
@@ -11,14 +11,26 @@ def allocate_interviews(year_group):
 
     qca_path = qca_list_download(year_group)
     qca_df = pd.read_csv(qca_path)
-    ranking_df = pd.read_csv(ranking_path)
 
     # convert qca order to list
     students_ordered = qca_df["StudentID"].tolist()
+    #print(f"Students ordered by QCA: {students_ordered}")
 
+    # copying all the rankings from the db
+    companies_ranked = (
+        supabase.table("RankingCompany")
+                      .select("rankNo,companyStaffID,studentID")
+                      .execute()
+    )
+    companies_ranked_df = pd.DataFrame(companies_ranked.data)
+    #print(companies_ranked_df)
+
+    # copying job details from the db
     jobDetails = (
         supabase.table("JobDetails")
-        .select("jobID,companyStaffID,positionsAvailable")
+        .select("jobID,"
+            "companyStaffID,"
+            "positionsAvailable")
         .execute()
     )
     jobDetails_df = pd.DataFrame(jobDetails.data)
@@ -36,34 +48,41 @@ def allocate_interviews(year_group):
     remaining_slots = interview_slots.copy()
     student_interview_count = {}
 
+    interview_list = []
+    new_interview_id = 1
+
     # going through each student in QCA order
     for student in students_ordered:
+
+        # finding and ordering that students ranked companies
+        student_rankings = companies_ranked_df[companies_ranked_df["studentID"] == student]
+        student_rankings = student_rankings.sort_values("rankNo")
         interview_count = 0
 
-        student_row = ranking_df[ranking_df["StudentID"] == student]
+        # if student rankings are blank, skip
+        student_row = companies_ranked_df[companies_ranked_df["studentID"] == student]
         if student_row.empty:
             continue
 
-        # the student's ranked companies
-        ranked_jobs = []
-        row = student_row.iloc[0]
-        for i in range(1, len(student_row.columns)):
-            column_name = f"Rank_{i}"
-            job = int(row[column_name])
-            ranked_jobs.append(job)
-    
-        #print(f"Ranked companies for {student}: {ranked_jobs}")
+        
+        for _, ranking_row in student_rankings.iterrows():
+            companies_ranked_id = ranking_row["companyStaffID"] # current company id
 
-        for job in ranked_jobs:
+            # find the jobID for the company
+            job_row = jobDetails_df[jobDetails_df["companyStaffID"] == companies_ranked_id]
+            if job_row.empty:
+                continue
+            job_id = job_row.iloc[0]["jobID"]
+
             # do a check to see if the company has slots left
-            if remaining_slots.get(job, 0) > 0:
+            if remaining_slots.get(job_id, 0) > 0:
             
                 # if the company is not in interview_results create a new list to hold students
                 if job not in interview_results:
                     interview_results[job] = []
                 interview_results[job].append(student)
 
-                remaining_slots[job] -= 1
+                remaining_slots[job_id] -= 1
                 interview_count += 1
 
                 if interview_count >= 3:
@@ -78,9 +97,9 @@ def allocate_interviews(year_group):
     for job, students in interview_results.items():
         for student in students:
             id_count += 90
-            interview_list.append({"Interview ID" : id_count ,
-                                "jobID": job, 
-                                "StudentID": student})
+            interview_list.append({
+                "jobID": job, 
+                "StudentID": student})
 
     interview_df = pd.DataFrame(interview_list)
 
@@ -91,29 +110,23 @@ def allocate_interviews(year_group):
     
     #print_full(interview_df)
 
-    max_id_response = supabase.table("InterviewAllocation").select("interviewID").order("interviewID", desc=True).limit(1).execute()
-    if max_id_response.data and max_id_response.data[0]:
-        latest_id = max_id_response.data[0]['interviewID']
-        new_interview_id = latest_id + 1
-    #counter for interview ids - stops duplication issues
-    else:
-        new_interview_id = 1 # Starts from 1 if table empty
-
     for index, row in interview_df.iterrows():
         job = str(row["jobID"])
         student_id = str(row["StudentID"])
-        interview_id = int(row["Interview ID"])
 
         response = (
             supabase.table("InterviewAllocation")
             .insert({
-                "interviewID": new_interview_id,
                 "jobID": job,
                 "studentID": student_id
             })
             .execute()
         )
         
+        
         new_interview_id += 1
 
     return interview_list
+
+#result = allocate_interviews("2025")
+#print(result)

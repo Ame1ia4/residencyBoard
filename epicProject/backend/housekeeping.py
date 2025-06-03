@@ -3,22 +3,30 @@ import os
 from dotenv import load_dotenv
 
 # creates a supabase client
-load_dotenv(dotenv_path=".env")
-url: str = os.environ.get("VITE_SUPABASE_URL")
-key: str = os.environ.get("VITE_SUPABASE_KEY") 
+url = "https://zahjfkggsyktdshmjmre.supabase.co"
+key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5ODEyMzMsImV4cCI6MjA2MzU1NzIzM30.-7nvAbM7nzfHAs3qYwXivZjHMP6dfbX5k3LUByxk09A"
+supabase: Client = create_client(url, key)
 
 
 def clearInterviewAllocations():
-    x = 0
+    response = (
+        supabase.table("InterviewAllocation")
+       .select("interviewID")
+        .execute()
+    )
+
     ids = []
-    for i in range(162):
-        x += 90
-        ids.append(x)
+
+    for row in response.data:
+        if "interviewID" in row:
+            ids.append(row["interviewID"])
+
+
     response = (
         supabase.table("InterviewAllocation")
         .delete()
         .in_("interviewID", ids)
         .execute()
-    )
+     )
 
 clearInterviewAllocations()

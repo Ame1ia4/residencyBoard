@@ -84,7 +84,7 @@ function RenderPage({user}){
         component = <HomePage/> 
         break
         case "/ranking":
-        component = <RankingPage/>
+        component = <RankingPage user = {user}/>
         break
         case "/details":
         component = <DetailsPage/>
