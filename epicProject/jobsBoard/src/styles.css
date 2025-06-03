@@ -391,9 +391,9 @@ margin-left: 580px;
 margin-top: 40px;
 margin-bottom: -90px;
   position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+display: inline-block;
+width: 60px;
+height: 34px;
 }
 
 /* Hide default HTML checkbox */
@@ -403,15 +403,23 @@ margin-bottom: -90px;
   height: 0;
 }
 
+#off{
+    margin-left: -70px;
+    display: inline;
+}
+
 /* The slider */
 .slider {
+    margin-top: -5px;
+    margin-bottom: 5px;
   position: absolute;
   cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #78dd89;
+  background-image: none;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -429,7 +437,8 @@ margin-bottom: -90px;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+background-image: none;
+background-color: #010f4bb9;
 }
 
 input:focus + .slider {
@@ -496,4 +505,9 @@ justify-content: space-around;
     background-color: none;
     background-image:  linear-gradient(to right,  #9696968c, #8f8f8f77, #8a8a8a73);
     border-radius: 25px;
+}
+
+#interviewAllocate{
+    margin-top: 40px;
+    color: #0a114b;
 }
