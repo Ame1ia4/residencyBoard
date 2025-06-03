@@ -41,7 +41,6 @@ function RankingPage({user}){
         let index = 0;
         let rank = data.rankNo;
         while(index < list.length && list[index].rankNo - rank < 2){ // operate on any row between new entry and its old position
-            console.log(list[index].companyStaffID);
             const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('companyStaffID',list[index].companyStaffID);
             const {error: uploadError} = await supabase.from("RankingCompany").insert({ 
                 studentID: user.id,
@@ -55,8 +54,6 @@ function RankingPage({user}){
                 if(uploadError){
                     console.log(uploadError.message);
                 }
-            }else{
-                console.log('updated');
             }
             index++;
             rank++;
@@ -121,7 +118,7 @@ function RankingPage({user}){
             .from('RankingCompany')
             .select('rankNo, companyStaffID(companyName)') // THIS IS THE CORRECT WAY TO GET COMPANY NAME VIA FK
             .eq('studentID',user.id)
-            .order('rankNo', { ascending: true});
+            .order('rankNo', { ascending: true});   
 
         if (error) {
             setFetchError('Could not fetch rankings data');
