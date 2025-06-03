@@ -70,14 +70,14 @@ function RPSPage() {
     }
 
     return (
-        <div className="home-main">
+        <div className="home-rps">
             <h2>Residency Partner Rankings</h2>
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
             {/* dropdown to pick a company */}
             {companyList.length > 0 && (
-                <div style={{ marginBottom: '1rem' }}>
+                <div className='rpsDiv' style={{ marginBottom: '1rem' }}>
                     <label>Select a company: </label>
                     <select
                         value={selectedCompanyID}
@@ -103,7 +103,7 @@ function RPSPage() {
                 <div>
                     <h3>{selectedCompanyName}'s Rankings</h3>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <table border="1" cellPadding="6">
+                        <table id="rpsTable" border="1" cellPadding="6">
                             <thead>
                                 <tr>
                                     <th>Rank</th>
