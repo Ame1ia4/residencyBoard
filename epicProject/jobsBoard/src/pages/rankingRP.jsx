@@ -102,18 +102,16 @@ function RankingPage(){
             <br></br>
             <h2 id='sortRank'>Sorted Rankings</h2>
             {fetchError && (<p>{fetchError}</p>)} 
-            <div className='Card'>
                 {rank && (
                     <div className='jobDetails'>
                         {rank.map(rankingStudent => (
-                            <p>
+                            <p id='rankName'>
                                 {rankingStudent.rankNo} : {rankingStudent.Student.firstName} {rankingStudent.Student.lastName}
                             </p>
                         ))}
                     </div>
                 )}
             </div>
-        </div>
     );
 };
 

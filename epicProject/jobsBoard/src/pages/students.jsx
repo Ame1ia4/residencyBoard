@@ -40,6 +40,7 @@ function StudentsPage() {
 
             <label>Year Group:</label>
             <input
+                id='qcaListInput'
                 type="text"
                 placeholder="Year of Graduation"
                 value={yearGroup}
@@ -47,6 +48,7 @@ function StudentsPage() {
             />
 
             <input
+                id='qcaListInput'
                 type="file"
                 accept=".csv"
                 onChange={(e) => setCsvFile(e.target.files[0])}

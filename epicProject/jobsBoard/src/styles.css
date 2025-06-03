@@ -22,6 +22,26 @@ h2{
 p{
     color: #fff;
     text-align: center;
+    background-color: none;
+    background-image: none;
+}
+
+#qcaListInput {
+    display: block;
+    margin-left: 500px;
+    background-color: transparent;
+    background-image: transparent;
+    color: #fff;
+}
+
+.jobDetails {
+    background-color: none;
+    background-image: none;
+}
+
+#rankName {
+    background-color: none;
+    background-image: linear-gradient(to right,  #9696967c, #8f8f8f6c, #8a8a8a75);
 }
 
 .nav{
@@ -348,16 +368,16 @@ margin-top: 80px;
 }
 
 .postForm input{
-    background-image: linear-gradient(to right,  #96969669, #8f8f8f93, #8a8a8a8a);
+    background-image: linear-gradient(to right,  #96969648, #8f8f8f38, #8a8a8a8a);
     opacity: 60%;
     z-index: 0;
     background-color: none;
     border-radius: 15px;
-    color: #fff;
+    color: rgb(90, 90, 90);
 }
 
 .postForm input:hover{
-    color: #000;
+    color: #000000;
 }
 
 .postForm textarea{
@@ -365,11 +385,11 @@ margin-top: 80px;
     opacity: 60%;
     background-color: none;
     border-radius: 15px;
-    color: rgb(255, 255, 255);
+    color: rgb(90, 90, 90);
 }
 
 .postForm textarea:hover{
-    color: #000;
+    color: #000000;
 }
 
 .postForm button{
@@ -406,6 +426,14 @@ height: 34px;
 #off{
     margin-left: -70px;
     display: inline;
+}
+
+#jobAllocate {
+    color: #010953;
+    margin-left: -10px;
+    background-color: none;
+    background-image: none;
+    margin-top: 90px;
 }
 
 /* The slider */
