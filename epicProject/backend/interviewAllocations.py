@@ -13,13 +13,14 @@ def allocate_interviews(year_group):
     qca_df = pd.read_csv(qca_path)
 
     # convert qca order to list
+    
     students_ordered = qca_df["StudentID"].tolist()
     #print(f"Students ordered by QCA: {students_ordered}")
 
     # copying all the rankings from the db
     companies_ranked = (
         supabase.table("RankingCompany")
-                      .select("rankNo,companyStaffID,studentID")
+                      .select("rankNo,jobID,studentID")
                       .execute()
     )
     companies_ranked_df = pd.DataFrame(companies_ranked.data)
@@ -28,9 +29,7 @@ def allocate_interviews(year_group):
     # copying job details from the db
     jobDetails = (
         supabase.table("JobDetails")
-        .select("jobID,"
-            "companyStaffID,"
-            "positionsAvailable")
+        .select("jobID,positionsAvailable")
         .execute()
     )
     jobDetails_df = pd.DataFrame(jobDetails.data)
@@ -66,18 +65,13 @@ def allocate_interviews(year_group):
 
         
         for _, ranking_row in student_rankings.iterrows():
-            companies_ranked_id = ranking_row["companyStaffID"] # current company id
 
-            # find the jobID for the company
-            job_row = jobDetails_df[jobDetails_df["companyStaffID"] == companies_ranked_id]
-            if job_row.empty:
-                continue
-            job_id = job_row.iloc[0]["jobID"]
+            job_id = ranking_row["jobID"] # current job id
 
             # do a check to see if the company has slots left
             if remaining_slots.get(job_id, 0) > 0:
             
-                # if the company is not in interview_results create a new list to hold students
+                # if the job is not in interview_results create a new list to hold students
                 if job not in interview_results:
                     interview_results[job] = []
                 interview_results[job].append(student)
@@ -108,7 +102,7 @@ def allocate_interviews(year_group):
         print(x)
         pd.reset_option('display.max_rows')
     
-    #print_full(interview_df)
+    print_full(interview_df)
 
     for index, row in interview_df.iterrows():
         job = str(row["jobID"])
@@ -128,5 +122,5 @@ def allocate_interviews(year_group):
 
     return interview_list
 
-#result = allocate_interviews("2025")
-#print(result)
+result = allocate_interviews("2025")
+print(result)
