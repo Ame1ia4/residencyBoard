@@ -16,17 +16,16 @@ def rpAllocate():
         .execute()
     )
 
-    print(studentsRankingCompanies)   
     studentsRankingCompanies_df = pd.DataFrame(studentsRankingCompanies.data)
     print(studentsRankingCompanies_df)
 
     stuff = {}
     for index, row in studentsRankingCompanies_df.iterrows():
-        rankNo = int(row['rankNo'])
-        companyName =row['companyName']
-        rankID = int(row['rankID'])
-        studentId = int(row['studentId']) 
-        list = [studentId, rankID, companyName]
+        rankNo = row['rankNo']
+        jobID =row['jobID']
+        rankID = row['rankID']
+        studentId = row['studentID']
+        list = [studentId, rankID, jobID]
         stuff[rankID] = list
 
     print(stuff)

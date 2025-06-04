@@ -11,10 +11,9 @@ CORS(app, origins={"http://127.0.0.1:5173"}) #uses CORS on this file so React ca
 def allocate(): #function to call in frontend
     return allocate_interviews(2025) #function form python file
 
-"""@app.route('/rpAllocation')
+@app.route('/rpAllocation')
 def rp():
     return rpAllocate()
-    """
 
 if __name__ == '__main__': #if this file is run directly then this will run
     app.run(debug=True)
