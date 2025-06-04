@@ -113,18 +113,18 @@ def allocate_interviews(year_group):
         print(x)
         pd.reset_option('display.max_rows')
 
-    response = (
+    ranking = (
         supabase.table("RankingCompany")
         .select("rankID,rankNo,studentID,jobID")
         .execute()
     )
 
-    ranking_df = pd.DataFrame(response.data)
+    ranking_df = pd.DataFrame(ranking.data)
 
     download_directory = "csvRankingDownloads"
     os.makedirs(download_directory, exist_ok=True)
 
-    ranking_path = os.path.join(download_directory, f"ranking_company_{year_group}.csv")
+    os.path.join(download_directory, f"ranking_company_{year_group}.csv")
 
     ranking_df.to_csv(f"csvRankingDownloads/ranking_company_{year_group}.csv", index=False)
 

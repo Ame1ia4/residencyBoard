@@ -6,9 +6,12 @@ function RPSPage() {
     const [rankingList, setRankingList] = useState([]);
     const [companyList, setCompanyList] = useState([]);
     const [studentList, setStudentList] = useState([]);
+    const[jobList, setJobList] = useState([]);
 
     // holds whatever company the user picks from the dropdown
     const [selectedCompanyID, setSelectedCompanyID] = useState('');
+    const[selectedJobID, setSelectedJobID] = useState('');
+
     const [rankError, setRankError] = useState(null);
 
     const [pending, setPending] = useState(null);
@@ -112,8 +115,8 @@ useEffect(() => {
         async function loadData() {
 
         const rankings = await supabase
-            .from('RankingCompany')
-            .select('companyStaffID, studentID, rankNo');
+            .from('RankingStudent2')
+            .select('jobID,studentID,rankNo');
     
         const companies = await supabase
             .from('ResidencyPartner')
@@ -122,8 +125,28 @@ useEffect(() => {
         const students = await supabase
             .from('Student')
             .select('studentID, firstName, lastName');
+        
+        const jobs = await supabase
+            .from('JobDetails')
+            .select('jobID,jobTitle,companyStaffID');
 
-        if (rankings.error || companies.error || students.error) {
+        if (rankings.error) {
+            console.error('Rankings error:', rankings.error);
+        }
+
+        if (companies.error) {
+            console.error('Companies error:', companies.error);
+        }
+
+        if (students.error) {
+            console.error('Students error:', students.error);
+        }
+
+        if (jobs.error) {
+            console.error('Jobs error:', jobs.error);
+        }
+
+        if (rankings.error || companies.error || students.error || jobs.error) {
             setRankError('Failed to load data.');
             return;
         }
@@ -131,6 +154,7 @@ useEffect(() => {
         setRankingList(rankings.data);
         setCompanyList(companies.data);
         setStudentList(students.data);
+        setJobList(jobs.data);
         setRankError(null);
         }
 
@@ -146,13 +170,19 @@ useEffect(() => {
         }
     }
 
+    console.log('companyList:', companyList);
+    console.log('rankingList:', rankingList);
+    console.log('selectedCompanyID:', selectedCompanyID);
+
     // filtering the rankings 
-    const companyRankings = rankingList
-        .filter(function (row) {
-        return row.companyStaffID === selectedCompanyID;
-        })
-        .sort(function (a, b) {
-        return a.rankNo - b.rankNo; 
+    const studentRankings = 
+
+        rankingList
+            .filter(function (row) {
+                return String(row.jobID) === String(selectedJobID);
+            })
+            .sort(function (a, b) {
+                return a.rankNo - b.rankNo; 
     });
 
     // function to get full name from student id
@@ -164,6 +194,9 @@ useEffect(() => {
         }
         return 'Unknown';
     }
+
+    console.log('selectedJobID:', selectedJobID);
+    console.log('studentRankings:', studentRankings);
 
     return (
         <div className="home-rps">
@@ -220,6 +253,7 @@ useEffect(() => {
                         value={selectedCompanyID}
                         onChange={function (e) {
                             setSelectedCompanyID(e.target.value);
+                            setSelectedJobID('');
                         }}
                     >
                         <option value="">-- Select a Company --</option>
@@ -234,7 +268,31 @@ useEffect(() => {
                 </div>
             )}
 
-            {companyRankings.length > 0 && (
+            {/* dropdown to pick a job */}
+            {selectedCompanyID && jobList.length > 0 && (
+                <div className='rpsDiv' style={{marginBottom: '1rem'}}>
+                    <label>Select a job: </label>
+                    <select
+                        value={selectedJobID}
+                        onChange={function (e) {
+                            setSelectedJobID(e.target.value);
+                        }}
+                    >
+                        <option value="">-- Select a Job --</option>
+                        {jobList
+                            .filter(job => job.companyStaffID === selectedCompanyID)
+                            .map(function (job) {
+                                return (
+                                    <option key={job.jobID} value={job.jobID}>
+                                        {job.jobTitle}
+                                    </option>
+                                );
+                            })}
+                    </select>
+                </div>
+            )}
+
+            {selectedJobID && studentRankings.length > 0 && (
                 <div>
                     <h3>{selectedCompanyName}'s Rankings</h3>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -247,7 +305,7 @@ useEffect(() => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {companyRankings.map(function (row, index) {
+                                {studentRankings.map(function (row, index) {
                                     return (
                                         <tr key={index}>
                                             <td>{row.rankNo}</td>
@@ -260,6 +318,10 @@ useEffect(() => {
                         </table>
                     </div>
                 </div>
+            )}
+
+            {selectedJobID && studentRankings.length === 0 && (
+                <p>No students ranked for this job.</p>
             )}
         </div>
     );
