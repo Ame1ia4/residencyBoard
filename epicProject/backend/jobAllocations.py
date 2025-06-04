@@ -12,7 +12,7 @@ def rpAllocate():
 
     studentsRankingCompanies = (
         supabase.table('RankingCompany')
-        .select('*')
+        .select('rankNo,jobID,studentID')
         .execute()
     )
 
