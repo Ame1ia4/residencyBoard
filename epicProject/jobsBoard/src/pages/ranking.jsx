@@ -39,7 +39,7 @@ function RankingPage({user}){
 
         let index = 0;
         let rank = data.rankNo;
-        while(index < list.length && list[index].rankNo - rank < 2){ // operate on any row between new entry and its old position
+        while(index < list.length){
             const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('jobID',list[index].jobID);
             const {error: uploadError} = await supabase.from("RankingCompany").insert({ 
                 studentID: user.id,

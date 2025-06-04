@@ -76,7 +76,7 @@ const Dropdown = ({ onSelectCompany, selectedCompanyStaffID }) => {
         let idToPass = selectedValue; 
 
         if (mode === '1') { 
-            const selectedJob = jobDetails.find(job => job.companyStaffID === selectedValue);
+            const selectedJob = jobDetails.find(job => job.jobID === selectedValue);
             if (selectedJob) {
                 companyName = selectedJob.ResidencyPartner.companyName;
               
@@ -176,7 +176,7 @@ const Dropdown = ({ onSelectCompany, selectedCompanyStaffID }) => {
                     {jobDetails.map(job => (
                         <option
                             key={job.jobID} 
-                            value={job.companyStaffID}
+                            value={job.jobID}
                         >
                             {job.jobTitle} - {job.ResidencyPartner.companyName}
                         </option>
