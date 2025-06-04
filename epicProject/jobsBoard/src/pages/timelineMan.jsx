@@ -5,10 +5,15 @@ import { supabase } from '../SupabaseClient';
 function TimePage() {
     const [algorithmEnabled, setAlgorithmEnabled] = useState(false);
     const [algorithm2Enabled, setAlgorithm2Enabled] = useState(false);
-    const [data, setData] = useState(null);
-    const [data2, setData2] = useState(null);
+    const [data, setData] = useState(null); //redundant??
+    const [data2, setData2] = useState(null); //redundant??? - don't need data really just need to run algorithm
     const [fetchError, setFetchError] = useState(null);
     const [view, setView] = useState({rankViewNo: ""});
+    const [switch1, setSwitch1] = useState(true);
+    const [switch2, setSwitch2] = useState(false);
+    const [switch3, setSwitch3] = useState(false);
+
+
 
     const [rankingUpdateError, setRankingUpdateError] = useState(null);
 
@@ -33,20 +38,6 @@ function TimePage() {
         }
     };
 
-    const handleClickStudentsRankJobs = () => {
-        updateRankingView('1');
-        alert("Student can now see and rank all companies in round 0.");
-    };
-
-    const handleClickRound1 = () => {
-        updateRankingView('2');
-        alert("Students can now rank assigned companies they interviewed with in round 1.")
-    };
-
-    const handleClickRound2 = () => {
-        updateRankingView('3');
-        alert("Students can now rank remaining companies in round 2.")
-    };
 
     const handleSwitch = (event) =>{
         const checked = event.target.checked;
@@ -64,6 +55,54 @@ function TimePage() {
 
          if (!checked) {
             setAlgorithm2Enabled(false);
+            console.log('Toggle is not checked.')
+        }
+    }
+
+    const handleSwitch4 = (event3) =>{
+        const checked = event3.target.checked;
+        setSwitch1(checked);
+        setSwitch2(!checked);
+        setSwitch3(!checked);
+
+        if(checked){
+            updateRankingView('1');
+        alert("Student can now see and rank all companies in round 0.");
+        }   
+        else {
+            setSwitch1(false);
+            console.log('Toggle is not checked.')
+        }
+    }
+
+    const handleSwitch5 = (event3) =>{
+        const checked = event3.target.checked;
+        setSwitch1(!checked);
+        setSwitch2(checked);
+        setSwitch3(!checked);
+        
+        if(checked){
+        updateRankingView('2');
+        alert("Student can now see and rank all companies in round 1.");
+        }   
+        else {
+            setSwitch2(false);
+            console.log('Toggle is not checked.')
+        }
+    }
+
+    const handleSwitch6 = (event3) =>{
+        const checked = event3.target.checked;
+        setSwitch1(!checked);
+        setSwitch2(!checked);
+        setSwitch3(checked);
+
+        if(checked){
+        updateRankingView('3');
+        alert("Student can now see and rank all companies in round 2.");
+        }   
+        else {
+            setSwitch3(false);
             console.log('Toggle is not checked.')
         }
     }
@@ -140,12 +179,21 @@ useEffect(()=>{
     <div className='home-main'>
      <h1>Ranking Control</h1>
             {rankingUpdateError && <p style={{ color: 'red' }}>{rankingUpdateError}</p>}
-            <button onClick={handleClickStudentsRankJobs}>Students rank Jobs</button>
-            <button onClick={handleClickRound1}>Round 1</button>
-            <button onClick={handleClickRound2}>Round 2</button>
+            <label class="switch">
+        <input id="switchBox" type="checkbox" checked={switch1} onChange={handleSwitch4} style={{}}></input>
+         <span class="slider round"></span>
+            </label>
+         <label class="switch">
+        <input id="switchBox" type="checkbox" checked={switch2} onChange={handleSwitch5}></input>
+         <span class="slider round"></span>
+            </label>
+        <label class="switch">
+        <input id="switchBox" type="checkbox" checked={switch3} onChange={handleSwitch6}></input>
+         <span class="slider round"></span>
+        </label>
      <h1 id='alloCon'>Allocation Control</h1>
      <h2 id='jobAllocate'>Interview Allocation Algorithm</h2>
-     <p>Please insert QCA list for year group you want to run algorithm for. Results will display for students of that year group.</p>
+     <p>Please ensure QCA list has been provided on 'Students' page for year group you want to run algorithm for. Results will display for students of that year group.</p>
      <label class="switch">
         <input id="switchBox" type="checkbox" checked={algorithmEnabled} onChange={handleSwitch}></input>
          <span class="slider round"></span>
