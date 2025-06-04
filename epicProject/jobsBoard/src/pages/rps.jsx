@@ -170,7 +170,7 @@ useEffect(() => {
             <h2>Residency Partner Rankings</h2>
 
             {/* Display Pending Job Posts for Approval */}
-            <h3>Pending Job Posts for Approval</h3>
+            <h3>Job Posts for Approval</h3>
             {pendingError && (<p style={{ color: 'red' }}>{pendingError}</p>)} {/* Use pendingJobsError */}
             <div className='Card'>
                 {/* FIX: Ensure pendingJobs is not null and has items before mapping */}
