@@ -35,14 +35,17 @@ function TimePage() {
 
     const handleClickStudentsRankJobs = () => {
         updateRankingView('1');
+        alert("Student can now see and rank all companies in round 0.");
     };
 
     const handleClickRound1 = () => {
         updateRankingView('2');
+        alert("Students can now rank assigned companies they interviewed with in round 1.")
     };
 
     const handleClickRound2 = () => {
         updateRankingView('3');
+        alert("Students can now rank remaining companies in round 2.")
     };
 
     const handleSwitch = (event) =>{
