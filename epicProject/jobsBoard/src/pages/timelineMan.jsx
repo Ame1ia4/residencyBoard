@@ -119,6 +119,7 @@ function TimePage() {
             const json = await response.json();
             setData(json);
             console.log('Algorithm ran successfully.')
+            alert('Algorithm ran successfully.')
             
             } else {
             console.log("Toggle not enabled, algorithm is not running");
@@ -179,7 +180,7 @@ useEffect(()=>{
     <div className='home-main'>
      <h1>Ranking Control</h1>
             {rankingUpdateError && <p style={{ color: 'red' }}>{rankingUpdateError}</p>}
-            <label class="switch">
+        <label class="switch">
         <input id="switchBox" type="checkbox" checked={switch1} onChange={handleSwitch4} style={{}}></input>
          <span class="slider round"></span>
             </label>
