@@ -21,27 +21,82 @@ function RankingPage(){
         }));
     };
 
+    const setNewRankNumbers = async (data) => {
+        // get the list of entries following the new entry
+        const { data: list, error: listError } = await supabase
+            .from('RankingStudent')
+            .select('rankNo, studentID') 
+            .eq('companyID',user.id)
+            .gte('rankNo', data.rankNo)
+            .neq('studentID',data.studentID)
+            .order('rankNo', { ascending: true}); 
+
+        let index = 0;
+        let rank = data.rankNo;
+        while(index < list.length){
+            const {error: deleteError} = await supabase.from('RankingStudent').delete().eq('companyID',user.id).eq('studentID',list[index].studentID);
+            const {error: uploadError} = await supabase.from("RankingStudent").insert({ 
+                companyID: user.id,
+                studentID: list[index].studentID,
+                rankNo: rank + 1}).single();
+
+
+            if(deleteError || uploadError){
+                if(deleteError){
+                    console.log(deleteError.message);
+                }
+                if(uploadError){
+                    console.log(uploadError.message);
+                }
+            }
+            index++;
+            rank++;
+        }
+        fetchRankings();
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Validate that a student has been selected (i.e., jobID is not null)
+        if (!newRank.studentID) { // Check for jobID now
+            setFetchError("Please select a student from the dropdown.");
+            return;
+        }
 
         const rankDataToInsert = {
-            ...newRank,
-            rankID: newRank.rankNo ? parseInt(newRank.rankNo) : undefined,
-            studentID: newRank.studentID ? parseInt(newRank.studentID) : undefined,
+            rankNo: newRank.rankNo ? parseInt(newRank.rankNo) : null, // Ensure rankNo is an integer or null
+            companyID: user.id, // take user.id and user it for companyID
+            studentID: newRank.studentID // get studentID from newRank
         };
 
-        const {error} = await supabase.from("RankingStudent").insert(rankDataToInsert).single();
-
-        if(error){
-            console.error("Error with inserting rank:", error.message);
-            setFetchError("Error inserting rank: " + error.message);
+        // Basic validation for rank number
+        if (!rankDataToInsert.rankNo) {
+             setFetchError("Please enter a valid rank number.");
+            return;
         }
-        else{
+
+        // Delete old ranking and Insert into RankingCompany table
+
+        const {error: presentError} = await supabase.from('RankingStudent').select('').eq('companyID', user.id).eq('studentID', newRank.studentID);
+        if(!presentError){ 
+            const {error: deleteError} = await supabase.from('RankingStudent').delete().eq('companyID',user.id).eq('studentID',newRank.studentID);
+
+            if(deleteError){
+                console.error("Error with deleting rank:", deleteError.message);
+                setFetchError("Error deletting rank: " + deleteError.message);
+            }
+        }
+        const {error: uploadError} = await supabase.from("RankingStudent").insert(rankDataToInsert).single();
+
+        if(uploadError){
+            console.error("Error with inserting rank:", uploadError.message);
+            setFetchError("Error inserting rank: " + uploadError.message);
+        }else{
             setNewRank({rankNo: ""}); 
             setStudentDropID(''); 
             setFetchError(null);
+            setNewRankNumbers(rankDataToInsert);
             fetchRank();
         }
     }
@@ -79,7 +134,7 @@ function RankingPage(){
     return (
         <div className='rankForm'>
 
-            <h2>Rank your companies</h2>
+            <h2>Rank your students</h2>
 
             <form style={{marginBottom: "1rem"}} onSubmit={handleSubmit}>
                 <input

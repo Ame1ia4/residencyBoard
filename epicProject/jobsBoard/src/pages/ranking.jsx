@@ -26,7 +26,6 @@ function RankingPage({user}){
         }));
     };
 
-    // recursively call this to give new rankNo
     const setNewRankNumbers = async (data) => {
         // get the list of entries following the new entry
         const { data: list, error: listError } = await supabase
@@ -46,6 +45,7 @@ function RankingPage({user}){
                 jobID: list[index].jobID,
                 rankNo: rank + 1}).single();
 
+                
             if(deleteError || uploadError){
                 if(deleteError){
                     console.log(deleteError.message);
