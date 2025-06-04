@@ -124,7 +124,7 @@ const Dropdown = ({ onSelectCompany, selectedCompanyStaffID }) => {
                     {jobDetails.map(job => (
                         <option
                             key={job.jobID} 
-                            value={job.companyStaffID}
+                            value={job.jobID}
                         >
                             {job.jobTitle} - {job.ResidencyPartner.companyName}
                         </option>

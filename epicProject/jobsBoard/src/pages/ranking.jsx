@@ -68,7 +68,7 @@ function RankingPage({user}){
             setFetchError("Please select a company from the dropdown.");
             return;
         }
-
+        
         // Prepare the data for insertion
         const rankDataToInsert = {
             rankNo: newRank.rankNo ? parseInt(newRank.rankNo) : null, // Ensure rankNo is an integer or null
@@ -83,13 +83,23 @@ function RankingPage({user}){
         }
 
         // Delete old ranking and Insert into RankingCompany table
-        const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('jobID',newRank.jobID);
+
+        const {error: presentError} = await supabase.from('RankingCompany').select('').eq('studentID', user.id).eq('jobID', newRank.jobID);
+        if(!presentError){ 
+            const {error: deleteError} = await supabase.from('RankingCompany').delete().eq('studentID',user.id).eq('jobID',newRank.jobID);
+
+            if(deleteError){
+                console.error("Error with deleting rank:", deleteError.message);
+                setFetchError("Error deletting rank: " + deleteError.message);
+            }
+        }
         const {error: uploadError} = await supabase.from("RankingCompany").insert(rankDataToInsert).single();
 
-        if(uploadError || deleteError){
-            console.error("Error with inserting rank:", uploadError.message,deleteError.message);
-            setFetchError("Error inserting rank: " + uploadError.message,deleteError.message);
+        if(uploadError){
+            console.error("Error with inserting rank:", uploadError.message);
+            setFetchError("Error inserting rank: " + uploadError.message);
         }
+
         else{
             // Clear form fields and update rankings after successful insert
             setNewRank({rankNo: "", jobID: null});
@@ -150,7 +160,8 @@ function RankingPage({user}){
                 />
                 <Dropdown
                     onSelectCompany={handleCompanySelection}
-                    selectedCompanyStaffID={selectedDropdownCompanyID} // Pass the ID to the dropdown
+                    selectedJobID={selectedDropdownCompanyID} // Pass the ID to the dropdown
+                    
                 />
                 <button type='submit' style={{padding: "0.5rem 1rem"}}>
                     Add Ranking
