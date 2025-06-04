@@ -15,7 +15,6 @@ def allocate_interviews(year_group):
     qca_df = pd.read_csv(qca_path)
 
     # convert qca order to list
-    
     students_ordered = qca_df["StudentID"].tolist()
     #print(f"Students ordered by QCA: {students_ordered}")
 
@@ -36,6 +35,7 @@ def allocate_interviews(year_group):
     )
     jobDetails_df = pd.DataFrame(jobDetails.data)
 
+    clearInterviewAllocations()
 
     # make a dict of how many interview slots a company has
     interview_slots = {}
