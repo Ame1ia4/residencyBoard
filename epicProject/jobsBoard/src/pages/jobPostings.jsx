@@ -32,7 +32,7 @@ const [userID, setUserID] = useState(null)
             .eq('companyStaffID', userID); 
 
         if (error) {
-            setFetchError('Could not fetch job posts: ' + error.message);
+            setFetchError('Could not fetch job posts, job post may be pending approval: ' + error.message);
             setJobDetails(null);
             console.error('Fetch error:', error);
         } else {
@@ -64,7 +64,7 @@ const [userID, setUserID] = useState(null)
             companyStaffID: userID, //debating do i put salary: salary stuff here too
         };
 
-        const { error } = await supabase.from("JobDetails").insert(jobDataToInsert).single();
+        const { error } = await supabase.from("Approval").insert(jobDataToInsert).single();
 
         if (error) {
             console.error("Error adding job:", error.message);
@@ -149,14 +149,14 @@ return (
 {jobDetails && (
   <div className='jobDetails'>
     {jobDetails.map(jobDetails => (
-      <p>
+      <div>
         <p>Job Title: {jobDetails.jobTitle}</p>
         <p>Salary: {jobDetails.salary}</p>
         <p>Description: {jobDetails.description}</p>
         <p>Requirements: {jobDetails.requirements}</p>
         <p>Residency: {jobDetails.residencyNo}</p>
         <br></br>
-      </p>
+      </div>
     ))}
   </div>
 )}

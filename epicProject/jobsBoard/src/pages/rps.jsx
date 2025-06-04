@@ -9,10 +9,106 @@ function RPSPage() {
 
     // holds whatever company the user picks from the dropdown
     const [selectedCompanyID, setSelectedCompanyID] = useState('');
+    const [rankError, setRankError] = useState(null);
 
-    const [error, setError] = useState(null);
+    const [pending, setPending] = useState(null);
+    const [pendingError, setPendingError] = useState(null);
+    const [userID, setUserID] = useState(null)
 
-    useEffect(function () {
+useEffect(() => {
+        const getUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                setUserID(user.id);
+            } else {
+                setUserID(null);
+                setPendingError("Please log in to view pending job posts.");
+            }
+        };
+        getUser();
+    }, []); // Runs once on mount to get the authenticated user
+
+    // Function to fetch pending job posts from the 'Approval' table
+    // Defined at the top level of the component
+    const fetchPending = async () => {
+        // Only attempt to fetch if a user is logged in
+        if (!userID) {
+            setPending(null);
+            setPendingError("Please log in to view job posts pending approval.");
+            return;
+        }
+
+        const { data, error } = await supabase
+            .from('Approval')
+            .select('*, ResidencyPartner(companyName)');
+
+        if (error) {
+            setPendingError('Could not fetch job posts, job post may be pending approval: ' + error.message);
+            setPending(null);
+            console.error('Fetch error (pending jobs):', error);
+        } else {
+            setPending(data);
+            setPendingError(null);
+        }
+    };
+
+    // Effect to trigger fetchPendingJobs when authUserID changes
+    // This useEffect is also at the top level
+    useEffect(() => {
+        fetchPending();
+    }, [userID]); // Re-run when authUserID changes (i.e., user logs in/out)
+
+    
+    const handleApproval = async(approving) =>{
+        setPendingError(null);
+
+        const {error: insertError} = await supabase.from('JobDetails')
+        .insert({residencyNo: approving.residencyNo, description: approving.description,
+        salary: approving.salary, requirements: approving.requirements, jobTitle: approving.jobTitle, 
+        positionsAvailable: approving.positionsAvailable, 
+        companyStaffID: approving.companyStaffID});
+
+        if(insertError){
+            console.error("Error inserting to JobDetails from Approval: ", insertError.message);
+            setPendingError("Failed to approve.")
+        }
+    
+
+    const{error: deletionError} = await supabase.from('Approval')
+    .delete()
+    .eq('jobID',approving.jobID );
+
+    if(deletionError){
+        console.error('Error deleting values from Approval', deletionError.message);
+        setPendingError('Job approved, but deletion failed.');
+    }
+    else{
+        console.log('Job approval and deletion complete:', approving);
+        fetchPending();
+    }
+    };
+
+    const handleRejection = async(rejecting) =>{
+        setPendingError(null);
+
+        const{error: deletionError} = await supabase.from('Approval')
+    .delete()
+    .eq('jobID',rejecting.jobID );
+
+    if(deletionError){
+        console.error('Error deleting values from Approval', deletionError.message);
+        setPendingError('Job rejected, but deletion failed.');
+    }
+    else{
+        console.log('Job rejection and deletion complete:', rejecting);
+        fetchPending();
+    }
+    };
+
+
+
+    useEffect(
+        function () {
         async function loadData() {
 
         const rankings = await supabase
@@ -28,14 +124,14 @@ function RPSPage() {
             .select('studentID, firstName, lastName');
 
         if (rankings.error || companies.error || students.error) {
-            setError('Failed to load data.');
+            setRankError('Failed to load data.');
             return;
         }
 
         setRankingList(rankings.data);
         setCompanyList(companies.data);
         setStudentList(students.data);
-        setError(null);
+        setRankError(null);
         }
 
         loadData();
@@ -73,7 +169,48 @@ function RPSPage() {
         <div className="home-rps">
             <h2>Residency Partner Rankings</h2>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {/* Display Pending Job Posts for Approval */}
+            <h3>Pending Job Posts for Approval</h3>
+            {pendingError && (<p style={{ color: 'red' }}>{pendingError}</p>)} {/* Use pendingJobsError */}
+            <div className='Card'>
+                {/* FIX: Ensure pendingJobs is not null and has items before mapping */}
+                {pending && pending.length > 0 ? (
+                    <div className='pending-jobs-list'> {/* Changed class name for clarity */}
+                        {pending.map(job => ( // Renamed 'pending' to 'job' for clarity in map
+                            <div key={job.jobID} style={{ marginBottom: '15px', border: '1px solid #ddd', padding: '10px', borderRadius: '8px', backgroundColor: '#f9f9f9', color: '#333' }}>
+                                <p>Job Title: {job.jobTitle}</p>
+                                <p>Company Staff ID: {job.companyStaffID}</p>
+                                <p>Company Name: {job.ResidencyPartner.companyName}</p>
+                                <p>Description: {job.description}</p>
+                                <p>Salary: {job.salary}</p>
+                                <p>Requirements: {job.requirements}</p>
+                                <p> Residency No: {job.residencyNo}</p>
+                                <p>Positions Available: {job.positionsAvailable}</p>
+                                <div style={{ marginTop: '10px' }}>
+                                    <button
+                                        onClick={() => handleApproval(job)}
+                                        style={{ marginRight: '10px', padding: '8px 15px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                                    >
+                                        Approve
+                                    </button>
+                                    <button
+                                        onClick={() => handleRejection(job)}
+                                        style={{ padding: '8px 15px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                                    >
+                                        Reject
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    // Display message if no pending jobs and no error
+                    !pendingError && <p>No pending job posts for approval.</p>
+                )}
+            </div>
+
+
+            {rankError && <p>{rankError}</p>} {/* Use rankingDataError */}
 
             {/* dropdown to pick a company */}
             {companyList.length > 0 && (
@@ -85,7 +222,6 @@ function RPSPage() {
                             setSelectedCompanyID(e.target.value);
                         }}
                     >
-            
                         <option value="">-- Select a Company --</option>
                         {companyList.map(function (company) {
                             return (
@@ -98,7 +234,6 @@ function RPSPage() {
                 </div>
             )}
 
-            {}
             {companyRankings.length > 0 && (
                 <div>
                     <h3>{selectedCompanyName}'s Rankings</h3>
@@ -127,6 +262,9 @@ function RPSPage() {
                 </div>
             )}
         </div>
-  );
+    );
 }
+
 export default RPSPage;
+
+
