@@ -13,13 +13,25 @@ def rpAllocate():
     # make a dictionary of companies with their rankings
     studentsRankingCompanies = (
         supabase.table('RankingCompany')
-        .select('rankNo,jobID(companyStaffID),studentID')
+        .select('rankNo,jobID,studentID')
         .execute()
     )
 
     studentsRankingCompanies_df = pd.DataFrame(studentsRankingCompanies.data)
-    print(studentsRankingCompanies_df)
+    global students
+    students = {}
+    for index, row in studentsRankingCompanies_df.iterrows():
+        rank = row['rankNo']
+        student = row['studentID']
+        job = row['jobID']
+        if(student in students):
+            assignStudent(rank,student,job)
+        else:
+            students[student] = {1:'',2:'',3:''}
+            assignStudent(rank,student,job)
     
+
+    # make a dictionary of students with their rankings
     companiesRankingStudents = (
         supabase.table('RankingStudent')
         .select('rankNo,companyID,studentID')
@@ -36,21 +48,49 @@ def rpAllocate():
         if(company in companies):
             assignStudent(rank,student,company)
         else:
-            companies[company] = {'rank1':'','rank2':'','rank3':''}
+            companies[company] = {1:'',2:'',3:''}
             assignStudent(rank,student,company)
 
-    
-    return companies
+    """match companies with students using this plan
+    company:student
+    1:1
+    1:2
+    2:1
+    1:3
+    2:2
+    2:3
+    3:1
+    3:2
+    3:3
+    """
+    global jobParings
+    jobParings = {}
+
+
+    return student,companies
+
 
 def assignStudent(rankNo,studentID,companyID):
     match rankNo:
         case 1:
-            companies.update({companyID:{'rank1':studentID}})
+            companies.update({companyID:{1:studentID}})
             return
         case 2:
-            companies.update({companyID:{'rank2':studentID}})
+            companies.update({companyID:{2:studentID}})
             return
         case 3:
-            companies.update({companyID:{'rank3':studentID}})
+            companies.update({companyID:{3:studentID}})
             return
-    
+
+
+def assignJob(rankNo,studentID,jobID):
+    match rankNo:
+        case 1:
+            students.update({studentID:{1:jobID}})
+            return
+        case 2:
+            students.update({studentID:{2:jobID}})
+            return
+        case 3:
+            students.update({studentID:{3:jobID}})
+            return
