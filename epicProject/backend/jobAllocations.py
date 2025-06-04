@@ -10,23 +10,47 @@ def rpAllocate():
     key: str = os.environ.get("VITE_SUPABASE_KEY") 
     supabase: Client = create_client(url, key)
 
+    # make a dictionary of companies with their rankings
     studentsRankingCompanies = (
         supabase.table('RankingCompany')
-        .select('rankNo,jobID,studentID')
+        .select('rankNo,jobID(companyStaffID),studentID')
         .execute()
     )
 
     studentsRankingCompanies_df = pd.DataFrame(studentsRankingCompanies.data)
     print(studentsRankingCompanies_df)
+    
+    companiesRankingStudents = (
+        supabase.table('RankingStudent')
+        .select('rankNo,companyID,studentID')
+        .execute()
+    )
 
-    stuff = {}
-    for index, row in studentsRankingCompanies_df.iterrows():
-        rankNo = row['rankNo']
-        jobID =row['jobID']
-        rankID = row['rankID']
-        studentId = row['studentID']
-        list = [studentId, rankID, jobID]
-        stuff[rankID] = list
+    companiesRankingStudents_df = pd.DataFrame(companiesRankingStudents)
+    global companies
+    companies = {}
+    for index, row in companiesRankingStudents_df.iterrows():
+        company = row['companyID']
+        rank = row['rankNo']
+        student = row['studentID']
+        if(company in companies):
+            assignStudent(rank,student,company)
+        else:
+            companies[company] = {'rank1':'','rank2':'','rank3':''}
+            assignStudent(rank,student,company)
 
-    print(stuff)
-    return 'unga bunga'
+    
+    return companies
+
+def assignStudent(rankNo,studentID,companyID):
+    match rankNo:
+        case 1:
+            companies.update({companyID:{'rank1':studentID}})
+            return
+        case 2:
+            companies.update({companyID:{'rank2':studentID}})
+            return
+        case 3:
+            companies.update({companyID:{'rank3':studentID}})
+            return
+    
