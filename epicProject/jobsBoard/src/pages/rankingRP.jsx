@@ -35,7 +35,7 @@ function RankingPage(){
         let rank = data.rankNo;
         while(index < list.length){
             const {error: deleteError} = await supabase.from('RankingStudent').delete().eq('companyID',user.id).eq('studentID',list[index].studentID);
-            const {error: uploadError} = await supabase.from("RankingStudent").insert({ 
+            const {error: uploadError} = await supabase.from("RankingStudent").insert({
                 companyID: user.id,
                 studentID: list[index].studentID,
                 rankNo: rank + 1}).single();
