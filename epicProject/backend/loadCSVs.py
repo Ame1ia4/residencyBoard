@@ -24,5 +24,5 @@ def qca_list_download(year_group):
     with open(qca_path, "wb") as file:
         file.write(response)
 
-    print(f"QCA list downloaded to {qca_path}")
+    #print(f"QCA list downloaded to {qca_path}")
     return qca_path
