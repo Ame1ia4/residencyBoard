@@ -34,7 +34,7 @@ clearInterviewAllocations()
 def clearJobAllocation(year_group):
     response = (
         supabase.table('JobAllocation')
-            .select('studentID')
+            .select('studentID, studentID(groupID)')
             .eq('studentID(groupID)',year_group)
             .execute()
     )
