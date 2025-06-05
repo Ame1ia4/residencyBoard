@@ -3,7 +3,7 @@ from supabase import create_client, Client
 from dotenv import load_dotenv
 import pandas as pd
 
-def rpAllocate():
+def rpAllocate(yearGroup):
     # creates a supabase client
     load_dotenv(dotenv_path=".env")
     url: str = os.environ.get("VITE_SUPABASE_URL")
@@ -14,6 +14,7 @@ def rpAllocate():
     studentsRankingCompanies = (
         supabase.table('RankingCompany')
         .select('rankNo,jobID,studentID')
+        .eq('studentID(groupID)',yearGroup)
         .execute()
     )
 
@@ -34,7 +35,8 @@ def rpAllocate():
     # make a dictionary of students with their rankings
     companiesRankingStudents = (
         supabase.table('RankingStudent')
-        .select('rankNo,companyID,studentID')
+        .select('rankNo,jobID,studentID')
+        .eq('studentID(groupID)',yearGroup)
         .execute()
     )
 
@@ -42,7 +44,7 @@ def rpAllocate():
     global companies
     companies = {}
     for index, row in companiesRankingStudents_df.iterrows():
-        company = row['companyID']
+        company = row['jobID']
         rank = row['rankNo']
         student = row['studentID']
         if(company in companies):
@@ -63,11 +65,85 @@ def rpAllocate():
     3:2
     3:3
     """
-    global jobParings
+
     jobParings = {}
+    for companyKey in companies:
+        if companyKey not in jobParings:
+            companyStudent = companies[companyKey][1]
+            for studentKey in students:
+                studentCompany = students[studentKey][1]
+                if companyStudent == studentCompany:
+                    jobParings[companyKey] = studentKey
+    for companyKey in companies:
+        if companyKey not in jobParings:
+            companyStudent = companies[companyKey][1]
+            for studentKey in students:
+                studentCompany = students[studentKey][2]
+                if companyStudent == studentCompany:
+                    jobParings[companyKey] = studentKey
+    for companyKey in companies:
+        if companyKey not in jobParings:
+            companyStudent = companies[companyKey][2]
+            for studentKey in students:
+                studentCompany = students[studentKey][1]
+                if companyStudent == studentCompany:
+                    jobParings[companyKey] = studentKey
+    for companyKey in companies:
+        if companyKey not in jobParings:
+            companyStudent = companies[companyKey][1]
+            for studentKey in students:
+                studentCompany = students[studentKey][3]
+                if companyStudent == studentCompany:
+                    jobParings[companyKey] = studentKey
+    for companyKey in companies:
+        if companyKey not in jobParings:
+            companyStudent = companies[companyKey][2]
+            for studentKey in students:
+                studentCompany = students[studentKey][2]
+                if companyStudent == studentCompany:
+                    jobParings[companyKey] = studentKey
+    for companyKey in companies:
+        if companyKey not in jobParings:
+            companyStudent = companies[companyKey][2]
+            for studentKey in students:
+                studentCompany = students[studentKey][3]
+                if companyStudent == studentCompany:
+                    jobParings[companyKey] = studentKey
+    for companyKey in companies:
+        if companyKey not in jobParings:
+            companyStudent = companies[companyKey][3]
+            for studentKey in students:
+                studentCompany = students[studentKey][1]
+                if companyStudent == studentCompany:
+                    jobParings[companyKey] = studentKey
+    for companyKey in companies:
+        if companyKey not in jobParings:
+            companyStudent = companies[companyKey][3]
+            for studentKey in students:
+                studentCompany = students[studentKey][2]
+                if companyStudent == studentCompany:
+                    jobParings[companyKey] = studentKey
+    for companyKey in companies:
+        if companyKey not in jobParings:
+            companyStudent = companies[companyKey][3]
+            for studentKey in students:
+                studentCompany = students[studentKey][3]
+                if companyStudent == studentCompany:
+                    jobParings[companyKey] = studentKey
 
-
-    return student,companies
+    # write these to the database
+    for key in jobParings:
+        companyid = key
+        studentid = jobParings[key]
+        finalAllocation = (
+            supabase.table('finalAllocations')
+                .insert({
+                    'studentID': studentid, 
+                    'jobID': companyid
+                    })
+                .execute()
+        )
+    return jobParings
 
 
 def assignStudent(rankNo,studentID,companyID):
