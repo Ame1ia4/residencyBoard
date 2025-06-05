@@ -1,5 +1,19 @@
+from interviewAllocations import get_students_ordered
 from interviewAllocations import allocate_slots
 import pandas as pd
+
+year_group = "2026"
+
+def test_get_students_ordered(): # unit test
+    data = {
+        "studentID": ["7eebe849-85e1-4196-b7ed-7919fa350f00",
+                        "9bbce3a5-dc56-4b0f-9b68-6ff7799960a4",
+                         "5ee089e9-e8d6-407b-8944-b38c098283fc",
+                           "de58fb69-86b5-4bfd-ae13-1210f588b994"],
+        "Rank" : [1, 2, 3, 4]
+    }
+    df = pd.DataFrame(data)
+    assert get_students_ordered(year_group) == df["studentID"].tolist()
 
 def test_unittest_allocate_interviews(): # unt test
     job_data = [

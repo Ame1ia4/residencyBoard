@@ -12,20 +12,6 @@ import os
 
 year_group = "2026"
 
-def test_get_students_ordered(): # integration test
-    data = {
-        "studentID": ["7eebe849-85e1-4196-b7ed-7919fa350f00",
-                        "9bbce3a5-dc56-4b0f-9b68-6ff7799960a4",
-                         "5ee089e9-e8d6-407b-8944-b38c098283fc",
-                           "de58fb69-86b5-4bfd-ae13-1210f588b994"],
-        "Rank" : [1, 2, 3, 4]
-    }
-    df = pd.DataFrame(data)
-    assert get_students_ordered(year_group) == df["studentID"].tolist()
-
-#test_get_students_ordered()
-#print("Passed")
-
 def test_get_jobs_ranked(): # integration test
 
     url = "https://zahjfkggsyktdshmjmre.supabase.co"
@@ -115,6 +101,7 @@ def test_insert_interview_allocations(): # integration test
 #test_insert_interview_allocations()
 #print("Passed")
 
+
 def test_export_and_upload_rankings(): # integration test
     url = "https://zahjfkggsyktdshmjmre.supabase.co"
     key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0Nzk4MTIzMywiZXhwIjoyMDYzNTU3MjMzfQ.pLxh4lCSOpIY6mp_Kr1VKB2Mm1YS80eAsd4OTn22LYk"
@@ -131,4 +118,24 @@ def test_export_and_upload_rankings(): # integration test
     assert os.path.exists(expected_file_path), "CSV file was not created."
 
 #test_export_and_upload_rankings()
+#print("Passed")
+
+def test_delete_rankings_for_students(): # integration test
+    url = "https://zahjfkggsyktdshmjmre.supabase.co"
+    key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0Nzk4MTIzMywiZXhwIjoyMDYzNTU3MjMzfQ.pLxh4lCSOpIY6mp_Kr1VKB2Mm1YS80eAsd4OTn22LYk"
+    supabase: Client = create_client(url, key)
+
+    students_ordered = get_students_ordered(year_group)
+
+    delete_rankings_for_students(supabase, students_ordered)
+
+    response = (
+        supabase
+        .table("RankingCompany")
+        .select("*")
+        .in_("studentID", students_ordered)
+        .execute()
+    )
+    assert len(response.data) == 0
+#test_delete_rankings_for_students()
 #print("Passed")
