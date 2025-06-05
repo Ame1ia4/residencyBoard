@@ -159,6 +159,7 @@ def rpAllocate(yearGroup):
                     if companyStudent == studentCompany:
                         jobParings[companyKey][positionKey] = {studentKey}
 
+    listOfStudents = []
     # write these to the database
     for company in jobParings:
         for position in jobParings:
@@ -173,11 +174,27 @@ def rpAllocate(yearGroup):
                         })
                     .execute()
             )
+            listOfStudents.append(studentid)
+    
+    # delete used information
+    deleteCompany = (
+        supabase.table('RankingCompany')
+            .delete()
+            .in_('studentID', listOfStudents)
+            .execute()
+    )
+
+    deleteStudent = (
+        supabase.table('RankingStudent')
+            .delete()
+            .in_('studentID', listOfStudents)
+            .execute()
+    )
     
     return jobParings
 
 
-def assignStudent(rankNo,studentID,companyID,positions):
+def assignStudent(rankNo,studentID,companyID,position):
     match rankNo:
         case 1:
             for position in companies[companyID].keys():
