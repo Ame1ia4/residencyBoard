@@ -1,161 +1,112 @@
 from supabase import create_client, Client
 import pandas as pd
-import os
 from loadCSVs import qca_list_download
 from housekeeping import clearInterviewAllocations
 
-def allocate_interviews(year_group):
-
-    # creates a supabase client
-    url = "https://zahjfkggsyktdshmjmre.supabase.co"
-    key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0Nzk4MTIzMywiZXhwIjoyMDYzNTU3MjMzfQ.pLxh4lCSOpIY6mp_Kr1VKB2Mm1YS80eAsd4OTn22LYk"
-    supabase: Client = create_client(url, key)
-
+def get_students_ordered(year_group):
     qca_path = qca_list_download(year_group)
     qca_df = pd.read_csv(qca_path)
+    return qca_df["StudentID"].tolist()
 
-    # convert qca order to list
-    students_ordered = qca_df["StudentID"].tolist()
-    #print(f"Students ordered by QCA: {students_ordered}")
-
-    # copying all the rankings from the db
+def get_jobs_ranked(supabase, students_ordered):
     jobs_ranked = (
         supabase.table("RankingCompany")
-                      .select("rankNo,jobID,studentID")
-                      .execute()
+        .select("rankID,rankNo,jobID,studentID")
+        .in_("studentID", students_ordered)
+        .execute()
     )
-    jobs_ranked_df = pd.DataFrame(jobs_ranked.data)
-    print(jobs_ranked_df)
+    return pd.DataFrame(jobs_ranked.data)
 
-    # copying job details from the db
+def get_job_details(supabase):
     jobDetails = (
         supabase.table("JobDetails")
         .select("jobID,positionsAvailable")
         .execute()
     )
-    jobDetails_df = pd.DataFrame(jobDetails.data)
+    return pd.DataFrame(jobDetails.data)
 
-    clearInterviewAllocations()
+def allocate_slots(jobs_ranked_df, jobDetails_df, students_ordered):
 
-    # make a dict of how many interview slots a company has
     interview_slots = {}
-    for index, row in jobDetails_df.iterrows():
-        job = row["jobID"]
-        positions = int(row["positionsAvailable"])
-        interview_slots[job] = positions * 3
+    for _,  row in jobs_ranked_df.iterrows():
+        interview_slots[row["jobID"]: int(row["positionsAvailable"]) * 3]
 
-    # selecting students for interviews
     interview_results = {}
     remaining_slots = interview_slots.copy()
     student_interview_count = {}
-
     interview_list = []
 
-    # going through each student in QCA order
     for student in students_ordered:
-
-        # finding and ordering that students ranked companies
-        student_rankings = jobs_ranked_df[jobs_ranked_df["studentID"] == student]
-        student_rankings = student_rankings.sort_values("rankNo")
+        student_rankings = jobs_ranked_df[jobs_ranked_df["studentID"] == student].sort_values("rankNo")
         interview_count = 0
-
-        # if student rankings are blank, skip
         if student_rankings.empty:
             continue
-        
         for _, ranking_row in student_rankings.iterrows():
-
-            job_id = ranking_row["jobID"] # current job id
-
-            # do a check to see if the company has slots left
+            job_id = ranking_row["jobID"]
             if remaining_slots.get(job_id, 0) > 0:
-            
-                # if the job is not in interview_results create a new list to hold students
-                if job_id not in interview_results:
-                    interview_results[job_id] = []
-                interview_results[job_id].append(student)
-
+                interview_results.setdefault(job_id, []).append(student)
                 remaining_slots[job_id] -= 1
                 interview_count += 1
-
                 if interview_count >= 3:
                     break
-
         student_interview_count[student] = interview_count
-
-
-    # creating a dataframe for the results to display
-    interview_list = []
     for job, students in interview_results.items():
         for student in students:
-            interview_list.append({
-                "jobID": job, 
-                "StudentID": student})
+            interview_list.append({"jobID": job, "StudentID": student})
+    return pd.DataFrame(interview_list)
 
-    interview_df = pd.DataFrame(interview_list)
-    #print(interview_df)
-
-    for index, row in interview_df.iterrows():
-        job = str(row["jobID"])
-        student_id = str(row["StudentID"])
-
-        response = (
-            supabase.table("InterviewAllocation")
+def insert_interview_allocations(supabase, interview_df):
+    for _, row in interview_df.iterrows():
+        response = (supabase
+            .table("InterviewAllocation")
             .insert({
-                "jobID": job,
-                "studentID": student_id
-        })
+                "jobID": str(row["jobID"]),
+                "studentID": str(row["StudentID"])
+            })
             .execute()
         )
 
-    def print_full(x):
-        pd.set_option('display.max_rows', len(x))
-        print(x)
-        pd.reset_option('display.max_rows')
-
+def export_and_upload_rankings(supabase, students_ordered, year_group):
     ranking = (
         supabase.table("RankingCompany")
-        .select("rankID,rankNo,studentID,jobID")
+        .select("rankNo,jobID,studentID,rankNo")
+        .in_("studentID", students_ordered)
         .execute()
     )
-
     ranking_df = pd.DataFrame(ranking.data)
-
-    download_directory = "csvRankingDownloads"
-    os.makedirs(download_directory, exist_ok=True)
-
-    os.path.join(download_directory, f"ranking_company_{year_group}.csv")
-
-    ranking_df.to_csv(f"csvRankingDownloads/ranking_company_{year_group}.csv", index=False)
-
-    with open(f"csvRankingDownloads/ranking_company_{year_group}.csv", "rb") as f:
-        response = (
-            supabase.storage
-            .from_("ranking-companies")
-            .upload(
-                file=f,
-                path=f"ranking_company_{year_group}.csv",
-                file_options={"upsert": "true"}
+    csv_path = f"csvRankingDownloads/ranking_company_{year_group}.csv"
+    ranking_df.to_csv(csv_path, index=False)
+    with open(csv_path, "rb") as f:
+        supabase.storage.from_("ranking-companies").upload(
+            path=f"ranking_company_{year_group}.csv",
+            file=f,
+            file_options={"upsert": "true"}
         )
-    )
 
-    
-    ranking_company_ids = (
-        supabase.table("RankingCompany")
-        .select("rankID")
-        .execute()
-    )
-
-    ranking_company_ids_list = [row["rankID"] for row in ranking_company_ids.data]
-
+def delete_rankings_for_students(supabase, students_ordered):
     response = (
-        supabase.table("RankingCompany")
-        .delete()
-        .in_("rankID", ranking_company_ids_list)
-        .execute()
+        supabase
+            .table("RankingCompany")
+            .delete()
+            .in_("studentID", students_ordered)
+            .execute()
     )
 
-    return interview_list
+def allocate_interviews(year_group):
+    url = "https://zahjfkggsyktdshmjmre.supabase.co"
+    key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0Nzk4MTIzMywiZXhwIjoyMDYzNTU3MjMzfQ.pLxh4lCSOpIY6mp_Kr1VKB2Mm1YS80eAsd4OTn22LYk"
+    supabase: Client = create_client(url, key)
 
-#result = allocate_interviews("2025")
-#print(result)
+    students_ordered = get_students_ordered(year_group)
+    jobs_ranked_df = get_jobs_ranked(supabase, students_ordered)
+    jobDetails_df = get_job_details(supabase)
+
+    clearInterviewAllocations()
+    interview_df = allocate_slots(jobs_ranked_df, jobDetails_df, students_ordered)
+    insert_interview_allocations(supabase, interview_df)
+    export_and_upload_rankings(supabase, students_ordered, year_group)
+    delete_rankings_for_students(supabase, students_ordered)
+
+    interview_list = interview_df.tolist()
+
+    return interview_list()
