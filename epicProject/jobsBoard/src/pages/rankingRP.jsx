@@ -26,7 +26,7 @@ function RankingPage(){
         const { data: list, error: listError } = await supabase
             .from('RankingStudent')
             .select('rankNo, studentID') 
-            .eq('companyID',user.id)
+            .eq('jobID',user.id)
             .gte('rankNo', data.rankNo)
             .neq('studentID',data.studentID)
             .order('rankNo', { ascending: true}); 
@@ -34,7 +34,7 @@ function RankingPage(){
         let index = 0;
         let rank = data.rankNo;
         while(index < list.length){
-            const {error: deleteError} = await supabase.from('RankingStudent').delete().eq('companyID',user.id).eq('studentID',list[index].studentID);
+            const {error: deleteError} = await supabase.from('RankingStudent').delete().eq('jobID',user.id).eq('studentID',list[index].studentID);
             const {error: uploadError} = await supabase.from("RankingStudent").insert({
                 companyID: user.id,
                 studentID: list[index].studentID,
@@ -78,9 +78,9 @@ function RankingPage(){
 
         // Delete old ranking and Insert into RankingCompany table
 
-        const {error: presentError} = await supabase.from('RankingStudent').select('').eq('companyID', user.id).eq('studentID', newRank.studentID);
+        const {error: presentError} = await supabase.from('RankingStudent').select('').eq('jobID', user.id).eq('studentID', newRank.studentID);
         if(!presentError){ 
-            const {error: deleteError} = await supabase.from('RankingStudent').delete().eq('companyID',user.id).eq('studentID',newRank.studentID);
+            const {error: deleteError} = await supabase.from('RankingStudent').delete().eq('jobID',user.id).eq('studentID',newRank.studentID);
 
             if(deleteError){
                 console.error("Error with deleting rank:", deleteError.message);
