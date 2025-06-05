@@ -15,5 +15,9 @@ def allocate(year_group): #function to call in frontend
 def rp(year_group):
     return rpAllocate(year_group)
 
+def rp():
+    return rpAllocate()
+    
+
 if __name__ == '__main__': #if this file is run directly then this will run
     app.run(debug=True)

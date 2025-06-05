@@ -1,7 +1,5 @@
 import os
 from supabase import create_client, Client
-from dotenv import load_dotenv
-import pandas as pd
 
 # creates a supabase client
 url = "https://zahjfkggsyktdshmjmre.supabase.co"
@@ -9,7 +7,7 @@ key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inph
 supabase: Client = create_client(url, key)
 
 # any files downloaded from supabase are stored in the download_directory
-download_directory = "epicProject/backend/csvDownloads"
+download_directory = "csvDownloads"
 os.makedirs(download_directory, exist_ok=True)
 
 # downloads the qca_list csv from supabase storage

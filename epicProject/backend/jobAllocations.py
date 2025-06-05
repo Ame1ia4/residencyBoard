@@ -12,7 +12,7 @@ def rpAllocate(yearGroup):
     supabase: Client = create_client(url, key)
 
     # clear existing data in output
-    clearJobAllocation(yearGroup,supabase)
+    clearJobAllocation(yearGroup)
     
     # make a global dictionary of student with their rankings
     gatherStudents(yearGroup,supabase)
