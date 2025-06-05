@@ -177,25 +177,29 @@ useEffect(()=>{
 , [algorithm2Enabled]);
 
     return (
-    <div className='home-main'>
+    <div className='home-time'>
      <h1>Ranking Control</h1>
             {rankingUpdateError && <p style={{ color: 'red' }}>{rankingUpdateError}</p>}
+        <p>Round 0: Let students rank all companies</p>
         <label class="switch">
         <input id="switchBox" type="checkbox" checked={switch1} onChange={handleSwitch4} style={{}}></input>
          <span class="slider round"></span>
             </label>
+            <p>Round 1: Let students rank companies they have interviewed with.</p>
          <label class="switch">
         <input id="switchBox" type="checkbox" checked={switch2} onChange={handleSwitch5}></input>
          <span class="slider round"></span>
             </label>
+            <p>Round 2: Let students rank remaining companies</p>
         <label class="switch">
         <input id="switchBox" type="checkbox" checked={switch3} onChange={handleSwitch6}></input>
          <span class="slider round"></span>
         </label>
      <h1 id='alloCon'>Allocation Control</h1>
      <h2 id='jobAllocate'>Interview Allocation Algorithm</h2>
-     <p>Please ensure QCA list has been provided on 'Students' page for year group you want to run algorithm for. Results will display for students of that year group.</p>
+     <p id='intAllo'>Please ensure QCA list has been provided on 'Students' page for year group you want to run algorithm for. Results will display for students of that year group.</p>
      <label class="switch">
+        <p id='off'>Off/On</p>
         <input id="switchBox" type="checkbox" checked={algorithmEnabled} onChange={handleSwitch}></input>
          <span class="slider round"></span>
     </label>

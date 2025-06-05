@@ -9,5 +9,10 @@ export default defineConfig({
       input: '/index.html',
     },
   },
+  test: {
+    environment: 'jsdom', 
+    globals: true, 
+    setupFiles: './vitest.setup.js', 
+  },
 });
 

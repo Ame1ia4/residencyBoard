@@ -436,7 +436,7 @@ margin-bottom: -90px;
     margin-left: -10px;
     background-color: none;
     background-image: none;
-    margin-top: 70px;
+    margin-top: 100px;
     margin-bottom: 40px;
 }
 
@@ -576,6 +576,8 @@ justify-content: space-around;
 }
 
 .home-rps h3{
+    font-size: 25px;
+    color: #0c134e;
     margin-top: 40px;
     text-align: center;
 }
@@ -588,6 +590,10 @@ justify-content: space-around;
 .home-rps td{
     background-color: none;
     background-image: none;
+}
+
+#rpsErrorPending {
+    margin-bottom: 90px;
 }
 
 .home-main h1{
@@ -612,9 +618,39 @@ color: #010742;
 }
 
 #alloCon{
+margin-top: 90px;
 margin-bottom: -75px;
 }
 
 .home-main{
     margin-bottom: 70px;
+}
+
+.switch {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.home-time {
+    color: #fff;
+    margin-top: 160px;
+    align-items: center;
+}
+
+.home-time h1{
+    background-color: none;
+    background-image: none;
+text-align: center;
+margin-bottom: 20PX;
+margin-top: 20px;
+}
+
+.home-time p{
+    margin-top: 30px;
+    margin-left: -55px;
+}
+
+#intAllo {
+    margin-inline-start: 90px;
+    margin-inline-end: 230px;
 }
