@@ -1,7 +1,5 @@
 import os
 from supabase import create_client, Client
-from dotenv import load_dotenv
-import pandas as pd
 
 # creates a supabase client
 url = "https://zahjfkggsyktdshmjmre.supabase.co"

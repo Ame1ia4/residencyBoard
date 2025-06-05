@@ -3,3 +3,5 @@ backend/venv/
 backend/__pycache__/
 backend/csvDownloads/
 backend/csvRankingDownloads/
+backend/testingFiles/
+epicProject/backend/epicProject/backend/csvDownloads/
