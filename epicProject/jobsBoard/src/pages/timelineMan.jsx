@@ -111,7 +111,8 @@ function TimePage() {
     useEffect(() =>{
         const runAlgorithm = async () =>{
             if(algorithmEnabled){
-            const response = await fetch('http://127.0.0.1:5000/timelineMan')
+            const yearGroup = 2025;
+            const response = await fetch(`http://127.0.0.1:5000/timelineMan/${yearGroup}`)
             
             if (!response.ok)
             console.error('Response error from fetch.')
@@ -127,28 +128,7 @@ function TimePage() {
             setData(null);
             }
         }
-
-        const runAlgorithm2 = async () => {
-            if(algorithm2Enabled){
-            const response2 = await fetch('http://127.0.0.1:5000/rpAllocation')
-            
-            if (!response2.ok)
-            console.error('Response error from fetch.')
-
-            const json2 = await response2.json();
-            setData2(json2);
-            console.log('Algorithm ran successfully.')
-            alert('Algorithm ran successfully');
-            
-            } else {
-            console.log("Toggle not enabled, algorithm is not running");
-            setFetchError('Failed to run algorithm.');
-            setData2(null);
-            }
-        }
-
-
-
+        
     runAlgorithm();
 }
 , [algorithmEnabled]);
@@ -156,7 +136,7 @@ function TimePage() {
 useEffect(()=>{
     const runAlgorithm2 = async () => {
             if(algorithm2Enabled){
-            const response2 = await fetch('http://127.0.0.1:5000/rpAllocation')
+            const response2 = await fetch(`http://127.0.0.1:5000/rpAllocation/${yearGroup}`)
             
             if (!response2.ok)
             console.error('Response error from fetch.')
