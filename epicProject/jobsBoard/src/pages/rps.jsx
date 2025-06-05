@@ -115,7 +115,7 @@ useEffect(() => {
         async function loadData() {
 
         const rankings = await supabase
-            .from('RankingStudent2')
+            .from('RankingStudent')
             .select('jobID,studentID,rankNo');
     
         const companies = await supabase
