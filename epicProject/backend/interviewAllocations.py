@@ -4,10 +4,16 @@ import os
 from loadCSVs import qca_list_download
 from housekeeping import clearInterviewAllocations
 
+url = "https://zahjfkggsyktdshmjmre.supabase.co"
+key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0Nzk4MTIzMywiZXhwIjoyMDYzNTU3MjMzfQ.pLxh4lCSOpIY6mp_Kr1VKB2Mm1YS80eAsd4OTn22LYk"
+supabase: Client = create_client(url, key)
+
 def get_students_ordered(year_group):
     qca_path = qca_list_download(year_group)
     qca_df = pd.read_csv(qca_path)
-    return qca_df["StudentID"].tolist()
+    sorted_qca_df = qca_df.sort_values(by="Rank")
+    qca_list = sorted_qca_df["studentID"].tolist()
+    return qca_list
 
 def get_jobs_ranked(supabase, students_ordered):
     jobs_ranked = (
@@ -16,9 +22,10 @@ def get_jobs_ranked(supabase, students_ordered):
         .in_("studentID", students_ordered)
         .execute()
     )
-    return pd.DataFrame(jobs_ranked.data)
+    ranked_df = pd.DataFrame(jobs_ranked.data) 
+    return ranked_df
 
-def get_job_details(supabase):
+def get_job_details(supabase): 
     jobDetails = (
         supabase.table("JobDetails")
         .select("jobID,positionsAvailable")
@@ -53,7 +60,7 @@ def allocate_slots(jobs_ranked_df, jobDetails_df, students_ordered):
         student_interview_count[student] = interview_count
     for job, students in interview_results.items():
         for student in students:
-            interview_list.append({"jobID": job, "StudentID": student})
+            interview_list.append({"jobID": job, "studentID": student})
     return pd.DataFrame(interview_list)
 
 def insert_interview_allocations(supabase, interview_df):
@@ -62,7 +69,7 @@ def insert_interview_allocations(supabase, interview_df):
             .table("InterviewAllocation")
             .insert({
                 "jobID": str(row["jobID"]),
-                "studentID": str(row["StudentID"])
+                "studentID": str(row["studentID"])
             })
             .execute()
         )
@@ -95,6 +102,7 @@ def delete_rankings_for_students(supabase, students_ordered):
     )
 
 def allocate_interviews(year_group):
+
     url = "https://zahjfkggsyktdshmjmre.supabase.co"
     key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InphaGpma2dnc3lrdGRzaG1qbXJlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0Nzk4MTIzMywiZXhwIjoyMDYzNTU3MjMzfQ.pLxh4lCSOpIY6mp_Kr1VKB2Mm1YS80eAsd4OTn22LYk"
     supabase: Client = create_client(url, key)
@@ -109,6 +117,4 @@ def allocate_interviews(year_group):
     export_and_upload_rankings(supabase, students_ordered, year_group)
     delete_rankings_for_students(supabase, students_ordered)
 
-    interview_list = interview_df.tolist()
-
-    return interview_list()
+    return interview_df.to_list()
