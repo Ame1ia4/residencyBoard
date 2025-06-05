@@ -12,6 +12,7 @@ function TimePage() {
     const [switch1, setSwitch1] = useState(true);
     const [switch2, setSwitch2] = useState(false);
     const [switch3, setSwitch3] = useState(false);
+    const [yearGroup, setYearGroup] = useState('');
 
 
 
@@ -107,11 +108,19 @@ function TimePage() {
         }
     }
 
+    
+     const handleChange = (e) => {
+        const { name, value } = e.target;
+        setYearGroup(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     useEffect(() =>{
         const runAlgorithm = async () =>{
             if(algorithmEnabled){
-            const yearGroup = 2025;
+            const yearGroup = {yearGroup};
             const response = await fetch(`http://127.0.0.1:5000/timelineMan/${yearGroup}`)
             
             if (!response.ok)
@@ -128,7 +137,7 @@ function TimePage() {
             setData(null);
             }
         }
-        
+
     runAlgorithm();
 }
 , [algorithmEnabled]);
@@ -177,7 +186,16 @@ useEffect(()=>{
         </label>
      <h1 id='alloCon'>Allocation Control</h1>
      <h2 id='jobAllocate'>Interview Allocation Algorithm</h2>
-     <p id='intAllo'>Please ensure QCA list has been provided on 'Students' page for year group you want to run algorithm for. Results will display for students of that year group.</p>
+     <p id='intAllo'>Please ensure QCA list has been provided on 'Students' page for year group you want to run algorithm for. Insert year group for which this algorithm is being run. Results will display for students of that year group.</p>
+     <label>Year Group:</label>
+            <input
+                id='qYearGroupInput'
+                type="text"
+                placeholder="Year of Graduation"
+                value={yearGroup}
+                onChange={(e) => setYearGroup(e.target.value)}    
+            />
+    <button onClick={handleChange}>Set Year Group</button>
      <label class="switch">
         <p id='off'>Off/On</p>
         <input id="switchBox" type="checkbox" checked={algorithmEnabled} onChange={handleSwitch}></input>
