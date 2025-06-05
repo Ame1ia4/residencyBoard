@@ -30,3 +30,23 @@ def clearInterviewAllocations():
      )
 
 clearInterviewAllocations()
+
+def clearJobAllocation(year_group):
+    response = (
+        supabase.table('JobAllocation')
+            .select('studentID')
+            .eq('studentID(groupID)',year_group)
+            .execute()
+    )
+
+    ids = []
+
+    for row in response.data:
+        ids.append(row['allocationID'])
+
+    response = (
+        supabase.table('JobAllocation')
+            .delete()
+            .in_('allocationID',ids)
+            .execute()
+    )
