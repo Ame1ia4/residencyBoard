@@ -112,5 +112,3 @@ def allocate_interviews(year_group):
     interview_list = interview_df.tolist()
 
     return interview_list()
-
-allocate_interviews("2025")
