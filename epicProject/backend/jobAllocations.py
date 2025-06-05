@@ -100,7 +100,7 @@ def gatherCompanies(yearGroup, supabase):
         .execute()
     )
 
-    companiesRankingStudents_df = pd.DataFrame(companiesRankingStudents)
+    companiesRankingStudents_df = pd.DataFrame(companiesRankingStudents.data)
     global companies
     companies = {}
     for index, row in companiesRankingStudents_df.iterrows():
@@ -126,7 +126,7 @@ def allocate():
                 for studentKey in students:
                     studentCompany = students[studentKey][1]
                     if companyStudent == studentCompany:
-                        jobParings[companyKey][positionKey] = {studentKey}
+                        jobParings[companyKey][positionKey] = studentKey
     for companyKey in companies:
         if companyKey not in jobParings:
             jobParings[companyKey] = {}
@@ -136,7 +136,7 @@ def allocate():
                 for studentKey in students:
                     studentCompany = students[studentKey][2]
                     if companyStudent == studentCompany:
-                        jobParings[companyKey][positionKey] = {studentKey}
+                        jobParings[companyKey][positionKey] = studentKey
     for companyKey in companies:
         if companyKey not in jobParings:
             jobParings[companyKey] = {}
@@ -146,7 +146,7 @@ def allocate():
                 for studentKey in students:
                     studentCompany = students[studentKey][1]
                     if companyStudent == studentCompany:
-                        jobParings[companyKey][positionKey] = {studentKey}
+                        jobParings[companyKey][positionKey] = studentKey
     for companyKey in companies:
         if companyKey not in jobParings:
             jobParings[companyKey] = {}
@@ -156,7 +156,7 @@ def allocate():
                 for studentKey in students:
                     studentCompany = students[studentKey][3]
                     if companyStudent == studentCompany:
-                        jobParings[companyKey][positionKey] = {studentKey}
+                        jobParings[companyKey][positionKey] = studentKey
     for companyKey in companies:
         if companyKey not in jobParings:
             jobParings[companyKey] = {}
@@ -166,7 +166,7 @@ def allocate():
                 for studentKey in students:
                     studentCompany = students[studentKey][2]
                     if companyStudent == studentCompany:
-                        jobParings[companyKey][positionKey] = {studentKey}
+                        jobParings[companyKey][positionKey] = studentKey
     for companyKey in companies:
         if companyKey not in jobParings:
             jobParings[companyKey] = {}
@@ -176,7 +176,7 @@ def allocate():
                 for studentKey in students:
                     studentCompany = students[studentKey][3]
                     if companyStudent == studentCompany:
-                        jobParings[companyKey][positionKey] = {studentKey}
+                        jobParings[companyKey][positionKey] = studentKey
     for companyKey in companies:
         if companyKey not in jobParings:
             jobParings[companyKey] = {}
@@ -186,7 +186,7 @@ def allocate():
                 for studentKey in students:
                     studentCompany = students[studentKey][1]
                     if companyStudent == studentCompany:
-                        jobParings[companyKey][positionKey] = {studentKey}
+                        jobParings[companyKey][positionKey] = studentKey
     for companyKey in companies:
         if companyKey not in jobParings:
             jobParings[companyKey] = {}
@@ -196,7 +196,7 @@ def allocate():
                 for studentKey in students:
                     studentCompany = students[studentKey][2]
                     if companyStudent == studentCompany:
-                        jobParings[companyKey][positionKey] = {studentKey}
+                        jobParings[companyKey][positionKey] = studentKey
     for companyKey in companies:
         if companyKey not in jobParings:
             jobParings[companyKey] = {}
@@ -206,13 +206,13 @@ def allocate():
                 for studentKey in students:
                     studentCompany = students[studentKey][3]
                     if companyStudent == studentCompany:
-                        jobParings[companyKey][positionKey] = {studentKey}
+                        jobParings[companyKey][positionKey] = studentKey
 
 def cleanUp(supabase):
     listOfStudents = []
     # write these to the database
     for company in jobParings:
-        for position in jobParings:
+        for position in jobParings[company]:
             companyid = company
             studentid = jobParings[company][position]
             finalAllocation = (
