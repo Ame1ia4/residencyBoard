@@ -108,19 +108,16 @@ function TimePage() {
         }
     }
 
-    
-     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setYearGroup(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
     useEffect(() =>{
+
         const runAlgorithm = async () =>{
             if(algorithmEnabled){
-            const yearGroup = {yearGroup};
+                if(!yearGroup){
+                    alert('No year group set.')
+                    setAlgorithmEnabled(false);
+                }
+
+
             const response = await fetch(`http://127.0.0.1:5000/timelineMan/${yearGroup}`)
             
             if (!response.ok)
@@ -189,13 +186,12 @@ useEffect(()=>{
      <p id='intAllo'>Please ensure QCA list has been provided on 'Students' page for year group you want to run algorithm for. Insert year group for which this algorithm is being run. Results will display for students of that year group.</p>
      <label>Year Group:</label>
             <input
-                id='qYearGroupInput'
+                id='yearGroup'
                 type="text"
-                placeholder="Year of Graduation"
+                placeholder="Year group"
                 value={yearGroup}
-                onChange={(e) => setYearGroup(e.target.value)}    
+                onChange={(e) => setYearGroup(e.target.value)}   
             />
-    <button onClick={handleChange}>Set Year Group</button>
      <label class="switch">
         <p id='off'>Off/On</p>
         <input id="switchBox" type="checkbox" checked={algorithmEnabled} onChange={handleSwitch}></input>
