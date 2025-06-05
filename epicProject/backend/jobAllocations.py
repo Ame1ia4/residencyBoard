@@ -9,17 +9,16 @@ def rpAllocate(yearGroup):
     load_dotenv(dotenv_path=".env")
     url: str = os.environ.get("VITE_SUPABASE_URL")
     key: str = os.environ.get("VITE_SUPABASE_KEY") 
-    global supabase
     supabase: Client = create_client(url, key)
 
     # clear existing data in output
-    clearJobAllocation(yearGroup)
+    clearJobAllocation(yearGroup,supabase)
     
     # make a global dictionary of student with their rankings
-    gatherStudents(yearGroup)
+    gatherStudents(yearGroup,supabase)
     
     # make a dictionary of companies with their rankings
-    gatherCompanies(yearGroup)
+    gatherCompanies(yearGroup, supabase)
     
     """match companies with students using this plan
     company:student
@@ -36,7 +35,7 @@ def rpAllocate(yearGroup):
     allocate()
 
     # remove used information
-    cleanUp()
+    cleanUp(supabase)
 
     return jobParings
 
@@ -72,7 +71,7 @@ def assignJob(rankNo,studentID,jobID):
             students[studentID][3] = jobID
             return
         
-def gatherStudents(yearGroup):
+def gatherStudents(yearGroup, supabase):
     studentsRankingCompanies = (
         supabase.table('RankingCompany')
         .select('rankNo,jobID,studentID')
@@ -93,7 +92,7 @@ def gatherStudents(yearGroup):
             students[student] = {1:'',2:'',3:''}
             assignStudent(rank,student,job)
     
-def gatherCompanies(yearGroup):
+def gatherCompanies(yearGroup, supabase):
     companiesRankingStudents = (
         supabase.table('RankingStudent')
         .select('rankNo,jobID,studentID,jobID(positionsAvailable)')
@@ -209,7 +208,7 @@ def allocate():
                     if companyStudent == studentCompany:
                         jobParings[companyKey][positionKey] = {studentKey}
 
-def cleanUp():
+def cleanUp(supabase):
     listOfStudents = []
     # write these to the database
     for company in jobParings:
