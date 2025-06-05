@@ -8,8 +8,8 @@ app = Flask(__name__) #creates the flask app and
 CORS(app, origins={"http://127.0.0.1:5173"}) #uses CORS on this file so React can talk to it
 
 @app.route('/timelineMan') #url on the flask local host that will run the function below
-def allocate(): #function to call in frontend
-    return allocate_interviews(2025) #function form python file
+def allocate(year_group): #function to call in frontend
+    return allocate_interviews(year_group) #function form python file
 
 @app.route('/rpAllocation')
 def rp():
