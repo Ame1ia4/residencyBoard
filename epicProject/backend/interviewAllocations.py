@@ -1,5 +1,6 @@
 from supabase import create_client, Client
 import pandas as pd
+import os
 from loadCSVs import qca_list_download
 from housekeeping import clearInterviewAllocations
 
@@ -28,8 +29,8 @@ def get_job_details(supabase):
 def allocate_slots(jobs_ranked_df, jobDetails_df, students_ordered):
 
     interview_slots = {}
-    for _,  row in jobs_ranked_df.iterrows():
-        interview_slots[row["jobID"]: int(row["positionsAvailable"]) * 3]
+    for _,  row in jobDetails_df.iterrows():
+        interview_slots[row["jobID"]] = int(row["positionsAvailable"]) * 3
 
     interview_results = {}
     remaining_slots = interview_slots.copy()
@@ -74,6 +75,7 @@ def export_and_upload_rankings(supabase, students_ordered, year_group):
         .execute()
     )
     ranking_df = pd.DataFrame(ranking.data)
+    os.makedirs("csvRankingDownloads", exist_ok=True)
     csv_path = f"csvRankingDownloads/ranking_company_{year_group}.csv"
     ranking_df.to_csv(csv_path, index=False)
     with open(csv_path, "rb") as f:
@@ -110,3 +112,5 @@ def allocate_interviews(year_group):
     interview_list = interview_df.tolist()
 
     return interview_list()
+
+allocate_interviews("2025")
