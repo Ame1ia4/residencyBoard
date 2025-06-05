@@ -35,7 +35,7 @@ def rpAllocate(yearGroup):
     # make a dictionary of students with their rankings
     companiesRankingStudents = (
         supabase.table('RankingStudent')
-        .select('rankNo,jobID,studentID')
+        .select('rankNo,jobID,studentID,jobID(positionsAvailable)')
         .eq('studentID(groupID)',yearGroup)
         .execute()
     )
@@ -47,11 +47,12 @@ def rpAllocate(yearGroup):
         company = row['jobID']
         rank = row['rankNo']
         student = row['studentID']
+        positions = row['jobID(positionsAvailable)']
         if(company in companies):
-            assignStudent(rank,student,company)
+            assignStudent(rank,student,company,positions)
         else:
             companies[company] = {1:'',2:'',3:''}
-            assignStudent(rank,student,company)
+            assignStudent(rank,student,company,positions)
 
     """match companies with students using this plan
     company:student
@@ -69,104 +70,140 @@ def rpAllocate(yearGroup):
     jobParings = {}
     for companyKey in companies:
         if companyKey not in jobParings:
-            companyStudent = companies[companyKey][1]
-            for studentKey in students:
-                studentCompany = students[studentKey][1]
-                if companyStudent == studentCompany:
-                    jobParings[companyKey] = studentKey
+            jobParings[companyKey] = {}
+        for positionKey in companies[companyKey]:
+            if positionKey not in jobParings[companyKey]:
+                companyStudent = companies[companyKey][positionKey][1]
+                for studentKey in students:
+                    studentCompany = students[studentKey][1]
+                    if companyStudent == studentCompany:
+                        jobParings[companyKey][positionKey] = {studentKey}
     for companyKey in companies:
         if companyKey not in jobParings:
-            companyStudent = companies[companyKey][1]
-            for studentKey in students:
-                studentCompany = students[studentKey][2]
-                if companyStudent == studentCompany:
-                    jobParings[companyKey] = studentKey
+            jobParings[companyKey] = {}
+        for positionKey in companies[companyKey]:
+            if positionKey not in jobParings[companyKey]:
+                companyStudent = companies[companyKey][positionKey][1]
+                for studentKey in students:
+                    studentCompany = students[studentKey][2]
+                    if companyStudent == studentCompany:
+                        jobParings[companyKey][positionKey] = {studentKey}
     for companyKey in companies:
         if companyKey not in jobParings:
-            companyStudent = companies[companyKey][2]
-            for studentKey in students:
-                studentCompany = students[studentKey][1]
-                if companyStudent == studentCompany:
-                    jobParings[companyKey] = studentKey
+            jobParings[companyKey] = {}
+        for positionKey in companies[companyKey]:
+            if positionKey not in jobParings[companyKey]:
+                companyStudent = companies[companyKey][positionKey][2]
+                for studentKey in students:
+                    studentCompany = students[studentKey][1]
+                    if companyStudent == studentCompany:
+                        jobParings[companyKey][positionKey] = {studentKey}
     for companyKey in companies:
         if companyKey not in jobParings:
-            companyStudent = companies[companyKey][1]
-            for studentKey in students:
-                studentCompany = students[studentKey][3]
-                if companyStudent == studentCompany:
-                    jobParings[companyKey] = studentKey
+            jobParings[companyKey] = {}
+        for positionKey in companies[companyKey]:
+            if positionKey not in jobParings[companyKey]:
+                companyStudent = companies[companyKey][positionKey][1]
+                for studentKey in students:
+                    studentCompany = students[studentKey][3]
+                    if companyStudent == studentCompany:
+                        jobParings[companyKey][positionKey] = {studentKey}
     for companyKey in companies:
         if companyKey not in jobParings:
-            companyStudent = companies[companyKey][2]
-            for studentKey in students:
-                studentCompany = students[studentKey][2]
-                if companyStudent == studentCompany:
-                    jobParings[companyKey] = studentKey
+            jobParings[companyKey] = {}
+        for positionKey in companies[companyKey]:
+            if positionKey not in jobParings[companyKey]:
+                companyStudent = companies[companyKey][positionKey][2]
+                for studentKey in students:
+                    studentCompany = students[studentKey][2]
+                    if companyStudent == studentCompany:
+                        jobParings[companyKey][positionKey] = {studentKey}
     for companyKey in companies:
         if companyKey not in jobParings:
-            companyStudent = companies[companyKey][2]
-            for studentKey in students:
-                studentCompany = students[studentKey][3]
-                if companyStudent == studentCompany:
-                    jobParings[companyKey] = studentKey
+            jobParings[companyKey] = {}
+        for positionKey in companies[companyKey]:
+            if positionKey not in jobParings[companyKey]:
+                companyStudent = companies[companyKey][positionKey][2]
+                for studentKey in students:
+                    studentCompany = students[studentKey][3]
+                    if companyStudent == studentCompany:
+                        jobParings[companyKey][positionKey] = {studentKey}
     for companyKey in companies:
         if companyKey not in jobParings:
-            companyStudent = companies[companyKey][3]
-            for studentKey in students:
-                studentCompany = students[studentKey][1]
-                if companyStudent == studentCompany:
-                    jobParings[companyKey] = studentKey
+            jobParings[companyKey] = {}
+        for positionKey in companies[companyKey]:
+            if positionKey not in jobParings[companyKey]:
+                companyStudent = companies[companyKey][positionKey][3]
+                for studentKey in students:
+                    studentCompany = students[studentKey][1]
+                    if companyStudent == studentCompany:
+                        jobParings[companyKey][positionKey] = {studentKey}
     for companyKey in companies:
         if companyKey not in jobParings:
-            companyStudent = companies[companyKey][3]
-            for studentKey in students:
-                studentCompany = students[studentKey][2]
-                if companyStudent == studentCompany:
-                    jobParings[companyKey] = studentKey
+            jobParings[companyKey] = {}
+        for positionKey in companies[companyKey]:
+            if positionKey not in jobParings[companyKey]:
+                companyStudent = companies[companyKey][positionKey][3]
+                for studentKey in students:
+                    studentCompany = students[studentKey][2]
+                    if companyStudent == studentCompany:
+                        jobParings[companyKey][positionKey] = {studentKey}
     for companyKey in companies:
         if companyKey not in jobParings:
-            companyStudent = companies[companyKey][3]
-            for studentKey in students:
-                studentCompany = students[studentKey][3]
-                if companyStudent == studentCompany:
-                    jobParings[companyKey] = studentKey
+            jobParings[companyKey] = {}
+        for positionKey in companies[companyKey]:
+            if positionKey not in jobParings[companyKey]:
+                companyStudent = companies[companyKey][positionKey][3]
+                for studentKey in students:
+                    studentCompany = students[studentKey][3]
+                    if companyStudent == studentCompany:
+                        jobParings[companyKey][positionKey] = {studentKey}
 
     # write these to the database
-    for key in jobParings:
-        companyid = key
-        studentid = jobParings[key]
-        finalAllocation = (
-            supabase.table('finalAllocations')
-                .insert({
-                    'studentID': studentid, 
-                    'jobID': companyid
-                    })
-                .execute()
-        )
+    for company in jobParings:
+        for position in jobParings:
+            companyid = company
+            studentid = jobParings[company][position]
+            finalAllocation = (
+                supabase.table('JobAllocation')
+                    .insert({
+                        'studentID': studentid, 
+                        'jobID': companyid,
+                        'position': position
+                        })
+                    .execute()
+            )
+    
     return jobParings
 
 
-def assignStudent(rankNo,studentID,companyID):
+def assignStudent(rankNo,studentID,companyID,positions):
     match rankNo:
         case 1:
-            companies.update({companyID:{1:studentID}})
+            for position in companies[companyID].keys():
+                if companies[companyID][position][1] == '':
+                    companies[companyID][position][1] = studentID
             return
         case 2:
-            companies.update({companyID:{2:studentID}})
+            for position in companies[companyID].keys():
+                if companies[companyID][position][2] == '':
+                    companies[companyID][position][2] = studentID
             return
         case 3:
-            companies.update({companyID:{3:studentID}})
+            for position in companies[companyID].keys():
+                if companies[companyID][position][3] == '':
+                    companies[companyID][position][3] = studentID
             return
 
 
 def assignJob(rankNo,studentID,jobID):
     match rankNo:
         case 1:
-            students.update({studentID:{1:jobID}})
+            students[studentID][1] = jobID
             return
         case 2:
-            students.update({studentID:{2:jobID}})
+            students[studentID][2] = jobID
             return
         case 3:
-            students.update({studentID:{3:jobID}})
+            students[studentID][3] = jobID
             return
