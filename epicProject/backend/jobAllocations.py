@@ -72,10 +72,19 @@ def assignJob(rankNo,studentID,jobID):
             return
         
 def gatherStudents(yearGroup, supabase):
+    studentsInGroup = (
+        supabase.table('Student')
+        .select('studentID')
+        .eq('groupID', yearGroup)
+        .execute()
+    )
+    student_ids = [s['studentID'] for s in studentsInGroup.data]
+
+
     studentsRankingCompanies = (
         supabase.table('RankingCompany')
         .select('rankNo,jobID,studentID')
-        .eq('studentID(groupID)',yearGroup)
+        .in_('studentID', student_ids)
         .execute()
     )
 
@@ -87,16 +96,24 @@ def gatherStudents(yearGroup, supabase):
         student = row['studentID']
         job = row['jobID']
         if(student in students):
-            assignStudent(rank,student,job)
+            assignJob(rank,student,job)
         else:
             students[student] = {1:'',2:'',3:''}
-            assignStudent(rank,student,job)
+            assignJob(rank,student,job)
     
 def gatherCompanies(yearGroup, supabase):
+    studentsInGroup = (
+        supabase.table('Student')
+        .select('studentID')
+        .eq('groupID', yearGroup)
+        .execute()
+    )
+    student_ids = [s['studentID'] for s in studentsInGroup.data]
+
     companiesRankingStudents = (
         supabase.table('RankingStudent')
         .select('rankNo,jobID,studentID,jobID(positionsAvailable)')
-        .eq('studentID(groupID)',yearGroup)
+        .in_('studentID', student_ids)
         .execute()
     )
 
