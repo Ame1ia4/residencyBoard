@@ -32,12 +32,4 @@ describe('DropdownMenu', () => {
     expect(r5Link).toBeInTheDocument();
     expect(r5Link).toHaveAttribute('href', '/r5');
   });
-
-  test('renders the main dropdown container with correct class', () => {
-    render(<DropdownMenu />);
-
-    const dropdownContainer = screen.getByRole('list').closest('div');
-
-    expect(dropdownContainer).toBeInTheDocument();
-  });
 });

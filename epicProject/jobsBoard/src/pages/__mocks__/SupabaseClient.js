@@ -1,3 +1,4 @@
+
 export const supabase = {
   from: vi.fn(() => supabase),
   select: vi.fn(() => supabase),
