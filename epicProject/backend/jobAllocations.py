@@ -16,9 +16,10 @@ def rpAllocate(yearGroup):
     
     # make a global dictionary of student with their rankings
     gatherStudents(yearGroup,supabase)
-    
+    print(students)
     # make a dictionary of companies with their rankings
     gatherCompanies(yearGroup, supabase)
+    print(companies)
     
     """match companies with students using this plan
     company:student
@@ -33,7 +34,7 @@ def rpAllocate(yearGroup):
     3:3
     """
     allocate()
-
+    print(jobParings)
     # remove used information
     cleanUp(supabase)
 
