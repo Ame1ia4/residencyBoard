@@ -65,7 +65,11 @@ p{
 }
 
 #studentnav {
-    margin-left: 150px;
+    margin-left: 140px;
+}
+
+#RPnav{
+    margin-left: 120px
 }
 
 .nav ul{
@@ -127,8 +131,8 @@ p{
     background-image: none;
     text-align: center;
     display: inline-block;
-    margin-inline-start: 170px;
-    margin-inline-end: 140px;
+    margin-inline-start: 240px;
+    margin-inline-end: 210px;
 }
 
 .details{
@@ -170,9 +174,8 @@ p{
     backdrop-filter: blur(100%);
   position: absolute;
     padding: -15px;
-    background-image: linear-gradient(to right,  #969696bd, #8f8f8fc2, #8a8a8a71);
-    opacity: 70%;
-    margin-left: 90px;
+    background-image: linear-gradient(to top,  #2f394dc5,#2f394dc5, #2f394d93, #53536b7c, #53536b56 , #53536b10, #ffffff00);
+    margin-left: 89px;
     border-radius: 25px;
 }
 
@@ -671,5 +674,41 @@ margin-top: 20px;
 
 #hello{
     margin-top: 130px;
+    text-align: center;
 }
 
+.Card{
+    background-color: none;
+    background-image: none;
+}
+
+.jobPostingDetails{
+    background-color: none;
+    background-image: none;
+}
+
+.jobPostingDetails {
+    background-color: none;
+    background-image: linear-gradient(to bottom,  #551cb15e, #9f52c248);
+    border-radius: 35px;
+    padding: 20px;
+    margin-bottom: 30px;  
+    width: 300px;
+    margin-left: 200px;
+    margin-top: 20px;
+}
+
+.jobPostingDetails p{
+     text-align: left;
+}
+
+.studentJobDetails {
+     background-color: none;
+    background-image: linear-gradient(to bottom,  #551cb188, #9f52c248);
+    border-radius: 35px;
+    padding: 20px;
+    margin-bottom: 30px;  
+    margin-left: 420px;
+    width: 400px;
+    margin-top: 20px;
+}

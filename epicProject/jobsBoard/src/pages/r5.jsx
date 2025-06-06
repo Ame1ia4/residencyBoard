@@ -35,8 +35,7 @@ const [jobDetails, setJobDetails] = useState(null)
 {jobDetails && (
   <div className='jobDetails'>
     {jobDetails.map(jobDetails => (
-      <p>
-        <div className='jobPost'>
+        <div className='studentJobDetails'>
         <p>Job Title: {jobDetails.jobTitle}</p>
         <p>Salary: {jobDetails.salary}</p>
         <p>Description: {jobDetails.description}</p>
@@ -44,7 +43,6 @@ const [jobDetails, setJobDetails] = useState(null)
         <p>Residency: {jobDetails.residencyNo}</p>
         <br></br>
         </div>
-      </p>
     ))}
   </div>
 )}

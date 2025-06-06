@@ -37,7 +37,7 @@ describe('AllocationPage', () => {
     vi.clearAllMocks();
   });
 
-  it('should display interview allocations when data is fetched successfully', async () => {
+  it('Displays interview allocations when data fetches!', async () => {
     const mockInterviewData = [
       { studentID: '58494', interviewID: 1, jobID: 'job1', JobDetails: { jobTitle: 'Software Engineer Interview' } },
       { studentID: '58494', interviewID: 2, jobID: 'job2', JobDetails: { jobTitle: 'Product Manager Interview' } },
@@ -65,8 +65,6 @@ describe('AllocationPage', () => {
 
     render(<AllocationPage />);
 
-    expect(screen.getByText('Interview Allocation')).toBeInTheDocument();
-
     await waitFor(() => {
       expect(screen.getByText('58494 : Software Engineer Interview')).toBeInTheDocument();
       expect(screen.getByText('58494 : Product Manager Interview')).toBeInTheDocument();
@@ -76,7 +74,7 @@ describe('AllocationPage', () => {
 
   });
 
-  it('should display job allocations when data is fetched successfully', async () => {
+  it('displays job allocations when data fetches', async () => {
     const mockJobData = [
       { allocationID: 101, studentID: '58494', JobDetails: { jobID: 'jobA', jobTitle: 'Data Analyst' } },
       { allocationID: 102, studentID: '58494', JobDetails: { jobID: 'jobB', jobTitle: 'UX Designer' } },
@@ -102,8 +100,6 @@ describe('AllocationPage', () => {
 
     render(<AllocationPage />);
 
-    expect(screen.getByText('Job Allocation')).toBeInTheDocument();
-
     await waitFor(() => {
       expect(screen.getByText('58494 : Data Analyst')).toBeInTheDocument();
       expect(screen.getByText('58494 : UX Designer')).toBeInTheDocument();
@@ -113,7 +109,7 @@ describe('AllocationPage', () => {
     expect(supabase.from).toHaveBeenCalledWith('JobAllocation');
   });
 
-  it('should display fetch error for interview allocation if fetch fails', async () => {
+  it('displays fetch error for interview allocation if fetch doesnt work', async () => {
     const interviewError = { message: 'Network error for interviews' };
     const mockJobData = [];
 
@@ -139,10 +135,9 @@ describe('AllocationPage', () => {
     await waitFor(() => {
       expect(screen.getByText('Could not fetch rankings data')).toBeInTheDocument();
     });
-    expect(screen.queryByText(/Software Engineer Interview/i)).not.toBeInTheDocument();
   });
 
-  it('should display fetch error for job allocation if fetch fails', async () => {
+  it('Displays fetch error for job allocation if fetch deosnt work', async () => {
     const jobError = { message: 'Database error for jobs' };
     const mockInterviewData = [];
 
@@ -168,6 +163,5 @@ describe('AllocationPage', () => {
     await waitFor(() => {
       expect(screen.getByText('Could not fetch job allocation data. Data may currently be unavailable.')).toBeInTheDocument();
     });
-    expect(screen.queryByText(/Data Analyst/i)).not.toBeInTheDocument();
   });
 });

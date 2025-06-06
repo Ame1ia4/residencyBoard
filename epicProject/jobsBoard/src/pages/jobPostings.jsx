@@ -149,7 +149,7 @@ return (
 {jobDetails && (
   <div className='jobDetails'>
     {jobDetails.map(jobDetails => (
-      <div>
+      <div className='jobPostingDetails'>
         <p>Job Title: {jobDetails.jobTitle}</p>
         <p>Salary: {jobDetails.salary}</p>
         <p>Description: {jobDetails.description}</p>
