@@ -118,7 +118,7 @@ function TimePage() {
                 }
 
 
-            const response = await fetch(`http://127.0.0.1:5000/timelineMan/${yearGroup}`)
+            const response = await fetch(`http://127.0.0.1:5000/timelineMan/${yearGroup}`) //yrGroup passes variable to allocate func in app.py
             
             if (!response.ok)
             console.error('Response error from fetch.')
@@ -142,7 +142,7 @@ function TimePage() {
 useEffect(()=>{
     const runAlgorithm2 = async () => {
             if(algorithm2Enabled){
-            const response2 = await fetch(`http://127.0.0.1:5000/rpAllocation/${yearGroup}`)
+            const response2 = await fetch(`http://127.0.0.1:5000/rpAllocation/${yearGroup}`) //yrGroup passes variable to rpAllocate func in app.py
             
             if (!response2.ok)
             console.error('Response error from fetch.')
@@ -212,7 +212,3 @@ export default TimePage;
 
 //control ranking - changes ranking page for all Rs
 // control allocation - changes allocation page results
-//
-//
-//
-//
