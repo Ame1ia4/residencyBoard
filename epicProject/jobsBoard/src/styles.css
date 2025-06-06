@@ -654,3 +654,22 @@ margin-top: 20px;
     margin-inline-start: 90px;
     margin-inline-end: 230px;
 }
+
+#yearGLabel{
+    margin-top: 20px;
+    margin-left: 450px;
+    background-color: none;
+    background-image: none;
+}
+
+#yearGroup {
+    color: #fff;
+    background-color: #ffffff93;
+    background-image: none; 
+    border-radius: 25px;
+}
+
+#hello{
+    margin-top: 130px;
+}
+

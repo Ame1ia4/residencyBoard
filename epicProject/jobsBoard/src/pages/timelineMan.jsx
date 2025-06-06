@@ -40,7 +40,7 @@ function TimePage() {
     };
 
 
-    const handleSwitch = (event) =>{
+    const handleSwitch = (event) =>{ // switch for interviewAllocation algorithm activation
         const checked = event.target.checked;
         setAlgorithmEnabled(checked);
 
@@ -50,7 +50,7 @@ function TimePage() {
         }
     }
 
-    const handleSwitch2 = (event2) => {
+    const handleSwitch2 = (event2) => { // switch for jobAllocation algorithm activation
         const checked = event2.target.checked;
         setAlgorithm2Enabled(checked);
 
@@ -60,7 +60,7 @@ function TimePage() {
         }
     }
 
-    const handleSwitch4 = (event3) =>{
+    const handleSwitch4 = (event3) =>{ // round 0 of ranking
         const checked = event3.target.checked;
         setSwitch1(checked);
         setSwitch2(!checked);
@@ -76,7 +76,7 @@ function TimePage() {
         }
     }
 
-    const handleSwitch5 = (event3) =>{
+    const handleSwitch5 = (event3) =>{ // round 1 of ranking
         const checked = event3.target.checked;
         setSwitch1(!checked);
         setSwitch2(checked);
@@ -92,7 +92,7 @@ function TimePage() {
         }
     }
 
-    const handleSwitch6 = (event3) =>{
+    const handleSwitch6 = (event3) =>{ // round 2 of ranking
         const checked = event3.target.checked;
         setSwitch1(!checked);
         setSwitch2(!checked);
@@ -184,7 +184,7 @@ useEffect(()=>{
      <h1 id='alloCon'>Allocation Control</h1>
      <h2 id='jobAllocate'>Interview Allocation Algorithm</h2>
      <p id='intAllo'>Please ensure QCA list has been provided on 'Students' page for year group you want to run algorithm for. Insert year group for which this algorithm is being run. Results will display for students of that year group.</p>
-     <label>Year Group:</label>
+     <label id='yearGLabel'>Year Group:</label>
             <input
                 id='yearGroup'
                 type="text"
